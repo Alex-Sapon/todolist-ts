@@ -8,7 +8,7 @@ type TodoListHeaderPropsType = {
 const TodoListHeader: FC<TodoListHeaderPropsType> = (props) => {
     return (
         <div>
-            <Typography variant={'h4'}>{props.title}</Typography>
+            <Typography variant={'h4'} sx={{marginBottom: '1rem'}}>{props.title}</Typography>
         </div>
     );
 };

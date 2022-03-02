@@ -3,14 +3,15 @@ import styles from './Button.module.css'
 
 type ButtonPropsType = {
     title: string
+    onClick: () => void
 }
 
 const Button: FC<ButtonPropsType> = (props) => {
 
+    const onClickHandler = () => props.onClick();
+
     return (
-        <>
-            <button className={styles.button}>{props.title}</button>
-        </>
+        <button className={styles.button} onClick={onClickHandler}>{props.title}</button>
     );
 };
 
