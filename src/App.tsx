@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import TodoList from "./TodoList";
+import TodoList from "./components/TodoList";
 
 export type TaskType = {
     id: number
@@ -8,22 +8,24 @@ export type TaskType = {
     isDone: boolean
 }
 
-function App() {
-    // BLL
-    const todoListTitle_01 = "What to learn";
+export const App = () => {
 
-    const tasks_1: Array<TaskType> = [
+    const todoListTitle = "What to learn";
+    const initTasks: Array<TaskType> = [
         {id: 1, title: 'HTML&CSS', isDone: true},
         {id: 2, title: 'JS/ES6', isDone: true},
-        {id: 3, title: 'React', isDone: false}
-    ]
+        {id: 3, title: 'React', isDone: false},
+        {id: 4, title: 'TypeScript', isDone: false},
+        {id: 5, title: 'Redux', isDone: false}
+    ];
 
-    // UI
+    const removeTask = () => {
+
+    }
+
     return (
         <div className="App">
-            <TodoList title={todoListTitle_01} tasks={tasks_1}/>
+            <TodoList title={todoListTitle} tasks={initTasks} removeTask={removeTask}/>
         </div>
     );
 }
-
-export default App;
