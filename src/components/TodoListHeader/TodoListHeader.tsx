@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {Typography} from "@mui/material";
+import styles from './TodoListHeader.module.css'
 
 type TodoListHeaderPropsType = {
     title: string
@@ -7,9 +8,7 @@ type TodoListHeaderPropsType = {
 
 const TodoListHeader: FC<TodoListHeaderPropsType> = (props) => {
     return (
-        <div>
-            <Typography variant={'h4'} sx={{marginBottom: '1rem'}}>{props.title}</Typography>
-        </div>
+        <Typography variant={'h4'} className={styles.title}>{props.title}</Typography>
     );
 };
 

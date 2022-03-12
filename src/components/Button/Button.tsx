@@ -1,17 +1,17 @@
 import React, {FC} from 'react';
-import styles from './Button.module.css'
+import styles from './Button.module.css';
 
 type ButtonPropsType = {
     title: string
     onClick: () => void
+    className?: string
 }
 
 const Button: FC<ButtonPropsType> = (props) => {
-
     const onClickHandler = () => props.onClick();
 
     return (
-        <button className={styles.button} onClick={onClickHandler}>{props.title}</button>
+        <button className={`${props.className} ${styles.button}`} onClick={onClickHandler}>{props.title}</button>
     );
 };
 

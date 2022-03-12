@@ -1,0 +1,17 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  border: 2px solid lightslategrey;
+  border-radius: 5px;
+  background-color: #EDEFF2;
+  padding: 2rem;
+}
