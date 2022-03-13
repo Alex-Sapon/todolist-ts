@@ -1,16 +1,22 @@
-import React, {useState} from 'react'
+import React, {FC, useState} from 'react'
 import {TextField} from '@mui/material'
 import styles from './Input.module.css'
 
-const Input = () => {
-    const [value, setValue] = useState('')
+type InputProps = {
+    value: string
+    setValue: (value: string) => void
+    onKeyPressHandler: () => void
+}
 
+const Input: FC<InputProps> = (props) => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.currentTarget.value)
+        props.setValue(event.currentTarget.value)
     }
 
-    const onKeyPresHandler = () => {
-
+    const onKeyPresHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            props.onKeyPressHandler()
+        }
     }
 
     return (
@@ -19,7 +25,7 @@ const Input = () => {
             className={styles.input}
             onChange={onChangeHandler}
             onKeyPress={onKeyPresHandler}
-            value={value}
+            value={props.value}
         />
     );
 };

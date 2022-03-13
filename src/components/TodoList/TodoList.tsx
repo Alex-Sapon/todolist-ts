@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {TaskType, ValueFilterType} from '../../App';
 
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
@@ -14,15 +14,25 @@ export type TodoListProps = {
     tasks: Array<TaskType>
     removeTask: (id: string) => void
     filterTasks: (value: ValueFilterType) => void
+    addTask: (value: string) => void
 }
 
 const TodoList: FC<TodoListProps> = (props) => {
+    const [value, setValue] = useState('')
+
+    const onClickKeyPressHandler = () => {
+        if (value.length) {
+            props.addTask(value)
+            setValue('')
+        }
+    }
+
     return (
         <Box>
             <TodoListHeader title={props.title}/>
-            <div className={styles.inputBlock}>
-                <Input/>
-                <Button title={'Add task'} onClick={() => props.removeTask}/>
+            <div className={styles.input_block}>
+                <Input value={value} setValue={setValue} onKeyPressHandler={onClickKeyPressHandler}/>
+                <Button title={'Add task'} onClick={onClickKeyPressHandler}/>
             </div>
             <div className={styles.buttons}>
                 <Button title={'All'} onClick={() => props.filterTasks('all')}/>

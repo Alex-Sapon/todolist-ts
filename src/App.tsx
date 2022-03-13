@@ -22,15 +22,17 @@ export const App = () => {
     ];
 
     const [tasks, setTasks] = useState<TaskType[]>(initTasks);
+
     const removeTask = (id: string) => {
-        const filteredTasks = tasks.filter(task => task.id !== id);
-        setTasks(filteredTasks);
+        setTasks(tasks.filter(task => task.id !== id));
     }
 
     const [filter, setFilter] = useState<ValueFilterType>('all');
 
-    const filterTasks = (value: ValueFilterType) => {
-        setFilter(value);
+    const filterTasks = (value: ValueFilterType) => setFilter(value);
+
+    const addTask = (value: string) => {
+        setTasks([{id: v1(), title: value, isDone: false}, ...tasks])
     }
 
     let setTodoTasks = tasks;
@@ -50,6 +52,7 @@ export const App = () => {
                 tasks={setTodoTasks}
                 removeTask={removeTask}
                 filterTasks={filterTasks}
+                addTask={addTask}
             />
         </div>
     );
