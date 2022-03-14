@@ -11,6 +11,17 @@ export type TasksList = {
 }
 
 const TasksList: FC<TasksList> = (props) => {
+    if (props.tasks.length === 0) {
+        return (
+            <Typography
+                variant={'h3'}
+                sx={{width: '100%', fontSize: '1.5rem', textAlign: 'center'}}
+            >
+                No tasks
+            </Typography>
+        )
+    }
+
     return (
         <List>
             {props.tasks.map(task =>

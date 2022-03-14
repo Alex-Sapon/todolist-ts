@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {FC} from 'react'
 import {TextField} from '@mui/material'
 import styles from './Input.module.css'
 
@@ -6,6 +6,8 @@ type InputProps = {
     value: string
     setValue: (value: string) => void
     onKeyPressHandler: () => void
+    className?: string
+    placeholder?: string
 }
 
 const Input: FC<InputProps> = (props) => {
@@ -21,8 +23,9 @@ const Input: FC<InputProps> = (props) => {
 
     return (
         <TextField
+            placeholder={props.placeholder}
             size={'small'}
-            className={styles.input}
+            className={`${props.className} ${styles.input}`}
             onChange={onChangeHandler}
             onKeyPress={onKeyPresHandler}
             value={props.value}

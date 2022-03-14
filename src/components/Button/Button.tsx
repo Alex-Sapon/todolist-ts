@@ -8,10 +8,10 @@ type ButtonPropsType = {
 }
 
 const Button: FC<ButtonPropsType> = (props) => {
-    const onClickHandler = () => props.onClick();
+    // const onClickHandler = () => props.onClick();
 
     return (
-        <button className={`${props.className} ${styles.button}`} onClick={onClickHandler}>{props.title}</button>
+        <button className={`${props.className} ${styles.button}`} onClick={props.onClick}>{props.title}</button>
     );
 };
 

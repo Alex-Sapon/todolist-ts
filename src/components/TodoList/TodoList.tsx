@@ -18,12 +18,12 @@ export type TodoListProps = {
 }
 
 const TodoList: FC<TodoListProps> = (props) => {
-    const [value, setValue] = useState('')
+    const [title, setTitle] = useState<string>('')
 
     const onClickKeyPressHandler = () => {
-        if (value.length) {
-            props.addTask(value)
-            setValue('')
+        if (title.length) {
+            props.addTask(title)
+            setTitle('')
         }
     }
 
@@ -31,8 +31,17 @@ const TodoList: FC<TodoListProps> = (props) => {
         <Box>
             <TodoListHeader title={props.title}/>
             <div className={styles.input_block}>
-                <Input value={value} setValue={setValue} onKeyPressHandler={onClickKeyPressHandler}/>
-                <Button title={'Add task'} onClick={onClickKeyPressHandler}/>
+                <Input
+                    placeholder={'Enter a task'}
+                    className={styles.input}
+                    value={title} setValue={setTitle}
+                    onKeyPressHandler={onClickKeyPressHandler}
+                />
+                <Button
+                    className={styles.button}
+                    title={'Add task'}
+                    onClick={onClickKeyPressHandler}
+                />
             </div>
             <div className={styles.buttons}>
                 <Button title={'All'} onClick={() => props.filterTasks('all')}/>

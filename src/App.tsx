@@ -12,16 +12,20 @@ export type TaskType = {
 export type ValueFilterType = 'all' | 'active' | 'completed';
 
 export const App = () => {
+    // C - create
+    // R - read
+    // U - update
+    // D - delete
+    // BLL
+
     const todoListTitle = 'What to learn';
-    const initTasks = [
+    const [tasks, setTasks] = useState<TaskType[]>([
         {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS/ES6', isDone: true},
+        {id: v1(), title: 'JavaScript/ES6', isDone: true},
         {id: v1(), title: 'React', isDone: false},
         {id: v1(), title: 'TypeScript', isDone: false},
         {id: v1(), title: 'Redux', isDone: false}
-    ];
-
-    const [tasks, setTasks] = useState<TaskType[]>(initTasks);
+    ]);
 
     const removeTask = (id: string) => {
         setTasks(tasks.filter(task => task.id !== id));
@@ -35,16 +39,20 @@ export const App = () => {
         setTasks([{id: v1(), title: value, isDone: false}, ...tasks])
     }
 
-    let setTodoTasks = tasks;
+    let setTodoTasks;
     switch (filter) {
         case 'active':
-            setTodoTasks = tasks.filter(task => task.isDone === false);
+            setTodoTasks = tasks.filter(task => !task.isDone);
             break;
         case 'completed':
-            setTodoTasks = tasks.filter(task => task.isDone === true);
+            setTodoTasks = tasks.filter(task => task.isDone);
+            break;
+        default:
+            setTodoTasks = tasks;
             break;
     }
 
+    // UI
     return (
         <div className={styles.container}>
             <TodoList
