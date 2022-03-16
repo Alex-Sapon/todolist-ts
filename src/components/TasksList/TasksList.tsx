@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import {TaskType} from '../../App';
 import Button from '../Button/Button';
 
-import {Checkbox, List, ListItem, Typography} from '@mui/material';
 import styles from './TasksList.module.css'
+import {FaTrashAlt} from 'react-icons/all';
 
 export type TasksList = {
     tasks: Array<TaskType>
@@ -11,27 +11,20 @@ export type TasksList = {
 }
 
 const TasksList: FC<TasksList> = (props) => {
-    if (props.tasks.length === 0) {
-        return (
-            <Typography
-                variant={'h3'}
-                sx={{width: '100%', fontSize: '1.5rem', textAlign: 'center'}}
-            >
-                No tasks
-            </Typography>
-        )
-    }
+    if (props.tasks.length === 0) return <h3>No tasks</h3>
 
     return (
-        <List>
+        <ul className={styles.list}>
             {props.tasks.map(task =>
-                <ListItem className={styles.listItem} key={task.id}>
-                    <Checkbox checked={task.isDone} size={'small'}/>
-                    <Typography variant={'subtitle1'} sx={{width: '100%'}}>{task.title}</Typography>
-                    <Button className={styles.button} title={'x'} onClick={() => props.removeTask(task.id)}/>
-                </ListItem>
+                <li className={styles.item} key={task.id}>
+                    <label className={styles.title}>
+                        <input className={styles.input} type={'checkbox'} checked={task.isDone}/>
+                        {task.title}
+                    </label>
+                    <FaTrashAlt className={styles.button_remove} onClick={() => props.removeTask(task.id)}/>
+                </li>
             )}
-        </List>
+        </ul>
     );
 };
 

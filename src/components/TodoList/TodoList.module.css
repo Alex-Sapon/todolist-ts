@@ -2,15 +2,27 @@
     display: flex;
     justify-content: space-between;
     max-width: 280px;
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.5rem;
 }
 
 .input_block {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .button {
     margin-left: 1rem;
+}
+
+.input {
+    padding: 10px;
+    border: 0;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
 }

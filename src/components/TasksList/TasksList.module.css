@@ -1,14 +1,37 @@
-.button {
-    padding: 3px 10px;
+.button_remove {
+    padding: 5px;
+    cursor: pointer;
+    color: crimson;
 }
 
-.button:hover {
-    background-color: lightcoral;
+.list {
+    padding: 0;
 }
 
-.listItem {
+.item {
     background-color: lightsteelblue;
     border-radius: 5px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     box-shadow: 4px 2px 9px -1px rgba(34, 60, 80, 0.35);
+    list-style-type: none;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input {
+    margin-right: 1rem;
+    width: 15px;
+    height: 15px;
+    border: none;
+}
+
+.title {
+    flex: 1 1 auto;
+    font-size: 1.2rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }

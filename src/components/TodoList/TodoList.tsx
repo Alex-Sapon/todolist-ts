@@ -6,7 +6,6 @@ import TasksList from '../TasksList/TasksList';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 
-import {Box} from '@mui/material';
 import styles from './TodoList.module.css'
 
 export type TodoListProps = {
@@ -28,7 +27,7 @@ const TodoList: FC<TodoListProps> = (props) => {
     }
 
     return (
-        <Box>
+        <div>
             <TodoListHeader title={props.title}/>
             <div className={styles.input_block}>
                 <Input
@@ -51,7 +50,7 @@ const TodoList: FC<TodoListProps> = (props) => {
             <div>
                 <TasksList tasks={props.tasks} removeTask={props.removeTask}/>
             </div>
-        </Box>
+        </div>
     )
 }
 
