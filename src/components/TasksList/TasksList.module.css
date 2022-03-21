@@ -25,6 +25,7 @@
     width: 15px;
     height: 15px;
     border: none;
+    cursor: pointer;
 }
 
 .title {
@@ -34,4 +35,12 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.no_tasks {
+    text-align: center;
+}
+
+.text_through {
+    text-decoration: line-through;
 }

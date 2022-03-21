@@ -7,10 +7,12 @@ type InputProps = {
     onKeyPressHandler: () => void
     className?: string
     placeholder?: string
+    setError: (error: boolean) => void
 }
 
 const Input: FC<InputProps> = (props) => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        props.setError(false)
         props.setValue(event.currentTarget.value)
     }
 

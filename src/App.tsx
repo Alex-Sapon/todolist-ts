@@ -31,6 +31,10 @@ export const App = () => {
         setTasks(tasks.filter(task => task.id !== id));
     }
 
+    const changeStatus = (isDone: boolean, id: string) => {
+        setTasks(tasks.map(task => task.id === id ? {...task, isDone} : task))
+    }
+
     const [filter, setFilter] = useState<ValueFilterType>('all');
 
     const filterTasks = (value: ValueFilterType) => setFilter(value);
@@ -52,7 +56,6 @@ export const App = () => {
             break;
     }
 
-    // UI
     return (
         <div className={styles.container}>
             <TodoList
@@ -61,6 +64,8 @@ export const App = () => {
                 removeTask={removeTask}
                 filterTasks={filterTasks}
                 addTask={addTask}
+                isChecked={changeStatus}
+                filter={filter}
             />
         </div>
     );

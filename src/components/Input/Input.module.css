@@ -2,3 +2,7 @@
     width: 100%;
     background-color: white;
 }
+
+.error {
+    border: solid 1px crimson;
+}
