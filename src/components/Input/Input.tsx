@@ -1,34 +1,32 @@
 import React, {FC} from 'react'
 import styles from './Input.module.css'
 
-type InputProps = {
-    value: string
-    setValue: (value: string) => void
-    onKeyPressHandler: () => void
+type DefaultInputPropsType = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+
+type InputPropsType = DefaultInputPropsType & {
+    title: string
+    addTask: () => void
     className?: string
     placeholder?: string
-    setError: (error: boolean) => void
 }
 
-const Input: FC<InputProps> = (props) => {
+const Input: FC<InputPropsType> = (props) => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.setError(false)
-        props.setValue(event.currentTarget.value)
+        props.onChange && props.onChange(event)
     }
 
-    const onKeyPresHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            props.onKeyPressHandler()
-        }
+    const onKeyPressHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.key === 'Enter' && props.addTask()
     }
 
     return (
         <input
             placeholder={props.placeholder}
-            className={`${props.className} ${styles.input}`}
+            className={`${styles.input} ${props.className} `}
             onChange={onChangeHandler}
-            onKeyPress={onKeyPresHandler}
-            value={props.value}
+            onKeyPress={onKeyPressHandler}
+            value={props.title}
+            onBlur={props.onBlur}
         />
     );
 };

@@ -31,6 +31,13 @@ const TodoList: FC<TodoListProps> = (props) => {
         }
     }
 
+    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setError(false)
+        setTitle(event.currentTarget.value)
+    }
+
+    const onBlurHandler = () => setError(false)
+
     const allFilterTasks = () => props.filterTasks('all')
     const activeFilterTasks = () => props.filterTasks('active')
     const completedFilterTasks = () => props.filterTasks('completed')
@@ -42,10 +49,10 @@ const TodoList: FC<TodoListProps> = (props) => {
                 <Input
                     placeholder={'Task...'}
                     className={`${styles.input} ${error ? styles.error : ''}`}
-                    value={title}
-                    setValue={setTitle}
-                    onKeyPressHandler={addTask}
-                    setError={setError}
+                    title={title}
+                    addTask={addTask}
+                    onChange={onChangeHandler}
+                    onBlur={onBlurHandler}
                 />
                 <Button
                     className={styles.button}

@@ -3,6 +3,7 @@ import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
 import {FaTrashAlt} from 'react-icons/all';
+import Input from '../Input/Input';
 
 export type TasksList = {
     tasks: Array<TaskType>
@@ -32,10 +33,7 @@ const TasksList: FC<TasksList> = (props) => {
                                 />
                                 <span className={task.isDone ? styles.text_through : ''}>{task.title}</span>
                             </label>
-                            <FaTrashAlt
-                                className={styles.button_remove}
-                                onClick={onClickRemoveHandler}
-                            />
+                            <FaTrashAlt className={styles.button_remove} onClick={onClickRemoveHandler}/>
                         </li>
                     )
                 }
