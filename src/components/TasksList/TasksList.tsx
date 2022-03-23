@@ -3,7 +3,7 @@ import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
 import {FaTrashAlt} from 'react-icons/all';
-import Input from '../Input/Input';
+import Input from '../InputText/InputText';
 
 export type TasksList = {
     tasks: Array<TaskType>

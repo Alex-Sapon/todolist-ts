@@ -4,7 +4,7 @@ import {TaskType, ValueFilterType} from '../../App';
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
 import TasksList from '../TasksList/TasksList';
 import Button from '../Button/Button';
-import Input from '../Input/Input';
+import InputText from '../InputText/InputText';
 
 import styles from './TodoList.module.css'
 
@@ -42,15 +42,18 @@ const TodoList: FC<TodoListProps> = (props) => {
     const activeFilterTasks = () => props.filterTasks('active')
     const completedFilterTasks = () => props.filterTasks('completed')
 
+    const inputClasses = `${styles.input} ${error ? styles.error : ''}`
+
     return (
         <div>
             <TodoListHeader title={props.title}/>
             <div className={styles.input_block}>
-                <Input
+                <InputText
+                    value={title}
                     placeholder={'Task...'}
-                    className={`${styles.input} ${error ? styles.error : ''}`}
+                    className={inputClasses}
                     title={title}
-                    addTask={addTask}
+                    onEnter={addTask}
                     onChange={onChangeHandler}
                     onBlur={onBlurHandler}
                 />
