@@ -3,7 +3,7 @@ import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
 import {FaTrashAlt} from 'react-icons/all';
-import Input from '../InputText/InputText';
+import InputCheckbox from '../../UI/InputCheckbox/InputCheckbox';
 
 export type TasksList = {
     tasks: Array<TaskType>
@@ -24,15 +24,12 @@ const TasksList: FC<TasksList> = (props) => {
 
                     return (
                         <li className={styles.item} key={task.id}>
-                            <label className={styles.title}>
-                                <input
-                                    className={styles.input}
-                                    type={'checkbox'}
-                                    checked={task.isDone}
-                                    onChange={onChangeHandler}
-                                />
-                                <span className={task.isDone ? styles.text_through : ''}>{task.title}</span>
-                            </label>
+                            <InputCheckbox
+                                checked={task.isDone}
+                                onChange={onChangeHandler}
+                            >
+                                {task.title}
+                            </InputCheckbox>
                             <FaTrashAlt className={styles.button_remove} onClick={onClickRemoveHandler}/>
                         </li>
                     )

@@ -3,8 +3,8 @@ import {TaskType, ValueFilterType} from '../../App';
 
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
 import TasksList from '../TasksList/TasksList';
-import Button from '../Button/Button';
-import InputText from '../InputText/InputText';
+import Button from '../../UI/Button/Button';
+import InputText from '../../UI/InputText/InputText';
 
 import styles from './TodoList.module.css'
 
