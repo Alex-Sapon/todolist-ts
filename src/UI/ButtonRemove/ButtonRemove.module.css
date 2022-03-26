@@ -1,0 +1,9 @@
+.button_remove {
+    padding: 5px;
+    cursor: pointer;
+    color: black;
+}
+
+.button_remove:hover {
+    color: crimson;
+}

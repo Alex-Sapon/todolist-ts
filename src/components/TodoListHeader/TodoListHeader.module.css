@@ -1,5 +1,16 @@
-.title {
-    margin: 0rem 0rem 1rem 0rem;
+.header_container {
+    display: flex;
+    align-items: center;
     text-align: center;
+    justify-content: center;
+    margin: 0rem 0rem 1rem 0rem;
+}
+
+.title {
     font-size: 1.8rem;
+    margin: 0 2rem 0 0;
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    padding-bottom: 5px;
 }

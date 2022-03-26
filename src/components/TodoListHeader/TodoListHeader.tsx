@@ -1,13 +1,21 @@
 import React, {FC} from 'react';
 import styles from './TodoListHeader.module.css'
+import ButtonRemove from '../../UI/ButtonRemove/ButtonRemove';
 
-type TodoListHeaderPropsType = {
+type TodoListHeaderProps = {
     title: string
+    removeTodoList: (todoListId: string) => void
+    todoListId: string
 }
 
-const TodoListHeader: FC<TodoListHeaderPropsType> = (props) => {
+const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoListId}) => {
+    const removeTodoListHandler = () => removeTodoList(todoListId)
+
     return (
-        <h2 className={styles.title}>{props.title}</h2>
+        <div className={styles.header_container}>
+            <h2 className={styles.title}>{title}</h2>
+            <ButtonRemove onClick={removeTodoListHandler}/>
+        </div>
     );
 };
 

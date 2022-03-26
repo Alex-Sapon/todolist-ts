@@ -10,12 +10,14 @@ import styles from './TodoList.module.css'
 
 export type TodoListProps = {
     title: string
+    todoListId: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
-    filterTasks: (value: ValueFilterType) => void
-    addTask: (value: string) => void
-    isChecked: (isDone: boolean, id: string) => void
+    removeTask: (id: string, todoListId: string) => void
+    filterTasks: (value: ValueFilterType, todoListId: string) => void
+    addTask: (value: string, todoListId: string) => void
+    isChecked: (isDone: boolean, id: string, todoListId: string) => void
     filter: ValueFilterType
+    removeTodoList: (todoListId: string) => void
 }
 
 const TodoList: FC<TodoListProps> = (props) => {
@@ -24,7 +26,7 @@ const TodoList: FC<TodoListProps> = (props) => {
 
     const addTask = () => {
         if (title.trim() !== '') {
-            props.addTask(title)
+            props.addTask(title, props.todoListId)
             setTitle('')
         } else {
             setError(true)
@@ -38,15 +40,19 @@ const TodoList: FC<TodoListProps> = (props) => {
 
     const onBlurHandler = () => setError(false)
 
-    const allFilterTasks = () => props.filterTasks('all')
-    const activeFilterTasks = () => props.filterTasks('active')
-    const completedFilterTasks = () => props.filterTasks('completed')
+    const allFilterTasks = () => props.filterTasks('all', props.todoListId)
+    const activeFilterTasks = () => props.filterTasks('active', props.todoListId)
+    const completedFilterTasks = () => props.filterTasks('completed', props.todoListId)
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''}`
 
     return (
-        <div>
-            <TodoListHeader title={props.title}/>
+        <div className={styles.todo_item}>
+            <TodoListHeader
+                title={props.title}
+                removeTodoList={props.removeTodoList}
+                todoListId={props.todoListId}
+            />
             <div className={styles.input_block}>
                 <InputText
                     value={title}
@@ -86,6 +92,7 @@ const TodoList: FC<TodoListProps> = (props) => {
                     tasks={props.tasks}
                     removeTask={props.removeTask}
                     isChecked={props.isChecked}
+                    todoListId={props.todoListId}
                 />
             </div>
         </div>

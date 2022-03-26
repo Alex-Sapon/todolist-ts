@@ -1,3 +1,12 @@
+.todo_item {
+    margin: 0 1rem;
+    border: 2px solid lightslategrey;
+    border-radius: 5px;
+    background-color: #EDEFF2;
+    padding: 2rem;
+    min-width: 280px;
+}
+
 .buttons {
     display: flex;
     justify-content: space-between;
@@ -18,7 +27,6 @@
 
 .input {
     padding: 10px;
-    border: 0;
     border-radius: 4px;
     width: 100%;
     border: solid 1px transparent;
