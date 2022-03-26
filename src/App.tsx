@@ -18,6 +18,10 @@ type TodoListsProps = {
 
 export type ValueFilterType = 'all' | 'active' | 'completed';
 
+type TasksStateType = {
+    [key: string]: TaskType[]
+}
+
 export const App = () => {
     // C - create
     // R - read
@@ -33,7 +37,7 @@ export const App = () => {
         {id: todoListId2, title: 'What to buy', filter: 'all'}
     ])
 
-    const [tasks, setTasks] = useState({
+    const [tasks, setTasks] = useState<TasksStateType>({
         [todoListId1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JavaScript/ES6', isDone: true},
