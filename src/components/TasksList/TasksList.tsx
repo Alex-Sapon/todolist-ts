@@ -4,34 +4,36 @@ import {TaskType} from '../../App';
 import styles from './TasksList.module.css'
 import InputCheckbox from '../../UI/InputCheckbox/InputCheckbox';
 import ButtonRemove from '../../UI/ButtonRemove/ButtonRemove';
+import {EditableSpan} from '../EditableSpan/EditableSpan';
 
 export type TasksList = {
     todoListId: string
     tasks: Array<TaskType>
-    removeTask: (id: string, todoListId: string) => void
-    isChecked: (isDone: boolean, id: string, todoListId: string) => void
+    removeTask: (todoListId: string, id: string) => void
+    isChecked: (todoListId: string, isDone: boolean, id: string) => void
+    changeValueTask: (todoListId: string, value: string, id: string) => void
 }
 
-const TasksList: FC<TasksList> = (props) => {
-    if (props.tasks.length === 0) return <h3 className={styles.no_tasks}>No tasks</h3>
+const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {
+    if (tasks.length === 0) return <h3 className={styles.no_tasks}>No tasks</h3>
 
     return (
         <ul className={styles.list}>
-            {props.tasks.map(task => {
-                    const onRemoveHandler = () => props.removeTask(task.id, props.todoListId)
-                    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-                        props.isChecked(event.currentTarget.checked, task.id, props.todoListId)
+            {tasks.map(task => {
+                    const onRemoveHandler = () => removeTask(todoListId, task.id)
+                    const onChangeStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
+                        isChecked(todoListId, event.currentTarget.checked, task.id)
                     }
+                    const onChangeValueHandler = (value: string) => changeValueTask(todoListId, value, task.id)
 
                     return (
                         <li className={styles.item} key={task.id}>
-                            <InputCheckbox
-                                checked={task.isDone}
-                                onChange={onChangeHandler}
-                            >
-                                {task.title}
-                            </InputCheckbox>
-                            <ButtonRemove onClick={onRemoveHandler}/>
+                            <InputCheckbox checked={task.isDone} onChange={onChangeStatusHandler}/>
+                            <EditableSpan
+                                title={task.title}
+                                changeValue={onChangeValueHandler}
+                                className={styles.item_title}/>
+                            <ButtonRemove onClick={onRemoveHandler} className={styles.item_button_remove}/>
                         </li>
                     )
                 }

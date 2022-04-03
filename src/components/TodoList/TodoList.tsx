@@ -1,50 +1,34 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {TaskType, ValueFilterType} from '../../App';
 
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
 import TasksList from '../TasksList/TasksList';
 import Button from '../../UI/Button/Button';
-import InputText from '../../UI/InputText/InputText';
 
 import styles from './TodoList.module.css'
+import {AddItemForm} from '../AddItemForm/AddItemForm';
 
 export type TodoListProps = {
     title: string
     todoListId: string
     tasks: Array<TaskType>
-    removeTask: (id: string, todoListId: string) => void
-    filterTasks: (value: ValueFilterType, todoListId: string) => void
-    addTask: (value: string, todoListId: string) => void
-    isChecked: (isDone: boolean, id: string, todoListId: string) => void
+    removeTask: (todoListId: string, id: string) => void
+    filterTasks: (todoListId: string, value: ValueFilterType) => void
+    addTask: (todoListId: string, value: string) => void
+    isChecked: (todoListId: string, isDone: boolean, id: string) => void
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
+    addTodoList: (value: string) => void
+    changeValueTask: (todoListId: string, value: string, id: string) => void
+    changeTodoListTitle: (todoListId: string, value: string) => void
 }
 
 const TodoList: FC<TodoListProps> = (props) => {
-    const [title, setTitle] = useState<string>('')
-    const [error, setError] = useState<boolean>(false)
+    const allFilterTasks = () => props.filterTasks(props.todoListId, 'all')
+    const activeFilterTasks = () => props.filterTasks(props.todoListId, 'active')
+    const completedFilterTasks = () => props.filterTasks(props.todoListId, 'completed')
 
-    const addTask = () => {
-        if (title.trim() !== '') {
-            props.addTask(title, props.todoListId)
-            setTitle('')
-        } else {
-            setError(true)
-        }
-    }
-
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setError(false)
-        setTitle(event.currentTarget.value)
-    }
-
-    const onBlurHandler = () => setError(false)
-
-    const allFilterTasks = () => props.filterTasks('all', props.todoListId)
-    const activeFilterTasks = () => props.filterTasks('active', props.todoListId)
-    const completedFilterTasks = () => props.filterTasks('completed', props.todoListId)
-
-    const inputClasses = `${styles.input} ${error ? styles.error : ''}`
+    const addTodoList = (value: string) => props.addTask(props.todoListId, value)
 
     return (
         <div className={styles.todo_item}>
@@ -52,24 +36,14 @@ const TodoList: FC<TodoListProps> = (props) => {
                 title={props.title}
                 removeTodoList={props.removeTodoList}
                 todoListId={props.todoListId}
+                changeTodoListTitle={props.changeTodoListTitle}
             />
-            <div className={styles.input_block}>
-                <InputText
-                    value={title}
-                    placeholder={'Task...'}
-                    className={inputClasses}
-                    title={title}
-                    onEnter={addTask}
-                    onChange={onChangeHandler}
-                    onBlur={onBlurHandler}
-                />
-                <Button
-                    className={styles.button}
-                    title={'Add task'}
-                    onClick={addTask}
-                />
-            </div>
-            {error && <div className={styles.error_title}>Task is required</div>}
+            <AddItemForm
+                addItem={addTodoList}
+                title={'Add task'}
+                placeholder={'Task...'}
+                className={styles.todo_input}
+            />
             <div className={styles.buttons}>
                 <Button
                     title={'All'}
@@ -93,6 +67,7 @@ const TodoList: FC<TodoListProps> = (props) => {
                     removeTask={props.removeTask}
                     isChecked={props.isChecked}
                     todoListId={props.todoListId}
+                    changeValueTask={props.changeValueTask}
                 />
             </div>
         </div>

@@ -10,10 +10,8 @@ type InputPropsType = DefaultInputPropsType & {
 
 const InputText: FC<InputPropsType> = (
     {
-        onKeyPress,
-        onEnter,
-        onChangeValue,
-        onChange, ...props
+        onKeyPress, onEnter,
+        onChangeValue, onChange, ...props
     }) => {
 
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

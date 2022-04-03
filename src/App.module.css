@@ -1,8 +1,22 @@
-.container {
-  max-width: 1100px;
-  margin: 2rem auto;
+.todo_container {
+
+}
+
+.todo_header {
+  background-color: cornflowerblue;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.todo_input {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.todo_body {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .no_todo {
