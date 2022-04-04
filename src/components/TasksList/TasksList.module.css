@@ -8,10 +8,11 @@
     margin-bottom: 1.5rem;
     box-shadow: 4px 2px 9px -1px rgba(34, 60, 80, 0.35);
     list-style-type: none;
-    padding: 13px;
+    padding: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: left;
 }
 
 .item_title {

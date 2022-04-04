@@ -48,16 +48,16 @@ export const App = () => {
         ]
     })
 
-    const changeFilter = (todoListId: string, value: ValueFilterType,) => {
-        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, filter: value} : todo))
+    const changeFilter = (todoListId: string, title: ValueFilterType,) => {
+        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, filter: title} : todo))
     };
 
     const removeTask = (todoListId: string, id: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].filter(task => task.id !== id)})
     }
 
-    const addTask = (todoListId: string, value: string) => {
-        setTasks({...tasks, [todoListId]: [{id: v1(), title: value, isDone: false}, ...tasks[todoListId]]})
+    const addTask = (todoListId: string, title: string) => {
+        setTasks({...tasks, [todoListId]: [{id: v1(), title, isDone: false}, ...tasks[todoListId]]})
     }
 
     const changeStatus = (todoListId: string, isDone: boolean, id: string) => {
@@ -70,20 +70,19 @@ export const App = () => {
         setTasks({...tasks})
     }
 
-    const addTodoList = (value: string) => {
-        const newTodoList: TodoListsProps = {id: v1(), title: value, filter: 'all'}
+    const addTodoList = (title: string) => {
+        const newTodoList: TodoListsProps = {id: v1(), title, filter: 'all'}
         setTodoLists([newTodoList, ...todoLists])
         setTasks({[newTodoList.id]: [], ...tasks})
     }
 
-    const changeValueTask = (todoListId: string, value: string, id: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, title: value} : task)})
+    const changeValueTask = (todoListId: string, title: string, id: string) => {
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, title} : task)})
     }
 
     const changeTodoListTitle = (todoListId: string, title: string) => {
         setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, title} : todo))
     }
-
 
     return (
         <div className={styles.todo_container}>
@@ -91,6 +90,7 @@ export const App = () => {
                 <AddItemForm
                     title={'Add todo'}
                     placeholder={'Todo...'}
+                    errorText={'Todo is required'}
                     addItem={addTodoList}
                     className={styles.todo_input}
                 />

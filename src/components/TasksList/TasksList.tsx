@@ -11,7 +11,7 @@ export type TasksList = {
     tasks: Array<TaskType>
     removeTask: (todoListId: string, id: string) => void
     isChecked: (todoListId: string, isDone: boolean, id: string) => void
-    changeValueTask: (todoListId: string, value: string, id: string) => void
+    changeValueTask: (todoListId: string, title: string, id: string) => void
 }
 
 const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {

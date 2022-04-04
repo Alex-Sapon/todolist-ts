@@ -13,14 +13,14 @@ export type TodoListProps = {
     todoListId: string
     tasks: Array<TaskType>
     removeTask: (todoListId: string, id: string) => void
-    filterTasks: (todoListId: string, value: ValueFilterType) => void
-    addTask: (todoListId: string, value: string) => void
+    filterTasks: (todoListId: string, title: ValueFilterType) => void
+    addTask: (todoListId: string, title: string) => void
     isChecked: (todoListId: string, isDone: boolean, id: string) => void
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
     addTodoList: (value: string) => void
-    changeValueTask: (todoListId: string, value: string, id: string) => void
-    changeTodoListTitle: (todoListId: string, value: string) => void
+    changeValueTask: (todoListId: string, title: string, id: string) => void
+    changeTodoListTitle: (todoListId: string, title: string) => void
 }
 
 const TodoList: FC<TodoListProps> = (props) => {
@@ -42,6 +42,7 @@ const TodoList: FC<TodoListProps> = (props) => {
                 addItem={addTodoList}
                 title={'Add task'}
                 placeholder={'Task...'}
+                errorText={'Task is required'}
                 className={styles.todo_input}
             />
             <div className={styles.buttons}>

@@ -1,0 +1,29 @@
+.input {
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+    border: solid 1px transparent;
+    margin-right: 1rem;
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+}
+
+.input_block {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.error {
+    border: solid 1px crimson;
+}
+
+.error_title {
+    color: crimson;
+    text-align: center;
+    position: absolute;
+    padding: 5px;
+}

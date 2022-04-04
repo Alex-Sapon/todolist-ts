@@ -5,8 +5,8 @@ import {EditableSpan} from '../EditableSpan/EditableSpan';
 
 type TodoListHeaderProps = {
     title: string
-    removeTodoList: (todoListId: string) => void
     todoListId: string
+    removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todolistId: string, title: string) => void
 }
 
@@ -16,8 +16,13 @@ const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoLis
 
     return (
         <div className={styles.header_container}>
-            <EditableSpan title={title} changeValue={onChangeValueHandler} className={styles.title}/>
-            <ButtonRemove onClick={removeTodoListHandler}/>
+            <EditableSpan 
+                title={title} 
+                changeValue={onChangeValueHandler} 
+                className={styles.header_title} 
+                inputStyles={styles.header_title}
+            />
+            <ButtonRemove onClick={removeTodoListHandler} className={styles.header_button_remove}/>
         </div>
     );
 };

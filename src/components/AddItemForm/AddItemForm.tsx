@@ -1,16 +1,17 @@
 import React, {FC, useState} from 'react'
-import styles from '../TodoList/TodoList.module.css';
+import styles from './AddItemForm.module.css'
 import InputText from '../../UI/InputText/InputText';
 import Button from '../../UI/Button/Button';
 
 type AddItemFormType = {
     title: string
+    errorText?: string
     placeholder?: string
     className?: string
     addItem: (value: string) => void
 }
 
-export const AddItemForm: FC<AddItemFormType> = ({title, className, placeholder, addItem}) => {
+export const AddItemForm: FC<AddItemFormType> = ({title, className, placeholder, errorText, addItem}) => {
     const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -46,7 +47,7 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, placeholder,
                />
                <Button className={styles.button} title={title} onClick={addTask}/>
            </div>
-           {error && <div className={styles.error_title}>Task is required</div>}
+           {error && <div className={styles.error_title}>{errorText}</div>}
        </div>
     )
 }

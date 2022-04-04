@@ -3,9 +3,8 @@
     border: 2px solid lightslategrey;
     border-radius: 5px;
     background-color: #EDEFF2;
-    padding: 2rem;
-    min-width: 280px;
-    max-width: 500px;
+    padding: 1.3rem;
+    width: 300px;
 }
 
 .buttons {
@@ -15,41 +14,8 @@
     margin: 0 auto 1.5rem;
 }
 
-.input_block {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-}
-
-.button {
-    margin-left: 1rem;
-}
-
-.input {
-    padding: 10px;
-    border-radius: 4px;
-    width: 100%;
-    border: solid 1px transparent;
-}
-
-.input:focus {
-    outline: none;
-    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-}
-
 .button_active {
     background-color: lightcoral;
-}
-
-.error {
-    border: solid 1px crimson;
-}
-
-.error_title {
-    color: crimson;
-    text-align: center;
-    position: absolute;
-    top: 166px;
 }
 
 .todo_input {

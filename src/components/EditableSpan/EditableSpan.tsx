@@ -8,7 +8,7 @@ type EditableSpanType = {
     className?: string
 }
 
-export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, className, inputStyles}) => {
+export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, className, inputStyles, children}) => {
     const [value, setValue] = useState<string>('')
     const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -24,15 +24,23 @@ export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, classNam
         value.trim() !== '' && changeValue(value)
     }
 
+    const finalInputStyles = `${inputStyles ? inputStyles : styles.edit_input}`
+
     return editMode
         ? <input
             value={value}
             onChange={onChangeHandler}
             onBlur={activeViewMode}
             autoFocus
-            className={styles.edit_input}
+            className={finalInputStyles}
         />
         : <span onDoubleClick={activeEditMode} className={className}>{title}</span>
+
+    // return (
+    //     <span contentEditable={editMode} onDoubleClick={activeEditMode} className={className} onBlur={activeViewMode}>
+    //         {title}
+    //     </span>
+    // )
 }
 
 
