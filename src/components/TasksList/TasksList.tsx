@@ -2,9 +2,9 @@ import React, {ChangeEvent, FC} from 'react';
 import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
-import InputCheckbox from '../../UI/InputCheckbox/InputCheckbox';
-import ButtonRemove from '../../UI/ButtonRemove/ButtonRemove';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
+import {Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export type TasksList = {
     todoListId: string
@@ -15,10 +15,10 @@ export type TasksList = {
 }
 
 const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {
-    if (tasks.length === 0) return <h3 className={styles.no_tasks}>No tasks</h3>
+    if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 
     return (
-        <ul className={styles.list}>
+        <List>
             {tasks.map(task => {
                     const onRemoveHandler = () => removeTask(todoListId, task.id)
                     const onChangeStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,18 +27,19 @@ const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, cha
                     const onChangeValueHandler = (value: string) => changeValueTask(todoListId, value, task.id)
 
                     return (
-                        <li className={styles.item} key={task.id}>
-                            <InputCheckbox checked={task.isDone} onChange={onChangeStatusHandler}/>
+                        <ListItem key={task.id} sx={{display: 'flex', alignItems: 'center', mb: '1rem', padding: '5px'}}>
+                            <Checkbox size='small' checked={task.isDone} onChange={onChangeStatusHandler}/>
                             <EditableSpan
                                 title={task.title}
                                 changeValue={onChangeValueHandler}
-                                className={styles.item_title}/>
-                            <ButtonRemove onClick={onRemoveHandler} className={styles.item_button_remove}/>
-                        </li>
+                                className={styles.item_title}
+                            />
+                            <DeleteForeverIcon className={styles.delete} onClick={onRemoveHandler}/>
+                        </ListItem>
                     )
                 }
             )}
-        </ul>
+        </List>
     );
 };
 

@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 import styles from './TodoListHeader.module.css'
-import ButtonRemove from '../../UI/ButtonRemove/ButtonRemove';
 import {EditableSpan} from '../EditableSpan/EditableSpan';
+import { AddBox } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 type TodoListHeaderProps = {
     title: string
@@ -22,7 +23,9 @@ const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoLis
                 className={styles.header_title} 
                 inputStyles={styles.header_title}
             />
-            <ButtonRemove onClick={removeTodoListHandler} className={styles.header_button_remove}/>
+            <IconButton onClick={removeTodoListHandler}>
+                <AddBox/>
+            </IconButton>
         </div>
     );
 };

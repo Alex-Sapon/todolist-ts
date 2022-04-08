@@ -1,11 +1,14 @@
+import {TextField } from '@mui/material';
 import React, {FC} from 'react'
 import styles from './InputText.module.css'
 
-type DefaultInputPropsType = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+// type DefaultInputPropsType = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-type InputPropsType = DefaultInputPropsType & {
+type InputPropsType = {
     onEnter?: () => void
     onChangeValue?: (value: string) => void
+    onKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const InputText: FC<InputPropsType> = (
@@ -25,13 +28,11 @@ const InputText: FC<InputPropsType> = (
     }
 
     return (
-        <input
+        <TextField
+            variant={'outlined'}
             type={'text'}
             onChange={onChangeHandler}
             onKeyPress={onKeyPressHandler}
-            onBlur={props.onBlur}
-            className={`${styles.input} ${props.className} `}
-            {...props}
         />
     );
 };

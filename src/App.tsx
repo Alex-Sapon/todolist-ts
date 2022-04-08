@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import styles from './App.module.css';
-import TodoList from './components/TodoList/TodoList';
+import {TodoList} from './components/TodoList/TodoList';
 import {v1} from 'uuid';
-import todoList from './components/TodoList/TodoList';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
+import {AppBar, Box, Button, Container, Grid, IconButton, Menu, Toolbar, Typography} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type TaskType = {
     id: string
@@ -85,51 +86,60 @@ export const App = () => {
     }
 
     return (
-        <div className={styles.todo_container}>
-            <div className={styles.todo_header}>
-                <AddItemForm
-                    title={'Add todo'}
-                    placeholder={'Todo...'}
-                    errorText={'Todo is required'}
-                    addItem={addTodoList}
-                    className={styles.todo_input}
-                />
-            </div>
-            <div className={styles.todo_body}>
-                {todoLists.length === 0 && <div className={styles.no_todo}>Why did you delete everything TodoLists???</div>}
-                {todoLists.map(todo => {
-                    let setTodoListTasks;
-                    switch (todo.filter) {
-                        case 'active':
-                            setTodoListTasks = tasks[todo.id].filter(task => !task.isDone);
-                            break;
-                        case 'completed':
-                            setTodoListTasks = tasks[todo.id].filter(task => task.isDone);
-                            break;
-                        default:
-                            setTodoListTasks = tasks[todo.id];
-                            break;
-                    }
+        <div>
+            <Box sx={{ flexGrow: 1 , mb: '2rem'}}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>News</Typography>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+            <Container sx={{mb: '2rem'}} fixed>
+                <AddItemForm title={'Add todo'} addItem={addTodoList}/>
+                <Grid container spacing={3}>
+                    {todoLists.length === 0 && <div>Why did you delete everything TodoLists???</div>}
 
-                    return (
-                        <TodoList
-                            key={todo.id}
-                            todoListId={todo.id}
-                            title={todo.title}
-                            tasks={setTodoListTasks}
-                            removeTask={removeTask}
-                            filterTasks={changeFilter}
-                            addTask={addTask}
-                            isChecked={changeStatus}
-                            filter={todo.filter}
-                            removeTodoList={removeTodoList}
-                            addTodoList={addTodoList}
-                            changeValueTask={changeValueTask}
-                            changeTodoListTitle={changeTodoListTitle}
-                        />
-                    )
-                })}
-            </div>
+                    {todoLists.map(todo => {
+                        let setTodoListTasks;
+                        switch (todo.filter) {
+                            case 'active':
+                                setTodoListTasks = tasks[todo.id].filter(task => !task.isDone);
+                                break;
+                            case 'completed':
+                                setTodoListTasks = tasks[todo.id].filter(task => task.isDone);
+                                break;
+                            default:
+                                setTodoListTasks = tasks[todo.id];
+                                break;
+                        }
+
+                        return (
+                            <Grid item xs={4}>
+                                <TodoList
+                                    key={todo.id}
+                                    todoListId={todo.id}
+                                    title={todo.title}
+                                    tasks={setTodoListTasks}
+                                    removeTask={removeTask}
+                                    filterTasks={changeFilter}
+                                    addTask={addTask}
+                                    isChecked={changeStatus}
+                                    filter={todo.filter}
+                                    removeTodoList={removeTodoList}
+                                    addTodoList={addTodoList}
+                                    changeValueTask={changeValueTask}
+                                    changeTodoListTitle={changeTodoListTitle}
+                                />
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+            </Container>
+          
         </div>
     );
 }

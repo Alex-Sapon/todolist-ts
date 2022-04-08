@@ -1,23 +1,5 @@
-.todo_item {
-    margin: 0rem 1rem 1rem 1rem;
-    border: 2px solid lightslategrey;
-    border-radius: 5px;
-    background-color: #EDEFF2;
-    padding: 1.3rem;
-    width: 300px;
-}
-
 .buttons {
     display: flex;
-    justify-content: space-between;
-    max-width: 280px;
-    margin: 0 auto 1.5rem;
-}
-
-.button_active {
-    background-color: lightcoral;
-}
-
-.todo_input {
-    margin-bottom: 2.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
 }

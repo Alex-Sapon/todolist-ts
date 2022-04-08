@@ -1,3 +1,4 @@
+import { TextField, Typography } from '@mui/material'
 import React, {ChangeEvent, FC, useState} from 'react'
 import styles from './EditableSpan.module.css'
 
@@ -27,20 +28,16 @@ export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, classNam
     const finalInputStyles = `${inputStyles ? inputStyles : styles.edit_input}`
 
     return editMode
-        ? <input
+        ? <TextField
+            fullWidth
+            variant={'standard'}
+            size={'small'}
             value={value}
             onChange={onChangeHandler}
             onBlur={activeViewMode}
             autoFocus
-            className={finalInputStyles}
         />
-        : <span onDoubleClick={activeEditMode} className={className}>{title}</span>
-
-    // return (
-    //     <span contentEditable={editMode} onDoubleClick={activeEditMode} className={className} onBlur={activeViewMode}>
-    //         {title}
-    //     </span>
-    // )
+        : <Typography sx={{width: '100%'}} variant={'subtitle1'} onDoubleClick={activeEditMode}>{title}</Typography>
 }
 
 

@@ -7,13 +7,10 @@ type InputCheckboxProps = DefaultInputCheckboxProps & {
     onSelect?: () => void
 }
 
-const InputCheckbox: FC<InputCheckboxProps> = (
+export const InputCheckbox: FC<InputCheckboxProps> = (
     {
-        checked,
-        onSelect,
-        className,
-        children,
-        ...props
+        checked, onSelect, className,
+        children, ...props
     }) => {
 
     const onSelectHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,10 +18,9 @@ const InputCheckbox: FC<InputCheckboxProps> = (
     }
 
     return (
-        <label className={styles.title}>
+        <label>
             <input
                 type={'checkbox'}
-                className={`${styles.input} ${className}`}
                 onChange={onSelectHandler}
                 checked={checked}
                 {...props}
@@ -33,5 +29,3 @@ const InputCheckbox: FC<InputCheckboxProps> = (
         </label>
     )
 }
-
-export default InputCheckbox

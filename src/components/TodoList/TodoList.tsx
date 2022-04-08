@@ -3,10 +3,10 @@ import {TaskType, ValueFilterType} from '../../App';
 
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
 import TasksList from '../TasksList/TasksList';
-import Button from '../../UI/Button/Button';
 
 import styles from './TodoList.module.css'
 import {AddItemForm} from '../AddItemForm/AddItemForm';
+import {Button, ButtonGroup, Paper} from '@mui/material'
 
 export type TodoListProps = {
     title: string
@@ -23,7 +23,7 @@ export type TodoListProps = {
     changeTodoListTitle: (todoListId: string, title: string) => void
 }
 
-const TodoList: FC<TodoListProps> = (props) => {
+export const TodoList: FC<TodoListProps> = (props) => {
     const allFilterTasks = () => props.filterTasks(props.todoListId, 'all')
     const activeFilterTasks = () => props.filterTasks(props.todoListId, 'active')
     const completedFilterTasks = () => props.filterTasks(props.todoListId, 'completed')
@@ -31,7 +31,7 @@ const TodoList: FC<TodoListProps> = (props) => {
     const addTodoList = (value: string) => props.addTask(props.todoListId, value)
 
     return (
-        <div className={styles.todo_item}>
+        <Paper sx={{padding: '1rem'}} elevation={3}>
             <TodoListHeader
                 title={props.title}
                 removeTodoList={props.removeTodoList}
@@ -41,39 +41,34 @@ const TodoList: FC<TodoListProps> = (props) => {
             <AddItemForm
                 addItem={addTodoList}
                 title={'Add task'}
-                placeholder={'Task...'}
                 errorText={'Task is required'}
-                className={styles.todo_input}
             />
             <div className={styles.buttons}>
                 <Button
-                    title={'All'}
+                    size={'small'}
+                    variant={props.filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
-                    className={props.filter === 'all' ? styles.button_active : ''}
-                />
+                >All</Button>
                 <Button
-                    title={'Active'}
+                    size={'small'}
+                    variant={props.filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
-                    className={props.filter === 'active' ? styles.button_active : ''}
-                />
+                >Active</Button>
                 <Button
-                    title={'Completed'}
+                    size={'small'}
+                    variant={props.filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
-                    className={props.filter === 'completed' ? styles.button_active : ''}
-                />
+                >Completed</Button>
+
             </div>
-            <div>
-                <TasksList
-                    tasks={props.tasks}
-                    removeTask={props.removeTask}
-                    isChecked={props.isChecked}
-                    todoListId={props.todoListId}
-                    changeValueTask={props.changeValueTask}
-                />
-            </div>
-        </div>
+            <TasksList
+                tasks={props.tasks}
+                removeTask={props.removeTask}
+                isChecked={props.isChecked}
+                todoListId={props.todoListId}
+                changeValueTask={props.changeValueTask}
+            />
+        </Paper>
     )
 }
-
-export default TodoList;
 

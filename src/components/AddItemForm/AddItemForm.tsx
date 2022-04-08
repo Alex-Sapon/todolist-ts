@@ -1,17 +1,17 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useState, KeyboardEvent, FocusEvent} from 'react'
 import styles from './AddItemForm.module.css'
-import InputText from '../../UI/InputText/InputText';
-import Button from '../../UI/Button/Button';
+import {Button, Container, Fab, IconButton, TextField} from '@mui/material';
+import { AddBox } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormType = {
     title: string
-    errorText?: string
-    placeholder?: string
     className?: string
     addItem: (value: string) => void
+    errorText?: string
 }
 
-export const AddItemForm: FC<AddItemFormType> = ({title, className, placeholder, errorText, addItem}) => {
+export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, errorText}) => {
     const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -24,30 +24,32 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, placeholder,
         }
     }
 
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError(false)
-        setValue(event.currentTarget.value)
+        setValue(e.currentTarget.value)
     }
 
-    const onBlurHandler = () => setError(false)
+    const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => setError(false)
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask()
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''}`
 
     return (
-       <div className={className}>
-           <div className={styles.input_block}>
-               <InputText
-                   value={value}
-                   placeholder={placeholder}
-                   className={inputClasses}
-                   title={title}
-                   onEnter={addTask}
-                   onChange={onChangeHandler}
-                   onBlur={onBlurHandler}
-               />
-               <Button className={styles.button} title={title} onClick={addTask}/>
-           </div>
-           {error && <div className={styles.error_title}>{errorText}</div>}
-       </div>
+       <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center'}} fixed>
+           <TextField
+                fullWidth
+                size={'small'}
+                value={value}
+                error={error}
+                label={title}
+                helperText={error && errorText}
+                onClick={addTask}
+                onKeyPress={onKeyPressHandler}
+                onChange={onChangeHandler}
+                onBlur={onBlurHandler}
+            />
+           <AddBox className={styles.add_button} onClick={addTask}/>
+       </Container>
     )
 }

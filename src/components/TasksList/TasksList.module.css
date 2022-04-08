@@ -1,31 +1,8 @@
-.list {
-    padding: 0;
+.delete {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.54);
 }
 
-.item {
-    background-color: lightsteelblue;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-    box-shadow: 4px 2px 9px -1px rgba(34, 60, 80, 0.35);
-    list-style-type: none;
-    padding: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
+.delete:hover {
+    color: crimson;
 }
-
-.item_title {
-    font-size: 18px;
-    text-align: left;
-    width: 100%;
-}
-
-.item_button_remove {
-    font-size: 18px;
-}
-
-.no_tasks {
-    text-align: center;
-}
-
