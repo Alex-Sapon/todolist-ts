@@ -6,3 +6,20 @@
 .delete:hover {
     color: crimson;
 }
+
+.list_item_wrapper {
+
+}
+
+.list_item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    background-color: #607d8b;
+}
+
+.item_title {
+    width: 100%;
+    font-size: 1.5rem;
+}

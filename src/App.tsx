@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import styles from './App.module.css';
 import {TodoList} from './components/TodoList/TodoList';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
-import {AppBar, Box, Button, Container, Grid, IconButton, Menu, Toolbar, Typography} from '@mui/material';
+import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export type TaskType = {
@@ -93,15 +92,18 @@ export const App = () => {
                         <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>News</Typography>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Menu</Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
             </Box>
             <Container sx={{mb: '2rem'}} fixed>
                 <AddItemForm title={'Add todo'} addItem={addTodoList}/>
-                <Grid container spacing={3}>
-                    {todoLists.length === 0 && <div>Why did you delete everything TodoLists???</div>}
+                <Grid container spacing={3} columns={12}>
+                    {todoLists.length === 0 && 
+                    <Grid item xs={12} md={12} sm={12} lg={12}>
+                        <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Why did you delete everything TodoLists???</Typography>
+                    </Grid>}
 
                     {todoLists.map(todo => {
                         let setTodoListTasks;
@@ -118,7 +120,7 @@ export const App = () => {
                         }
 
                         return (
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6} sm={12} lg={4}>
                                 <TodoList
                                     key={todo.id}
                                     todoListId={todo.id}

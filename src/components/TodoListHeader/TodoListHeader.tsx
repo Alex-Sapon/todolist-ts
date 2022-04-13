@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
-import { AddBox } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TodoListHeaderProps = {
     title: string
@@ -17,15 +16,8 @@ const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoLis
 
     return (
         <div className={styles.header_container}>
-            <EditableSpan 
-                title={title} 
-                changeValue={onChangeValueHandler} 
-                className={styles.header_title} 
-                inputStyles={styles.header_title}
-            />
-            <IconButton onClick={removeTodoListHandler}>
-                <AddBox/>
-            </IconButton>
+            <EditableSpan title={title} changeValue={onChangeValueHandler} textStyles={styles.header_title}/>
+            <DeleteIcon className={styles.delete} onClick={removeTodoListHandler}/>
         </div>
     );
 };

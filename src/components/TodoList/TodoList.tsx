@@ -53,6 +53,7 @@ export const TodoList: FC<TodoListProps> = (props) => {
                     size={'small'}
                     variant={props.filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
+                    sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size={'small'}

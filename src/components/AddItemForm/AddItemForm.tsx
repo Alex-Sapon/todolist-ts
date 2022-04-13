@@ -2,7 +2,6 @@ import React, {FC, useState, KeyboardEvent, FocusEvent} from 'react'
 import styles from './AddItemForm.module.css'
 import {Button, Container, Fab, IconButton, TextField} from '@mui/material';
 import { AddBox } from '@mui/icons-material';
-import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormType = {
     title: string
@@ -30,13 +29,12 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, err
     }
 
     const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => setError(false)
-
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask()
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''}`
 
     return (
-       <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center'}} fixed>
+       <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
            <TextField
                 fullWidth
                 size={'small'}
@@ -44,10 +42,10 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, err
                 error={error}
                 label={title}
                 helperText={error && errorText}
-                onClick={addTask}
                 onKeyPress={onKeyPressHandler}
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}
+                sx={{mr: '1rem'}}
             />
            <AddBox className={styles.add_button} onClick={addTask}/>
        </Container>

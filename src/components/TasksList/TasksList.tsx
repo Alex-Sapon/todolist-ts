@@ -3,8 +3,8 @@ import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
-import {Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import {Checkbox, IconButton, List, ListItem, Paper, Typography} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export type TasksList = {
     todoListId: string
@@ -27,14 +27,16 @@ const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, cha
                     const onChangeValueHandler = (value: string) => changeValueTask(todoListId, value, task.id)
 
                     return (
-                        <ListItem key={task.id} sx={{display: 'flex', alignItems: 'center', mb: '1rem', padding: '5px'}}>
-                            <Checkbox size='small' checked={task.isDone} onChange={onChangeStatusHandler}/>
-                            <EditableSpan
-                                title={task.title}
-                                changeValue={onChangeValueHandler}
-                                className={styles.item_title}
-                            />
-                            <DeleteForeverIcon className={styles.delete} onClick={onRemoveHandler}/>
+                        <ListItem key={task.id} className={styles.list_item_wrapper}>
+                            <Paper className={styles.list_item}>
+                                <Checkbox size='small' checked={task.isDone} onChange={onChangeStatusHandler}/>
+                                <EditableSpan
+                                    title={task.title}
+                                    changeValue={onChangeValueHandler}
+                                    textStyles={styles.item_title}
+                                />
+                                <DeleteIcon className={styles.delete} onClick={onRemoveHandler}/>
+                            </Paper>
                         </ListItem>
                     )
                 }
