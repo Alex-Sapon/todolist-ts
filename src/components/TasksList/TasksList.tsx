@@ -28,7 +28,7 @@ const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, cha
 
                     return (
                         <ListItem key={task.id} className={styles.list_item_wrapper}>
-                            <Paper className={styles.list_item}>
+                            <Paper className={styles.list_item} sx={{backgroundColor: '#b3e5fc'}}>
                                 <Checkbox size='small' checked={task.isDone} onChange={onChangeStatusHandler}/>
                                 <EditableSpan
                                     title={task.title}
