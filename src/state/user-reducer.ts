@@ -1,10 +1,10 @@
-type StateType = {
+export type StateType = {
     age: number
     childrenCount: number
     name: string
 }
 
-type ActionType = {
+export type ActionType = {
     type: string
     [key: string]: any
     newName?: string

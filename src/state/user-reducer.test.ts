@@ -1,7 +1,7 @@
-import {userReducer} from './user-reducer';
+import {ActionType, StateType, userReducer} from './user-reducer';
 
 test('user reducer should increment only age', () => {
-    const startState = {age: 20, childrenCount: 2, name: 'Dimych'};
+    const startState: StateType = {age: 20, childrenCount: 2, name: 'Dimych'};
     const endState = userReducer(startState, {type: 'INCREMENT-AGE'})
 
     expect(endState.age).toBe(21);

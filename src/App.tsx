@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
+import styles from './App.module.css';
 import {TodoList} from './components/TodoList/TodoList';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
-import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
+import {AppBar, Box, Button, Container, Grid, IconButton, Menu, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, todoListsReducer } from './state/todolists-reducer';
 
 export type TaskType = {
     id: string
@@ -11,7 +13,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-type TodoListsProps = {
+export type TodoListsType = {
     id: string
     title: string
     filter: ValueFilterType
@@ -27,10 +29,15 @@ export const App = () => {
     const todoListId1 = v1()
     const todoListId2 = v1()
 
-    const [todoLists, setTodoLists] = useState<TodoListsProps[]>([
+    const [todoLists, setTodoLists] = useState<TodoListsType[]>([
         {id: todoListId1, title: 'What to learn', filter: 'all'},
         {id: todoListId2, title: 'What to buy', filter: 'all'}
     ])
+
+    // const [todoLists, dispatch] = useReducer(todoListsReducer, [
+    //     {id: todoListId1, title: 'What to learn', filter: 'all'},
+    //     {id: todoListId2, title: 'What to buy', filter: 'all'}
+    // ])
 
     const [tasks, setTasks] = useState<TasksStateType>({
         [todoListId1]: [
@@ -48,10 +55,6 @@ export const App = () => {
         ]
     })
 
-    const changeFilter = (todoListId: string, title: ValueFilterType,) => {
-        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, filter: title} : todo))
-    };
-
     const removeTask = (todoListId: string, id: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].filter(task => task.id !== id)})
     }
@@ -64,23 +67,31 @@ export const App = () => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, isDone} : task)})
     }
 
+    const changeValueTask = (todoListId: string, title: string, id: string) => {
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, title} : task)})
+    }
+
+    const changeFilter = (todoListId: string, filter: ValueFilterType) => {
+        // dispatch(changeTodoListFilterAC(todoListId, filter))
+        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, filter} : todo))
+    };
+
     const removeTodoList = (todoListId: string) => {
+        // dispatch(removeTodoListAC(todoListId))
         setTodoLists(todoLists.filter(todo => todo.id !== todoListId))
         delete tasks[todoListId]
         setTasks({...tasks})
     }
 
     const addTodoList = (title: string) => {
-        const newTodoList: TodoListsProps = {id: v1(), title, filter: 'all'}
+        const newTodoList: TodoListsType = {id: v1(), title, filter: 'all'}
+        // dispatch(addTodoListAC(title))
         setTodoLists([newTodoList, ...todoLists])
         setTasks({[newTodoList.id]: [], ...tasks})
     }
 
-    const changeValueTask = (todoListId: string, title: string, id: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, title} : task)})
-    }
-
     const changeTodoListTitle = (todoListId: string, title: string) => {
+        // dispatch(changeTodoListTitleAC(todoListId, title))
         setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, title} : todo))
     }
 
@@ -120,9 +131,8 @@ export const App = () => {
                         }
 
                         return (
-                            <Grid item xs={12} md={6} sm={12} lg={4}>
+                            <Grid key={todo.id} item xs={12} md={6} sm={12} lg={4}>
                                 <TodoList
-                                    key={todo.id}
                                     todoListId={todo.id}
                                     title={todo.title}
                                     tasks={setTodoListTasks}
