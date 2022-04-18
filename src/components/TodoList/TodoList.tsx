@@ -6,7 +6,7 @@ import TasksList from '../TasksList/TasksList';
 
 import styles from './TodoList.module.css'
 import {AddItemForm} from '../AddItemForm/AddItemForm';
-import {Button, ButtonGroup, Paper} from '@mui/material'
+import {Button, Paper} from '@mui/material'
 
 export type TodoListProps = {
     title: string
@@ -23,7 +23,7 @@ export type TodoListProps = {
     changeTodoListTitle: (todoListId: string, title: string) => void
 }
 
-export const TodoList: FC<TodoListProps> = (props) => {
+export const TodoList = React.memo((props: TodoListProps) => {
     const allFilterTasks = () => props.filterTasks(props.todoListId, 'all')
     const activeFilterTasks = () => props.filterTasks(props.todoListId, 'active')
     const completedFilterTasks = () => props.filterTasks(props.todoListId, 'completed')
@@ -71,5 +71,5 @@ export const TodoList: FC<TodoListProps> = (props) => {
             />
         </Paper>
     )
-}
+})
 

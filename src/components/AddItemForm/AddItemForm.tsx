@@ -1,6 +1,6 @@
-import React, {FC, useState, KeyboardEvent, FocusEvent} from 'react'
+import React, {useState, KeyboardEvent, FocusEvent, ChangeEvent} from 'react'
 import styles from './AddItemForm.module.css'
-import {Button, Container, Fab, IconButton, TextField} from '@mui/material';
+import {Container, TextField} from '@mui/material';
 import { AddBox } from '@mui/icons-material';
 
 type AddItemFormType = {
@@ -10,7 +10,7 @@ type AddItemFormType = {
     errorText?: string
 }
 
-export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, errorText}) => {
+export const AddItemForm = React.memo(({title, className, addItem, errorText}: AddItemFormType) => {
     const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -23,7 +23,7 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, err
         }
     }
 
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setError(false)
         setValue(e.currentTarget.value)
     }
@@ -50,4 +50,4 @@ export const AddItemForm: FC<AddItemFormType> = ({title, className, addItem, err
            <AddBox className={styles.add_button} onClick={addTask}/>
        </Container>
     )
-}
+})

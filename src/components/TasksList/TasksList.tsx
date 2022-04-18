@@ -3,7 +3,7 @@ import {TaskType} from '../../App';
 
 import styles from './TasksList.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
-import {Checkbox, IconButton, List, ListItem, Paper, Typography} from '@mui/material';
+import {Checkbox, List, ListItem, Paper, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export type TasksList = {
