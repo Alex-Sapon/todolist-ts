@@ -1,9 +1,17 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import {TodoList} from './components/TodoList/TodoList';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
 import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import {
+    addTodoListAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    removeTodoListAC,
+    todoListsReducer
+} from './state/todolists-reducer';
+import {addTaskAC, changeStatusAC, changeValueTaskAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
 
 export type TaskType = {
     id: string
@@ -23,16 +31,16 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-const App = () => {
+export const AppWithReducers = () => {
     const todoListId1 = v1()
     const todoListId2 = v1()
 
-    const [todoLists, setTodoLists] = useState<TodoListsType[]>([
+    const [todoLists, dispatchTodoLists] = useReducer(todoListsReducer,[
         {id: todoListId1, title: 'What to learn', filter: 'all'},
         {id: todoListId2, title: 'What to buy', filter: 'all'}
     ])
 
-    const [tasks, setTasks] = useState<TasksStateType>({
+    const [tasks, dispatchTasks] = useReducer(tasksReducer, {
         [todoListId1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JavaScript/ES6', isDone: true},
@@ -49,39 +57,39 @@ const App = () => {
     })
 
     const removeTask = (todoListId: string, id: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].filter(task => task.id !== id)})
+        dispatchTasks(removeTaskAC(todoListId, id))
     }
 
     const addTask = (todoListId: string, title: string) => {
-        setTasks({...tasks, [todoListId]: [{id: v1(), title, isDone: false}, ...tasks[todoListId]]})
+        dispatchTasks(addTaskAC(todoListId, title))
     }
 
     const changeStatus = (todoListId: string, isDone: boolean, id: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, isDone} : task)})
+        dispatchTasks(changeStatusAC(todoListId, isDone, id))
     }
 
     const changeValueTask = (todoListId: string, title: string, id: string) => {
-        setTasks({...tasks, [todoListId]: tasks[todoListId].map(task => task.id === id ? {...task, title} : task)})
+        dispatchTasks(changeValueTaskAC(todoListId, title, id))
     }
 
     const changeFilter = (todoListId: string, filter: ValueFilterType) => {
-        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, filter} : todo))
+        dispatchTodoLists(changeTodoListFilterAC(todoListId, filter))
     }
 
     const removeTodoList = (todoListId: string) => {
-        setTodoLists(todoLists.filter(todo => todo.id !== todoListId))
-        delete tasks[todoListId]
-        setTasks({...tasks})
+        const action = removeTodoListAC(todoListId)
+        dispatchTodoLists(action)
+        dispatchTasks(action)
     }
 
     const addTodoList = (title: string) => {
-        const newTodoList: TodoListsType = {id: v1(), title, filter: 'all'}
-        setTodoLists([newTodoList, ...todoLists])
-        setTasks({[newTodoList.id]: [], ...tasks})
+        const action = addTodoListAC(title)
+        dispatchTasks(action)
+        dispatchTodoLists(action)
     }
 
     const changeTodoListTitle = (todoListId: string, title: string) => {
-        setTodoLists(todoLists.map(todo => todo.id === todoListId ? {...todo, title} : todo))
+        dispatchTodoLists(changeTodoListTitleAC(todoListId, title))
     }
 
     return (
@@ -100,22 +108,19 @@ const App = () => {
             <Container sx={{mb: '2rem'}} fixed>
                 <AddItemForm title={'Add todo'} addItem={addTodoList}/>
                 <Grid container spacing={3} columns={12}>
-                    {todoLists.length === 0 &&
+                    {todoLists.length === 0 && 
                     <Grid item xs={12} md={12} sm={12} lg={12}>
                         <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Why did you delete everything TodoLists???</Typography>
                     </Grid>}
 
                     {todoLists.map(todo => {
-                        let setTodoListTasks;
+                        let setTodoListTasks: TaskType[] = tasks[todo.id];
                         switch (todo.filter) {
                             case 'active':
                                 setTodoListTasks = tasks[todo.id].filter(task => !task.isDone);
                                 break;
                             case 'completed':
                                 setTodoListTasks = tasks[todo.id].filter(task => task.isDone);
-                                break;
-                            default:
-                                setTodoListTasks = tasks[todo.id];
                                 break;
                         }
 
@@ -140,7 +145,7 @@ const App = () => {
                     })}
                 </Grid>
             </Container>
-
+          
         </div>
     );
 }

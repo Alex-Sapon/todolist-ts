@@ -2,7 +2,7 @@ import React from 'react';
 import {TaskType, ValueFilterType} from '../../App';
 
 import TodoListHeader from '../TodoListHeader/TodoListHeader';
-import TasksList from '../TasksList/TasksList';
+import {TasksList} from '../TasksList/TasksList';
 
 import styles from './TodoList.module.css'
 import {AddItemForm} from '../AddItemForm/AddItemForm';
@@ -24,6 +24,7 @@ export type TodoListProps = {
 }
 
 export const TodoList = React.memo((props: TodoListProps) => {
+    console.log('TodoList')
     const allFilterTasks = () => props.filterTasks(props.todoListId, 'all')
     const activeFilterTasks = () => props.filterTasks(props.todoListId, 'active')
     const completedFilterTasks = () => props.filterTasks(props.todoListId, 'completed')

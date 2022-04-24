@@ -14,7 +14,8 @@ export type TasksList = {
     changeValueTask: (todoListId: string, title: string, id: string) => void
 }
 
-const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {
+export const TasksList: FC<TasksList> = React.memo(({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {
+    console.log('TaskList')
     if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 
     return (
@@ -42,7 +43,5 @@ const TasksList: FC<TasksList> = ({todoListId, tasks, isChecked, removeTask, cha
                 }
             )}
         </List>
-    );
-};
-
-export default TasksList;
+    )
+})
