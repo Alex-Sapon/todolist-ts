@@ -1,5 +1,5 @@
 import { TextField, Typography } from '@mui/material'
-import React, {ChangeEvent, FC, useState} from 'react'
+import React, {ChangeEvent, useState} from 'react'
 import styles from './EditableSpan.module.css'
 
 type EditableSpanType = {
@@ -9,11 +9,11 @@ type EditableSpanType = {
     textStyles?: string
 }
 
-export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, textStyles, inputStyles}) => {
+export const EditableSpan = React.memo(({title, changeValue, textStyles, inputStyles}: EditableSpanType) => {
     const [value, setValue] = useState<string>('')
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => setValue(event.currentTarget.value)
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
 
     const activeEditMode = () => {
         setEditMode(true)
@@ -39,7 +39,7 @@ export const EditableSpan: FC<EditableSpanType> = ({title, changeValue, textStyl
             autoFocus
             className={finalInputStyles}
         />
-        : <Typography className={textStyles} onDoubleClick={activeEditMode}>{title}</Typography>
-}
+        : <Typography className={finalTextStyles} onDoubleClick={activeEditMode}>{title}</Typography>
+})
 
 

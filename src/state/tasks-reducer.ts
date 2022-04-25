@@ -1,22 +1,8 @@
 import {TasksStateType} from '../App';
 import {v1} from 'uuid';
-import {addTodoListAC, removeTodoListAC, todoListId1, todoListId2} from './todolists-reducer';
+import {addTodoListAC, removeTodoListAC} from './todolists-reducer';
 
-const initialState: TasksStateType = {
-    [todoListId1]: [
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JavaScript/ES6', isDone: true},
-        {id: v1(), title: 'React', isDone: false},
-        {id: v1(), title: 'TypeScript', isDone: false},
-        {id: v1(), title: 'Redux', isDone: false},
-        {id: v1(), title: 'Rest API', isDone: false}
-    ],
-    [todoListId2]: [
-        {id: v1(), title: 'Book', isDone: true},
-        {id: v1(), title: 'Milk', isDone: false},
-        {id: v1(), title: 'Phone', isDone: false}
-    ]
-}
+const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch(action.type) {

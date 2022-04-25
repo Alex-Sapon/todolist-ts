@@ -1,13 +1,7 @@
 import { v1 } from 'uuid'
 import {TodoListsType, ValueFilterType} from '../App'
 
-export const todoListId1 = v1()
-export const todoListId2 = v1()
-
-const initialState: Array<TodoListsType> = [
-    {id: todoListId1, title: 'What to learn', filter: 'all'},
-    {id: todoListId2, title: 'What to buy', filter: 'all'}
-]
+const initialState: Array<TodoListsType> = []
 
 export const todoListsReducer = (state: Array<TodoListsType> = initialState, action: ActionsType): Array<TodoListsType> => {
     switch (action.type) {

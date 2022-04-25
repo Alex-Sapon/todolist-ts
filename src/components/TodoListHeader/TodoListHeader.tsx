@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,7 +10,7 @@ type TodoListHeaderProps = {
     changeTodoListTitle: (todolistId: string, title: string) => void
 }
 
-const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoListId, changeTodoListTitle}) => {
+export const TodoListHeader = React.memo(({title, removeTodoList, todoListId, changeTodoListTitle}: TodoListHeaderProps) => {
     const removeTodoListHandler = () => removeTodoList(todoListId)
     const onChangeValueHandler = (title: string) => changeTodoListTitle(todoListId, title)
 
@@ -19,7 +19,5 @@ const TodoListHeader: FC<TodoListHeaderProps> = ({title, removeTodoList, todoLis
             <EditableSpan title={title} changeValue={onChangeValueHandler} textStyles={styles.header_title}/>
             <DeleteIcon className={styles.delete} onClick={removeTodoListHandler}/>
         </div>
-    );
-};
-
-export default TodoListHeader;
+    )
+})

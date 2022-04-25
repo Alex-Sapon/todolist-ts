@@ -1,7 +1,7 @@
 import React, {useState, KeyboardEvent, FocusEvent, ChangeEvent} from 'react'
 import styles from './AddItemForm.module.css'
 import {Container, TextField} from '@mui/material';
-import { AddBox } from '@mui/icons-material';
+import {AddBox} from '@mui/icons-material';
 
 type AddItemFormType = {
     title: string
@@ -31,7 +31,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
     const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => setError(false)
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask()
 
-    const inputClasses = `${styles.input} ${error ? styles.error : ''}`
+    // const inputClasses = `${styles.input} ${error ? styles.error : ''}`
 
     return (
        <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>

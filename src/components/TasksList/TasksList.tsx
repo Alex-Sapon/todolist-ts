@@ -5,38 +5,41 @@ import styles from './TasksList.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import {Checkbox, List, ListItem, Paper, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { changeStatusAC, changeValueTaskAC, removeTaskAC } from '../../state/tasks-reducer';
+import { useDispatch } from 'react-redux';
 
 export type TasksList = {
     todoListId: string
     tasks: Array<TaskType>
-    removeTask: (todoListId: string, id: string) => void
-    isChecked: (todoListId: string, isDone: boolean, id: string) => void
-    changeValueTask: (todoListId: string, title: string, id: string) => void
 }
 
-export const TasksList: FC<TasksList> = React.memo(({todoListId, tasks, isChecked, removeTask, changeValueTask}) => {
+export const TasksList: FC<TasksList> = React.memo(({todoListId, tasks}) => {
     console.log('TaskList')
+
+    const dispatch = useDispatch()
     if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 
     return (
         <List>
             {tasks.map(task => {
-                    const onRemoveHandler = () => removeTask(todoListId, task.id)
-                    const onChangeStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
-                        isChecked(todoListId, event.currentTarget.checked, task.id)
+                    const removeHandler = () => dispatch(removeTaskAC(todoListId, task.id))
+                    const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                        dispatch(changeStatusAC(todoListId, e.currentTarget.checked, task.id))
                     }
-                    const onChangeValueHandler = (value: string) => changeValueTask(todoListId, value, task.id)
+                    const changeValueHandler = (value: string) => {
+                        dispatch(changeValueTaskAC(todoListId, value, task.id))
+                    }
 
                     return (
                         <ListItem key={task.id} className={styles.list_item_wrapper}>
                             <Paper className={styles.list_item} sx={{backgroundColor: '#b3e5fc'}}>
-                                <Checkbox size='small' checked={task.isDone} onChange={onChangeStatusHandler}/>
+                                <Checkbox size='small' checked={task.isDone} onChange={changeStatusHandler}/>
                                 <EditableSpan
                                     title={task.title}
-                                    changeValue={onChangeValueHandler}
+                                    changeValue={changeValueHandler}
                                     textStyles={styles.item_title}
                                 />
-                                <DeleteIcon className={styles.delete} onClick={onRemoveHandler}/>
+                                <DeleteIcon className={styles.delete} onClick={removeHandler}/>
                             </Paper>
                         </ListItem>
                     )
