@@ -78,7 +78,6 @@ export const App = () => {
                                     filterTasks={changeFilter}
                                     filter={todo.filter}
                                     removeTodoList={removeTodoList}
-                                    addTodoList={addTodoList}
                                     changeTodoListTitle={changeTodoListTitle}
                                 />
                             </Grid>

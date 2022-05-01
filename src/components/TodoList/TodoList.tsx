@@ -18,18 +18,18 @@ export type TodoListProps = {
     filterTasks: (todoListId: string, title: ValueFilterType) => void
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
-    addTodoList: (value: string) => void
     changeTodoListTitle: (todoListId: string, title: string) => void
 }
 
 export const TodoList = React.memo((props: TodoListProps) => {
-    const {title, todoListId, filterTasks, filter, removeTodoList, addTodoList, changeTodoListTitle} = props
     console.log('TodoList')
+
+    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props
     const dispatch = useDispatch()
     const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId])
 
     let setTodoListTasks: Array<TaskType>;
-    switch (props.filter) {
+    switch (filter) {
         case 'active':
             setTodoListTasks = tasks.filter(task => !task.isDone);
             break;
@@ -51,7 +51,7 @@ export const TodoList = React.memo((props: TodoListProps) => {
         filterTasks(todoListId, 'completed')
     }, [filterTasks, todoListId])
 
-    const addTodoItem = (value: string) => dispatch(addTaskAC(todoListId, value))
+    const addTask = (value: string) => dispatch(addTaskAC(todoListId, value))
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={3}>
@@ -61,7 +61,7 @@ export const TodoList = React.memo((props: TodoListProps) => {
                 todoListId={todoListId}
                 changeTodoListTitle={changeTodoListTitle}
             />
-            <AddItemForm addItem={addTodoItem} title={'Add task'} errorText={'Task is required'}/>
+            <AddItemForm addItem={addTask} title={'Add task'} errorText={'Task is required'}/>
             <div className={styles.buttons}>
                 <Button
                     size={'small'}
