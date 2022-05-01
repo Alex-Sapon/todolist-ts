@@ -5,8 +5,8 @@ import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
 import {TasksList} from '../TasksList/TasksList';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 
-import styles from './TodoList.module.css'
-import {Button, Paper} from '@mui/material'
+import styles from './TodoList.module.css';
+import {Button, Paper} from '@mui/material';
 
 import {TaskType, ValueFilterType} from '../../App';
 import {RootStateType} from '../../state/store';
@@ -19,14 +19,15 @@ export type TodoListProps = {
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, title: string) => void
-}
+};
 
 export const TodoList = React.memo((props: TodoListProps) => {
-    console.log('TodoList')
+    console.log('TodoList');
 
-    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props
-    const dispatch = useDispatch()
-    const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId])
+    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props;
+
+    const dispatch = useDispatch();
+    const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId]);
 
     let setTodoListTasks: Array<TaskType>;
     switch (filter) {
@@ -43,15 +44,17 @@ export const TodoList = React.memo((props: TodoListProps) => {
 
     const allFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'all')
-    }, [filterTasks, todoListId])
+    }, [filterTasks, todoListId]);
     const activeFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'active')
-    }, [filterTasks, todoListId])
+    }, [filterTasks, todoListId]);
     const completedFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'completed')
-    }, [filterTasks, todoListId])
+    }, [filterTasks, todoListId]);
 
-    const addTask = (value: string) => dispatch(addTaskAC(todoListId, value))
+    const addTask = useCallback((value: string) => {
+        dispatch(addTaskAC(todoListId, value))
+    }, [dispatch, todoListId]);
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={3}>
@@ -83,5 +86,5 @@ export const TodoList = React.memo((props: TodoListProps) => {
             <TasksList tasks={setTodoListTasks} todoListId={todoListId}/>
         </Paper>
     )
-})
+});
 

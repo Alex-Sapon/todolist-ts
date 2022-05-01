@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material';
+import {TextField, Typography} from '@mui/material';
 import React, {ChangeEvent, useState} from 'react';
 import styles from './EditableSpan.module.css';
 
@@ -13,6 +13,7 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
     console.log('EditableSpan');
 
     const {title, changeValue, textStyles, inputStyles} = props;
+
     const [value, setValue] = useState<string>('');
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -21,12 +22,12 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
     const activeEditMode = () => {
         setEditMode(true);
         setValue(title);
-    }
+    };
 
     const activeViewMode = () => {
         setEditMode(false);
         value.trim() !== '' && changeValue(value);
-    }
+    };
 
     const finalInputStyles = `${inputStyles ? inputStyles : ''}`;
     const finalTextStyles = `${textStyles ? textStyles : ''}`;
