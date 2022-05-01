@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TodoList} from './components/TodoList/TodoList';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
 import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootStateType} from './state/store';
-import {addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC} from './state/todolists-reducer';
+import {
+    addTodoListAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    removeTodoListAC
+} from './state/todolists-reducer';
 
 export type TaskType = {
     id: string
@@ -26,34 +31,32 @@ export type TasksStateType = {
 }
 
 export const App = () => {
+    console.log('App')
     const dispatch = useDispatch()
     const todoLists = useSelector<RootStateType, Array<TodoListsType>>(state => state.todoLists)
 
-    const changeFilter = (todoListId: string, filter: ValueFilterType) => {
+    const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC(todoListId, filter))
-    }
-
-    const removeTodoList = (todoListId: string) => {
+    }, [dispatch])
+    const removeTodoList = useCallback((todoListId: string) => {
         dispatch(removeTodoListAC(todoListId))
-    }
-
-    const addTodoList = (title: string) => {
+    }, [dispatch])
+    const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }
-
-    const changeTodoListTitle = (todoListId: string, title: string) => {
+    }, [dispatch])
+    const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
         dispatch(changeTodoListTitleAC(todoListId, title))
-    }
+    }, [dispatch])
 
     return (
         <div>
-            <Box sx={{ flexGrow: 1 , mb: '2rem'}}>
+            <Box sx={{flexGrow: 1, mb: '2rem'}}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-                            <MenuIcon />
+                        <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{mr: 2}}>
+                            <MenuIcon/>
                         </IconButton>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Menu</Typography>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>Menu</Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
@@ -62,9 +65,9 @@ export const App = () => {
                 <AddItemForm title={'Add todo'} addItem={addTodoList}/>
                 <Grid container spacing={3} columns={12}>
                     {todoLists.length === 0 &&
-                    <Grid item xs={12} md={12} sm={12} lg={12}>
-                        <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add TodoList.</Typography>
-                    </Grid>}
+                        <Grid item xs={12} md={12} sm={12} lg={12}>
+                            <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add TodoList.</Typography>
+                        </Grid>}
 
                     {todoLists.map(todo => {
                         return (
@@ -87,12 +90,6 @@ export const App = () => {
         </div>
     );
 }
-
-
-
-
-
-
 
 
 // import {TodoList} from './components/TodoList/TodoList';

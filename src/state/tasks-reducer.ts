@@ -25,11 +25,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 }
 
 type ActionsType = ReturnType<typeof addTaskAC> 
-| ReturnType<typeof removeTaskAC> 
-| ReturnType<typeof changeStatusAC> 
-| ReturnType<typeof changeValueTaskAC>
-| ReturnType<typeof addTodoListAC>
-| ReturnType<typeof removeTodoListAC>
+    | ReturnType<typeof removeTaskAC>
+    | ReturnType<typeof changeStatusAC>
+    | ReturnType<typeof changeValueTaskAC>
+    | ReturnType<typeof addTodoListAC>
+    | ReturnType<typeof removeTodoListAC>
 
 export const addTaskAC = (todoListId: string, title: string) => ({type: 'ADD-TASK', todoListId, title} as const)
 export const removeTaskAC = (todoListId: string, id: string) => ({type: 'REMOVE-TASK', todoListId, id} as const)

@@ -11,6 +11,7 @@ type AddItemFormType = {
 }
 
 export const AddItemForm = React.memo(({title, className, addItem, errorText}: AddItemFormType) => {
+    console.log('AddItemForm')
     const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -24,7 +25,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(false)
+        error && setError(false)
         setValue(e.currentTarget.value)
     }
 

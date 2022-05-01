@@ -15,7 +15,6 @@ export type TasksList = {
 
 export const TasksList: FC<TasksList> = React.memo(({todoListId, tasks}) => {
     console.log('TaskList')
-
     const dispatch = useDispatch()
     if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 

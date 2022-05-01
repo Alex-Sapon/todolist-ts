@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
@@ -23,8 +23,10 @@ export type TodoListProps = {
 }
 
 export const TodoList = React.memo((props: TodoListProps) => {
+    const {title, todoListId, filterTasks, filter, removeTodoList, addTodoList, changeTodoListTitle} = props
+    console.log('TodoList')
     const dispatch = useDispatch()
-    const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[props.todoListId])
+    const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId])
 
     let setTodoListTasks: Array<TaskType>;
     switch (props.filter) {
@@ -39,40 +41,46 @@ export const TodoList = React.memo((props: TodoListProps) => {
             break;
     }
 
-    const allFilterTasks = () => props.filterTasks(props.todoListId, 'all')
-    const activeFilterTasks = () => props.filterTasks(props.todoListId, 'active')
-    const completedFilterTasks = () => props.filterTasks(props.todoListId, 'completed')
+    const allFilterTasks = useCallback(() => {
+        filterTasks(todoListId, 'all')
+    }, [filterTasks, todoListId])
+    const activeFilterTasks = useCallback(() => {
+        filterTasks(todoListId, 'active')
+    }, [filterTasks, todoListId])
+    const completedFilterTasks = useCallback(() => {
+        filterTasks(todoListId, 'completed')
+    }, [filterTasks, todoListId])
 
-    const addTodoList = (value: string) => dispatch(addTaskAC(props.todoListId, value))
+    const addTodoItem = (value: string) => dispatch(addTaskAC(todoListId, value))
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={3}>
             <TodoListHeader
-                title={props.title}
-                removeTodoList={props.removeTodoList}
-                todoListId={props.todoListId}
-                changeTodoListTitle={props.changeTodoListTitle}
+                title={title}
+                removeTodoList={removeTodoList}
+                todoListId={todoListId}
+                changeTodoListTitle={changeTodoListTitle}
             />
-            <AddItemForm addItem={addTodoList} title={'Add task'} errorText={'Task is required'}/>
+            <AddItemForm addItem={addTodoItem} title={'Add task'} errorText={'Task is required'}/>
             <div className={styles.buttons}>
                 <Button
                     size={'small'}
-                    variant={props.filter === 'all' ? 'contained' : 'text'}
+                    variant={filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
                 >All</Button>
                 <Button
                     size={'small'}
-                    variant={props.filter === 'active' ? 'contained' : 'text'}
+                    variant={filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size={'small'}
-                    variant={props.filter === 'completed' ? 'contained' : 'text'}
+                    variant={filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
                 >Completed</Button>
             </div>
-            <TasksList tasks={setTodoListTasks} todoListId={props.todoListId}/>
+            <TasksList tasks={setTodoListTasks} todoListId={todoListId}/>
         </Paper>
     )
 })
