@@ -21,26 +21,3 @@ export const TasksList = React.memo((props: TasksList) => {
         </List>
     )
 });
-
-
-// const removeHandler = () => dispatch(removeTaskAC(todoListId, task.id));
-// const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-//     dispatch(changeStatusAC(todoListId, e.currentTarget.checked, task.id));
-// }
-// const changeValueHandler = (value: string) => {
-//     dispatch(changeValueTaskAC(todoListId, value, task.id));
-// }
-//
-// return (
-//     <ListItem key={task.id} className={styles.list_item_wrapper}>
-//         <Paper className={styles.list_item} sx={{backgroundColor: '#b3e5fc'}}>
-//             <Checkbox size="small" checked={task.isDone} onChange={changeStatusHandler}/>
-//             <EditableSpan
-//                 title={task.title}
-//                 changeValue={changeValueHandler}
-//                 textStyles={styles.item_title}
-//             />
-//             <DeleteIcon className={styles.delete} onClick={removeHandler}/>
-//         </Paper>
-//     </ListItem>
-// )

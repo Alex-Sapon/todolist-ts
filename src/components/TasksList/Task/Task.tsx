@@ -1,7 +1,7 @@
 import {changeStatusAC, changeValueTaskAC, removeTaskAC} from '../../../state/tasks-reducer';
 import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
-import styles from '../TasksList.module.css';
+import styles from './Task.module.css';
 import {EditableSpan} from '../../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useDispatch} from 'react-redux';
@@ -28,15 +28,15 @@ export const Task = React.memo((props: TaskPropsType) => {
     }, [dispatch, todoListID, task.id]);
 
     return (
-        <ListItem className={styles.list_item_wrapper}>
-            <Paper className={styles.list_item} sx={{backgroundColor: '#b3e5fc'}}>
+        <ListItem>
+            <Paper className={styles.item_container} sx={{backgroundColor: '#b3e5fc'}}>
                 <Checkbox size="small" checked={task.isDone} onChange={changeStatusHandler}/>
                 <EditableSpan
                     title={task.title}
                     changeValue={changeValueHandler}
                     textStyles={styles.item_title}
                 />
-                <DeleteIcon className={styles.delete} onClick={removeHandler}/>
+                <DeleteIcon className={styles.item_delete} onClick={removeHandler}/>
             </Paper>
         </ListItem>
     )

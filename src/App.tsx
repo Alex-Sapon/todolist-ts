@@ -32,21 +32,21 @@ export type TasksStateType = {
 
 export const App = () => {
     console.log('App')
-    const dispatch = useDispatch()
-    const todoLists = useSelector<RootStateType, Array<TodoListsType>>(state => state.todoLists)
+    const dispatch = useDispatch();
+    const todoLists = useSelector<RootStateType, Array<TodoListsType>>(state => state.todoLists);
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC(todoListId, filter))
-    }, [dispatch])
+    }, [dispatch]);
     const removeTodoList = useCallback((todoListId: string) => {
         dispatch(removeTodoListAC(todoListId))
-    }, [dispatch])
+    }, [dispatch]);
     const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }, [dispatch])
+    }, [dispatch]);
     const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
         dispatch(changeTodoListTitleAC(todoListId, title))
-    }, [dispatch])
+    }, [dispatch]);
 
     return (
         <div>
@@ -85,10 +85,9 @@ export const App = () => {
                     })}
                 </Grid>
             </Container>
-
         </div>
     );
-}
+};
 
 
 // import {TodoList} from './components/TodoList/TodoList';
