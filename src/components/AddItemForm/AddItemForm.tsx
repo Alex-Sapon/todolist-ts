@@ -11,7 +11,6 @@ type AddItemFormType = {
 };
 
 export const AddItemForm = React.memo(({title, className, addItem, errorText}: AddItemFormType) => {
-    console.log('AddItemForm')
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
 
@@ -29,7 +28,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
         setValue(e.currentTarget.value);
     };
 
-    const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => setError(false);
+    const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => setError(false);
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask();
 
     // const inputClasses = `${styles.input} ${error ? styles.error : ''}`;

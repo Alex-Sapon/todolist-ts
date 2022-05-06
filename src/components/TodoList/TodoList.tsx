@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
 import {TasksList} from '../TasksList/TasksList';
@@ -8,8 +8,7 @@ import {AddItemForm} from '../AddItemForm/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {TaskType, ValueFilterType} from '../../App';
-import {RootStateType} from '../../state/store';
+import {ValueFilterType} from '../../App';
 import {addTaskAC} from '../../state/tasks-reducer';
 
 export type TodoListProps = {
@@ -22,25 +21,9 @@ export type TodoListProps = {
 };
 
 export const TodoList = React.memo((props: TodoListProps) => {
-    console.log('TodoList');
-
     const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props;
 
     const dispatch = useDispatch();
-    const tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId]);
-
-    let setTodoListTasks: Array<TaskType>;
-    switch (filter) {
-        case 'active':
-            setTodoListTasks = tasks.filter(task => !task.isDone);
-            break;
-        case 'completed':
-            setTodoListTasks = tasks.filter(task => task.isDone);
-            break;
-        default:
-            setTodoListTasks = tasks;
-            break;
-    }
 
     const allFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'all')
@@ -83,7 +66,7 @@ export const TodoList = React.memo((props: TodoListProps) => {
                     onClick={completedFilterTasks}
                 >Completed</Button>
             </div>
-            <TasksList tasks={setTodoListTasks} todoListId={todoListId}/>
+            <TasksList filter={filter} todoListId={todoListId}/>
         </Paper>
     )
 });

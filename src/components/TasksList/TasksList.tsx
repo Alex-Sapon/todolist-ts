@@ -1,17 +1,28 @@
 import React from 'react';
-import {TaskType} from '../../App';
+import {TaskType, ValueFilterType} from '../../App';
 import {List, Typography} from '@mui/material';
 import {Task} from './Task/Task';
+import {useSelector} from 'react-redux';
+import {RootStateType} from '../../state/store';
 
 export type TasksList = {
-    tasks: Array<TaskType>
+    filter: ValueFilterType
     todoListId: string
 };
 
 export const TasksList = React.memo((props: TasksList) => {
-    console.log('TaskList');
+    const {todoListId, filter} = props;
 
-    const {todoListId, tasks} = props;
+    let tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId]);
+
+    switch (filter) {
+        case 'active':
+            tasks = tasks.filter(task => !task.isDone);
+            break;
+        case 'completed':
+            tasks = tasks.filter(task => task.isDone);
+            break;
+    }
 
     if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 

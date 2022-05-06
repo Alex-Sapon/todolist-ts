@@ -13,7 +13,6 @@ type TaskPropsType = {
 };
 
 export const Task = React.memo((props: TaskPropsType) => {
-    console.log('Task');
     const {task, todoListID} = props;
     const dispatch = useDispatch();
 
@@ -29,13 +28,9 @@ export const Task = React.memo((props: TaskPropsType) => {
 
     return (
         <ListItem>
-            <Paper className={styles.item_container} sx={{backgroundColor: '#b3e5fc'}}>
+            <Paper className={styles.item_container} sx={{backgroundColor: '#cce8ff'}}>
                 <Checkbox size="small" checked={task.isDone} onChange={changeStatusHandler}/>
-                <EditableSpan
-                    title={task.title}
-                    changeValue={changeValueHandler}
-                    textStyles={styles.item_title}
-                />
+                <EditableSpan title={task.title} changeValue={changeValueHandler} textStyles={styles.item_title}/>
                 <DeleteIcon className={styles.item_delete} onClick={removeHandler}/>
             </Paper>
         </ListItem>

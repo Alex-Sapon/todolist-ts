@@ -11,10 +11,11 @@ type TodoListHeaderType = {
 };
 
 export const TodoListHeader = React.memo((props: TodoListHeaderType) => {
-    console.log('TodoListHeader');
     const {title, removeTodoList, todoListId, changeTodoListTitle} = props;
 
-    const removeTodoListHandler = useCallback(() => removeTodoList(todoListId), [removeTodoList, todoListId]);
+    const removeTodoListHandler = useCallback(() => {
+        removeTodoList(todoListId)
+    }, [removeTodoList, todoListId]);
     const onChangeValueHandler = useCallback((title: string) => {
         changeTodoListTitle(todoListId, title)
     }, [changeTodoListTitle, todoListId]);
