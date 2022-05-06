@@ -34,8 +34,8 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
     // const inputClasses = `${styles.input} ${error ? styles.error : ''}`;
 
     return (
-       <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
-           <TextField
+        <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
+            <TextField
                 fullWidth
                 size={'small'}
                 value={value}
@@ -47,7 +47,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
                 onBlur={onBlurHandler}
                 sx={{mr: '1rem'}}
             />
-           <AddBox className={styles.add_button} onClick={addTask}/>
-       </Container>
+            <AddBox className={styles.add_button} onClick={addTask}/>
+        </Container>
     )
 });

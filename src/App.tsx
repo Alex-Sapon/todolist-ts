@@ -61,7 +61,7 @@ export const App = () => {
                 </AppBar>
             </Box>
             <Container sx={{mb: '2rem'}} fixed>
-                <AddItemForm title={'Add todo'} addItem={addTodoList}/>
+                <AddItemForm title={'Add todo list'} addItem={addTodoList}/>
                 <Grid container spacing={3} columns={12}>
                     {todoLists.length === 0 &&
                         <Grid item xs={12} md={12} sm={12} lg={12}>

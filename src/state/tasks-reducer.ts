@@ -7,13 +7,22 @@ const initialState: TasksStateType = {};
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch(action.type) {
         case 'ADD-TASK':
-            return {...state, [action.todoListId]: [{id: v1(), title: action.title, isDone: false}, ...state[action.todoListId]]};
+            return {
+                ...state,
+                [action.todoListId]: [{id: v1(), title: action.title, isDone: false}, ...state[action.todoListId]]
+            };
         case 'REMOVE-TASK':
-            return {...state, [action.todoListId]: state[action.todoListId].filter(i => i.id !== action.id)};
+            return {...state, [action.todoListId]: state[action.todoListId].filter(task => task.id !== action.id)};
         case 'CHANGE-STATUS':
-            return {...state, [action.todoListId]: state[action.todoListId].map(i => i.id === action.id ? {...i, isDone: action.isDone} : i)};
+            return {
+                ...state,
+                [action.todoListId]: state[action.todoListId].map(task => task.id === action.id
+                    ? {...task, isDone: action.isDone} : task)};
         case 'CHANGE-VALUE-TASK':
-            return {...state, [action.todoListId]: state[action.todoListId].map(i => i.id === action.id ? {...i, title: action.title} : i)};
+            return {
+                ...state,
+                [action.todoListId]: state[action.todoListId].map(task => task.id === action.id
+                    ? {...task, title: action.title} : task)};
         case 'ADD-TODOLIST':
             return {[action.id]: [], ...state};
         case 'REMOVE-TODOLIST':
@@ -24,7 +33,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
     }
 };
 
-type ActionsType = ReturnType<typeof addTaskAC> 
+type ActionsType = ReturnType<typeof addTaskAC>
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof changeStatusAC>
     | ReturnType<typeof changeValueTaskAC>
