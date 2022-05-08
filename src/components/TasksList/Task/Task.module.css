@@ -19,3 +19,9 @@
 .item_delete:hover {
     color: crimson;
 }
+
+.item_edit {
+    font-size: small;
+    color: rgba(0, 0, 0, 0.54);
+    margin-right: 5px;
+}

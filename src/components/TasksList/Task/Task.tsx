@@ -6,6 +6,7 @@ import {EditableSpan} from '../../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useDispatch} from 'react-redux';
 import {TaskType} from '../../../App';
+import EditIcon from '@mui/icons-material/Edit';
 
 type TaskPropsType = {
     task: TaskType
@@ -30,7 +31,11 @@ export const Task = React.memo((props: TaskPropsType) => {
         <ListItem>
             <Paper className={styles.item_container} sx={{backgroundColor: '#cce8ff'}}>
                 <Checkbox size="small" checked={task.isDone} onChange={changeStatusHandler}/>
-                <EditableSpan title={task.title} changeValue={changeValueHandler} textStyles={styles.item_title}/>
+                <EditableSpan
+                    title={task.title}
+                    changeValue={changeValueHandler}
+                    textStyles={styles.item_title}
+                ><EditIcon className={styles.item_edit} fontSize={'small'}/></EditableSpan>
                 <DeleteIcon className={styles.item_delete} onClick={removeHandler}/>
             </Paper>
         </ListItem>
