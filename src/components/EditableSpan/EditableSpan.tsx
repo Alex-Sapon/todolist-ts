@@ -1,9 +1,7 @@
 import {TextField, Typography} from '@mui/material';
 import React, {ChangeEvent, useState} from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import styles from './EditableSpan.module.css';
 
-type EditableSpanType = {
+export type EditableSpanType = {
     title: string
     changeValue: (value: string) => void
     inputStyles?: string
@@ -44,7 +42,8 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
             className={finalInputStyles}
         />
         : <>
-            <Typography className={finalTextStyles} onDoubleClick={activeEditMode}>{title}</Typography>{children}
+            <Typography className={finalTextStyles} onDoubleClick={activeEditMode}>{title}</Typography>
+            {children}
         </>
 });
 

@@ -8,7 +8,7 @@ import {useDispatch} from 'react-redux';
 import {TaskType} from '../../../App';
 import EditIcon from '@mui/icons-material/Edit';
 
-type TaskPropsType = {
+export type TaskPropsType = {
     task: TaskType
     todoListID: string
 };
@@ -35,7 +35,7 @@ export const Task = React.memo((props: TaskPropsType) => {
                     title={task.title}
                     changeValue={changeValueHandler}
                     textStyles={styles.item_title}
-                ><EditIcon className={styles.item_edit} fontSize={'small'}/></EditableSpan>
+                ><EditIcon className={styles.item_edit}/></EditableSpan>
                 <DeleteIcon className={styles.item_delete} onClick={removeHandler}/>
             </Paper>
         </ListItem>
