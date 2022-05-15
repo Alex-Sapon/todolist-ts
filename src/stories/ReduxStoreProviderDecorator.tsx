@@ -1,9 +1,9 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {combineReducers, legacy_createStore as createStore} from 'redux';
-import {tasksReducer} from '../state/tasks-reducer';
-import {todoListsReducer} from '../state/todolists-reducer';
-import {RootStateType} from '../state/store';
+import {tasksReducer} from '../store/tasks-reducer';
+import {todoListsReducer} from '../store/todolists-reducer';
+import {RootStateType} from '../store/store';
 
 const storyBookReducer = combineReducers({
     tasks: tasksReducer,

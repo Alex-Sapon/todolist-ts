@@ -1,16 +1,16 @@
-import React, {useCallback} from 'react';
+import React, {FC, useCallback} from 'react';
 import {TodoList} from './components/TodoList/TodoList';
 import {AddItemForm} from './components/AddItemForm/AddItemForm';
 import {AppBar, Box, Button, Container, Grid, IconButton, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootStateType} from './state/store';
 import {
     addTodoListAC,
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC
-} from './state/todolists-reducer';
+} from './store/todolists-reducer';
+import {useAppDispatch, useAppSelector} from './store/hooks';
+
 
 export type TaskType = {
     id: string
@@ -30,9 +30,9 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-export const App = () => {
-    const dispatch = useDispatch();
-    const todoLists = useSelector<RootStateType, Array<TodoListsType>>(state => state.todoLists);
+export const App: FC = () => {
+    const dispatch = useAppDispatch();
+    const todoLists = useAppSelector(state => state.todoLists);
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC(todoListId, filter))
@@ -65,23 +65,21 @@ export const App = () => {
                 <Grid container spacing={3} columns={12}>
                     {todoLists.length === 0 &&
                         <Grid item xs={12} md={12} sm={12} lg={12}>
-                            <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add TodoList.</Typography>
+                            <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add
+                                TodoList.</Typography>
                         </Grid>}
-
-                    {todoLists.map(todo => {
-                        return (
-                            <Grid key={todo.id} item xs={12} md={6} sm={12} lg={4}>
-                                <TodoList
-                                    todoListId={todo.id}
-                                    title={todo.title}
-                                    filterTasks={changeFilter}
-                                    filter={todo.filter}
-                                    removeTodoList={removeTodoList}
-                                    changeTodoListTitle={changeTodoListTitle}
-                                />
-                            </Grid>
-                        )
-                    })}
+                    {todoLists.map(todo =>
+                        <Grid item xs={12} md={6} sm={12} lg={4}>
+                            <TodoList
+                                todoListId={todo.id}
+                                title={todo.title}
+                                filterTasks={changeFilter}
+                                filter={todo.filter}
+                                removeTodoList={removeTodoList}
+                                changeTodoListTitle={changeTodoListTitle}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
             </Container>
         </div>

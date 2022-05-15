@@ -1,21 +1,20 @@
-import {changeStatusAC, changeValueTaskAC, removeTaskAC} from '../../../state/tasks-reducer';
+import {changeStatusAC, changeValueTaskAC, removeTaskAC} from '../../../store/tasks-reducer';
 import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
 import {EditableSpan} from '../../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {useDispatch} from 'react-redux';
 import {TaskType} from '../../../App';
 import EditIcon from '@mui/icons-material/Edit';
+import {useAppDispatch} from '../../../store/hooks';
 
 export type TaskPropsType = {
     task: TaskType
     todoListID: string
 };
 
-export const Task = React.memo((props: TaskPropsType) => {
-    const {task, todoListID} = props;
-    const dispatch = useDispatch();
+export const Task = React.memo(({task, todoListID}: TaskPropsType) => {
+    const dispatch = useAppDispatch();
 
     const removeHandler = useCallback(() => {
         dispatch(removeTaskAC(todoListID, task.id))

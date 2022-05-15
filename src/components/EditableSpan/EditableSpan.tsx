@@ -6,7 +6,7 @@ export type EditableSpanType = {
     changeValue: (value: string) => void
     inputStyles?: string
     textStyles?: string
-    children?: React.ReactNode | React.ReactChild
+    children?: React.ReactNode
 };
 
 export const EditableSpan = React.memo((props: EditableSpanType) => {

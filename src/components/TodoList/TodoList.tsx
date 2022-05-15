@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-import {useDispatch} from 'react-redux';
 
 import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
 import {TasksList} from '../TasksList/TasksList';
@@ -9,7 +8,8 @@ import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
 import {ValueFilterType} from '../../App';
-import {addTaskAC} from '../../state/tasks-reducer';
+import {addTaskAC} from '../../store/tasks-reducer';
+import {useAppDispatch} from '../../store/hooks';
 
 export type TodoListProps = {
     title: string
@@ -23,7 +23,7 @@ export type TodoListProps = {
 export const TodoList = React.memo((props: TodoListProps) => {
     const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props;
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const allFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'all')

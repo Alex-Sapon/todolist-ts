@@ -1,19 +1,16 @@
 import React from 'react';
-import {TaskType, ValueFilterType} from '../../App';
+import {ValueFilterType} from '../../App';
 import {List, Typography} from '@mui/material';
 import {Task} from './Task/Task';
-import {useSelector} from 'react-redux';
-import {RootStateType} from '../../state/store';
+import {useAppSelector} from '../../store/hooks';
 
 export type TasksList = {
     filter: ValueFilterType
     todoListId: string
 };
 
-export const TasksList = React.memo((props: TasksList) => {
-    const {todoListId, filter} = props;
-
-    let tasks = useSelector<RootStateType, Array<TaskType>>(state => state.tasks[todoListId]);
+export const TasksList = React.memo(({todoListId, filter}: TasksList) => {
+    let tasks = useAppSelector(state => state.tasks[todoListId]);
 
     switch (filter) {
         case 'active':
