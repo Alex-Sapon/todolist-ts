@@ -3,7 +3,7 @@ import styles from './AddItemForm.module.css';
 import {Container, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
 
-type AddItemFormType = {
+export type AddItemFormType = {
     title: string
     className?: string
     addItem: (value: string) => void

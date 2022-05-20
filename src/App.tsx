@@ -65,8 +65,7 @@ export const App: FC = () => {
                 <Grid container spacing={3} columns={12}>
                     {todoLists.length === 0 &&
                         <Grid item xs={12} md={12} sm={12} lg={12}>
-                            <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add
-                                TodoList.</Typography>
+                            <Typography sx={{textAlign: 'center', mt: '2rem'}} variant={'h5'}>Add TodoList.</Typography>
                         </Grid>}
                     {todoLists.map(todo =>
                         <Grid item xs={12} md={6} sm={12} lg={4}>
