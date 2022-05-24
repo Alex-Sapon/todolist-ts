@@ -152,7 +152,7 @@ export const SetTask = () => {
     }
 
     const onClickHandler = () => {
-        todolistAPI.setTask(todolistId, taskTitle).then(res => setState(res.data));
+        todolistAPI.createTask(todolistId, taskTitle).then(res => setState(res.data));
         setTodolistId('');
         setTaskTitle('');
     }

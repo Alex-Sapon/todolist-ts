@@ -10,25 +10,8 @@ import {
     removeTodoListAC
 } from './store/todolists-reducer';
 import {useAppDispatch, useAppSelector} from './store/hooks';
+import {ValueFilterType} from './api/todolist-api';
 
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
-export type TodoListsType = {
-    id: string
-    title: string
-    filter: ValueFilterType
-}
-
-export type ValueFilterType = 'all' | 'active' | 'completed';
-
-export type TasksStateType = {
-    [key: string]: TaskType[]
-}
 
 export const App: FC = () => {
     const dispatch = useAppDispatch();
@@ -37,12 +20,15 @@ export const App: FC = () => {
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC(todoListId, filter))
     }, [dispatch]);
+
     const removeTodoList = useCallback((todoListId: string) => {
         dispatch(removeTodoListAC(todoListId))
     }, [dispatch]);
+
     const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
     }, [dispatch]);
+
     const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
         dispatch(changeTodoListTitleAC(todoListId, title))
     }, [dispatch]);

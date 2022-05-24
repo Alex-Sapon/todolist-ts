@@ -1,8 +1,8 @@
 import React from 'react';
-import {ValueFilterType} from '../../App';
 import {List, Typography} from '@mui/material';
 import {Task} from './Task/Task';
 import {useAppSelector} from '../../store/hooks';
+import {TaskStatuses, ValueFilterType} from '../../api/todolist-api';
 
 export type TasksList = {
     filter: ValueFilterType
@@ -14,10 +14,10 @@ export const TasksList = React.memo(({todoListId, filter}: TasksList) => {
 
     switch (filter) {
         case 'active':
-            tasks = tasks.filter(task => !task.isDone);
+            tasks = tasks.filter(task => task.status === TaskStatuses.New);
             break;
         case 'completed':
-            tasks = tasks.filter(task => task.isDone);
+            tasks = tasks.filter(task => task.status === TaskStatuses.Completed);
             break;
     }
 

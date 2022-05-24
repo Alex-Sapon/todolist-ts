@@ -22,12 +22,26 @@ type ResponseType<D = {}> = {
     data: D
 }
 
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3,
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4,
+}
+
 export type TaskType = {
     description: string
     title: string
-    completed: boolean
     status: number
-    priority: number
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -47,10 +61,12 @@ export type UpdateTaskType = {
     description: string
     completed: boolean
     status: number
-    priority: number
+    priority: TaskPriorities
     startDate: string
     deadline: string
 }
+
+export type ValueFilterType = 'all' | 'active' | 'completed';
 
 export const todolistAPI = {
     getTodolists() {
@@ -66,15 +82,15 @@ export const todolistAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`);
     },
     getTasks(todolistId: string) {
-        return instance.get<GetTasksResponseType>(`/todo-lists/${todolistId}/tasks`);
+        return instance.get<GetTasksResponseType>(`todo-lists/${todolistId}/tasks`);
     },
-    setTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks`, {title: title});
+    createTask(todolistId: string, title: string) {
+        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title: title});
     },
     updateTask(todolistId: string, taskId: string, task: UpdateTaskType) {
-        return instance.put<ResponseType<{ item: TaskType }>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {...task});
+        return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`, task);
     },
     deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`);
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
 };

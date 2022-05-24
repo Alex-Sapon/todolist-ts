@@ -7,9 +7,9 @@ import {AddItemForm} from '../AddItemForm/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {ValueFilterType} from '../../App';
 import {addTaskAC} from '../../store/tasks-reducer';
 import {useAppDispatch} from '../../store/hooks';
+import {ValueFilterType} from '../../api/todolist-api';
 
 export type TodoListProps = {
     title: string
