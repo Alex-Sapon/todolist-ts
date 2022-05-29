@@ -8,7 +8,7 @@ import {
     TasksStateType
 } from './tasks-reducer';
 import {addTodoListAC, removeTodoListAC} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses} from '../api/todolist-api';
+import {TaskPriorities, TaskStatuses} from '../../api/todolist-api';
 
 let todoListId1: string;
 let todoListId2: string;

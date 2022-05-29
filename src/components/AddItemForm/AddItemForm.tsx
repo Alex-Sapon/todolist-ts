@@ -28,10 +28,10 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
         setValue(e.currentTarget.value);
     };
 
-    const onBlurHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => setError(false);
+    const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => setError(false);
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask();
 
-    // const inputClasses = `${styles.input} ${error ? styles.error : ''}`;
+    const inputClasses = `${styles.input} ${error ? styles.error : ''} ${className ? className : ''}`;
 
     return (
         <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
@@ -41,6 +41,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
                 value={value}
                 error={error}
                 label={title}
+                className={inputClasses}
                 helperText={error && errorText}
                 onKeyPress={onKeyPressHandler}
                 onChange={onChangeHandler}

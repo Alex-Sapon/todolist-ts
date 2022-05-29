@@ -12,3 +12,7 @@
 .delete:hover {
     color: crimson;
 }
+
+.todolist_add-item {
+    background-color: white;
+}

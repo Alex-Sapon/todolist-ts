@@ -1,3 +1,7 @@
+.add_title {
+    background-color: white;
+}
+
 .add_button {
     cursor: pointer;
     color: rgba(0, 0, 0, 0.54);

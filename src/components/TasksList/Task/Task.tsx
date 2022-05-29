@@ -1,11 +1,11 @@
-import {changeStatusAC, changeValueTaskAC, removeTaskAC} from '../../../store/tasks-reducer';
+import {changeStatusAC, changeValueTaskAC, removeTaskAC} from '../../../features/TodolistsList/tasks-reducer';
 import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
 import {EditableSpan} from '../../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import {useAppDispatch} from '../../../store/hooks';
+import {useAppDispatch} from '../../../features/TodolistsList/hooks';
 import {TaskStatuses, TaskType} from '../../../api/todolist-api';
 
 export type TaskPropsType = {
@@ -30,7 +30,7 @@ export const Task = React.memo(({task, todoListID}: TaskPropsType) => {
 
     return (
         <ListItem>
-            <Paper className={styles.item_container} sx={{backgroundColor: '#cce8ff'}}>
+            <Paper className={styles.item_container} sx={{backgroundColor: '#9AB8BA'}}>
                 <Checkbox size="small" checked={task.status === TaskStatuses.Completed} onChange={changeStatusHandler}/>
                 <EditableSpan
                     title={task.title}

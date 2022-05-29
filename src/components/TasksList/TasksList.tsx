@@ -1,7 +1,7 @@
 import React from 'react';
 import {List, Typography} from '@mui/material';
 import {Task} from './Task/Task';
-import {useAppSelector} from '../../store/hooks';
+import {useAppSelector} from '../../features/TodolistsList/hooks';
 import {TaskStatuses, ValueFilterType} from '../../api/todolist-api';
 
 export type TasksList = {

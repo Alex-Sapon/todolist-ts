@@ -7,7 +7,7 @@ import {Meta} from '@storybook/react/types-6-0';
 import {TaskPriorities, TaskStatuses, TaskType} from '../../../api/todolist-api';
 
 export default {
-    title: 'TodoList/Task',
+    title: 'TodoList/Todolist',
     component: Task,
     decorators: [ReduxStoreProviderDecorator],
 } as Meta;
@@ -20,9 +20,9 @@ type TaskPropsType = {
     removeTask: () => void
 }
 
-const changeTaskStatusCallback = action('Status changed inside Task');
-const changeTaskTitleCallback = action('Title changed inside Task');
-const removeTaskCallback = action('Remove task inside Task clicked');
+const changeTaskStatusCallback = action('Status changed inside Todolist');
+const changeTaskTitleCallback = action('Title changed inside Todolist');
+const removeTaskCallback = action('Remove task inside Todolist clicked');
 
 const baseArgs = {
     changeTaskStatus: changeTaskStatusCallback,

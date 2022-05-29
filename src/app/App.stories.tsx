@@ -1,6 +1,6 @@
 import React from 'react';
 import {App} from './App';
-import {ReduxStoreProviderDecorator} from './stories/decorators/ReduxStoreProviderDecorator';
+import {ReduxStoreProviderDecorator} from '../stories/decorators/ReduxStoreProviderDecorator';
 import {Meta, Story} from '@storybook/react/types-6-0';
 
 export default {

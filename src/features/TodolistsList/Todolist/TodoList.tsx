@@ -1,15 +1,15 @@
 import React, {useCallback} from 'react';
 
-import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
-import {TasksList} from '../TasksList/TasksList';
-import {AddItemForm} from '../AddItemForm/AddItemForm';
+import {TodoListHeader} from '../../../components/TodoListHeader/TodoListHeader';
+import {TasksList} from '../../../components/TasksList/TasksList';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {addTaskAC} from '../../store/tasks-reducer';
-import {useAppDispatch} from '../../store/hooks';
-import {ValueFilterType} from '../../api/todolist-api';
+import {addTaskAC} from '../tasks-reducer';
+import {useAppDispatch} from '../hooks';
+import {ValueFilterType} from '../../../api/todolist-api';
 
 export type TodoListProps = {
     title: string
@@ -28,9 +28,11 @@ export const TodoList = React.memo((props: TodoListProps) => {
     const allFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'all')
     }, [filterTasks, todoListId]);
+
     const activeFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'active')
     }, [filterTasks, todoListId]);
+
     const completedFilterTasks = useCallback(() => {
         filterTasks(todoListId, 'completed')
     }, [filterTasks, todoListId]);
@@ -40,14 +42,14 @@ export const TodoList = React.memo((props: TodoListProps) => {
     }, [dispatch, todoListId]);
 
     return (
-        <Paper sx={{padding: '1rem'}} elevation={3}>
+        <Paper sx={{padding: '1rem', backgroundColor: '#DDF7F8'}} elevation={6}>
             <TodoListHeader
                 title={title}
                 removeTodoList={removeTodoList}
                 todoListId={todoListId}
                 changeTodoListTitle={changeTodoListTitle}
             />
-            <AddItemForm addItem={addTask} title={'Add task'} errorText={'Task is required'}/>
+            <AddItemForm addItem={addTask} title={'Add task'} errorText={'Todolist is required'} className={styles.todolist_addItem}/>
             <div className={styles.buttons}>
                 <Button
                     size={'small'}
