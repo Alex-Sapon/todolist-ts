@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,15 +10,16 @@ type TodoListHeaderType = {
     changeTodoListTitle: (todolistId: string, title: string) => void
 };
 
-export const TodoListHeader = React.memo((props: TodoListHeaderType) => {
+export const TodoListHeader = memo((props: TodoListHeaderType) => {
     const {title, removeTodoList, todoListId, changeTodoListTitle} = props;
 
     const removeTodoListHandler = useCallback(() => {
-        removeTodoList(todoListId)
-    }, [removeTodoList, todoListId]);
+        removeTodoList(todoListId);
+    }, [removeTodoList, todoListId])
+
     const onChangeValueHandler = useCallback((title: string) => {
-        changeTodoListTitle(todoListId, title)
-    }, [changeTodoListTitle, todoListId]);
+        changeTodoListTitle(todoListId, title);
+    }, [changeTodoListTitle, todoListId])
 
     return (
         <div className={styles.header_container}>

@@ -8,7 +8,7 @@ import {
     TasksStateType
 } from './tasks-reducer';
 import {addTodoListAC, removeTodoListAC} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses} from '../../api/todolist-api';
+import {TaskPriority, TaskStatus} from '../../api/todolist-api';
 
 let todoListId1: string;
 let todoListId2: string;
@@ -25,8 +25,8 @@ beforeEach(() => {
                 id: '1',
                 title: 'HTML&CSS',
                 description: '',
-                status: TaskStatuses.Completed,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.Completed,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -37,8 +37,8 @@ beforeEach(() => {
                 id: '2',
                 title: 'JavaScript/ES6',
                 description: '',
-                status: TaskStatuses.Completed,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.Completed,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -49,8 +49,8 @@ beforeEach(() => {
                 id: '3',
                 title: 'React',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -61,8 +61,8 @@ beforeEach(() => {
                 id: '4',
                 title: 'TypeScript',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -74,8 +74,8 @@ beforeEach(() => {
                 id: '5',
                 title: 'Redux',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -87,8 +87,8 @@ beforeEach(() => {
                 id: '6',
                 title: 'Rest API',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -101,8 +101,8 @@ beforeEach(() => {
                 id: '1',
                 title: 'Book',
                 description: '',
-                status: TaskStatuses.Completed,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.Completed,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -113,8 +113,8 @@ beforeEach(() => {
                 id: '2',
                 title: 'Milk',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -125,8 +125,8 @@ beforeEach(() => {
                 id: '3',
                 title: 'Phone',
                 description: '',
-                status: TaskStatuses.New,
-                priority: TaskPriorities.Low,
+                status: TaskStatus.New,
+                priority: TaskPriority.Low,
                 startDate: '',
                 deadline: '',
                 todoListId: todoListId1,
@@ -154,10 +154,10 @@ test('task should be removed', () => {
 });
 
 test('status of task should be changed', () => {
-    const endState = tasksReducer(startState, changeStatusAC(todoListId2, '2', TaskStatuses.Completed))
+    const endState = tasksReducer(startState, changeStatusAC(todoListId2, '2', TaskStatus.Completed))
 
-    expect(startState[todoListId2][1].status).toBe(TaskStatuses.New);
-    expect(endState[todoListId2][1].status).toBe(TaskStatuses.Completed);
+    expect(startState[todoListId2][1].status).toBe(TaskStatus.New);
+    expect(endState[todoListId2][1].status).toBe(TaskStatus.Completed);
 })
 
 test('title of task should be changed', () => {

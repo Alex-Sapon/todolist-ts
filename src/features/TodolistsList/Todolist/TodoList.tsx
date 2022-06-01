@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 
 import {TodoListHeader} from '../../../components/TodoListHeader/TodoListHeader';
 import {TasksList} from '../../../components/TasksList/TasksList';
@@ -7,8 +7,8 @@ import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {addTaskAC} from '../tasks-reducer';
-import {useAppDispatch} from '../hooks';
+import {addTaskAC} from '../../../store/reducers/tasks-reducer';
+import {useAppDispatch} from '../../../store/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
 
 export type TodoListProps = {
@@ -20,26 +20,26 @@ export type TodoListProps = {
     changeTodoListTitle: (todoListId: string, title: string) => void
 };
 
-export const TodoList = React.memo((props: TodoListProps) => {
+export const TodoList = memo((props: TodoListProps) => {
     const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props;
 
     const dispatch = useAppDispatch();
 
     const allFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'all')
-    }, [filterTasks, todoListId]);
+        filterTasks(todoListId, 'all');
+    }, [filterTasks, todoListId])
 
     const activeFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'active')
-    }, [filterTasks, todoListId]);
+        filterTasks(todoListId, 'active');
+    }, [filterTasks, todoListId])
 
     const completedFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'completed')
-    }, [filterTasks, todoListId]);
+        filterTasks(todoListId, 'completed');
+    }, [filterTasks, todoListId])
 
     const addTask = useCallback((value: string) => {
-        dispatch(addTaskAC(todoListId, value))
-    }, [dispatch, todoListId]);
+        dispatch(addTaskAC(todoListId, value));
+    }, [dispatch, todoListId])
 
     return (
         <Paper sx={{padding: '1rem', backgroundColor: '#DDF7F8'}} elevation={6}>

@@ -1,5 +1,5 @@
 import {TextField, Typography} from '@mui/material';
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, memo, useState} from 'react';
 
 export type EditableSpanType = {
     title: string
@@ -9,7 +9,7 @@ export type EditableSpanType = {
     children?: React.ReactNode
 };
 
-export const EditableSpan = React.memo((props: EditableSpanType) => {
+export const EditableSpan = memo((props: EditableSpanType) => {
     const {title, changeValue, textStyles, inputStyles, children} = props;
 
     const [value, setValue] = useState<string>('');
@@ -22,7 +22,7 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
         setValue(title);
     };
 
-    const activeViewMode = () => {
+    const deactiveEditMode = () => {
         setEditMode(false);
         value.trim() !== '' && changeValue(value);
     };
@@ -37,7 +37,7 @@ export const EditableSpan = React.memo((props: EditableSpanType) => {
             size={'small'}
             value={value}
             onChange={onChangeHandler}
-            onBlur={activeViewMode}
+            onBlur={deactiveEditMode}
             autoFocus
             className={finalInputStyles}
         />

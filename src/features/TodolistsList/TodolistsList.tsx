@@ -1,30 +1,41 @@
 import {Grid, Typography} from '@mui/material';
 import {TodoList} from './Todolist/TodoList';
-import React, {FC, useCallback} from 'react';
-import {useAppDispatch, useAppSelector} from './hooks';
+import React, {useCallback, useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {ValueFilterType} from '../../api/todolist-api';
-import {addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC} from './todolists-reducer';
+import {
+    addTodoListAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC, fetchTodoLists,
+    removeTodoListAC
+} from '../../store/reducers/todolists-reducer';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
+import {selectTodoLists} from '../../store/selectors/selectTodoLists';
 
-export const TodolistsList: FC = () => {
+export const TodolistsList = () => {
     const dispatch = useAppDispatch();
-    const todoLists = useAppSelector(state => state.todoLists);
+
+    const todoLists = useAppSelector(selectTodoLists);
+
+    useEffect(() => {
+        dispatch(fetchTodoLists())
+    }, [])
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
-        dispatch(changeTodoListFilterAC(todoListId, filter))
-    }, [dispatch]);
+        dispatch(changeTodoListFilterAC(todoListId, filter));
+    }, [dispatch])
 
     const removeTodoList = useCallback((todoListId: string) => {
-        dispatch(removeTodoListAC(todoListId))
-    }, [dispatch]);
+        dispatch(removeTodoListAC(todoListId));
+    }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title))
-    }, [dispatch]);
+        dispatch(addTodoListAC(title));
+    }, [dispatch])
 
     const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
-        dispatch(changeTodoListTitleAC(todoListId, title))
-    }, [dispatch]);
+        dispatch(changeTodoListTitleAC(todoListId, title));
+    }, [dispatch])
 
     return (
         <>
@@ -44,8 +55,8 @@ export const TodolistsList: FC = () => {
                                 removeTodoList={removeTodoList}
                                 changeTodoListTitle={changeTodoListTitle}
                             />
-                        </Grid>)
-                }
+                        </Grid>
+                    )}
             </Grid>
         </>
     )
