@@ -4,8 +4,9 @@ import React, {useCallback, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {ValueFilterType} from '../../api/todolist-api';
 import {
+    addTodoList,
     addTodoListAC,
-    changeTodoListFilterAC,
+    changeTodoListFilterAC, changeTodoListTitle,
     changeTodoListTitleAC,
     fetchTodoLists,
     removeTodoList
@@ -30,17 +31,17 @@ export const TodolistsList = () => {
         dispatch(removeTodoList(todoListId));
     }, [dispatch])
 
-    const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title));
+    const addTodoListHandler = useCallback((title: string) => {
+        dispatch(addTodoList(title));
     }, [dispatch])
 
-    const changeTodoListTitle = useCallback((todoListId: string, title: string) => {
-        dispatch(changeTodoListTitleAC(todoListId, title));
+    const changeTodoListTitleHandler = useCallback((todoListId: string, title: string) => {
+        dispatch(changeTodoListTitle(todoListId, title));
     }, [dispatch])
 
     return (
         <>
-            <AddItemForm title={'Add todo list'} addItem={addTodoList}/>
+            <AddItemForm title={'Add todo list'} addItem={addTodoListHandler}/>
             <Grid container spacing={3} columns={12}>
                 {todoLists.length === 0
                     ? <Grid item xs={12} md={12} sm={12} lg={12}>
@@ -54,7 +55,7 @@ export const TodolistsList = () => {
                                 filterTasks={changeFilter}
                                 filter={todo.filter}
                                 removeTodoList={deleteTodoList}
-                                changeTodoListTitle={changeTodoListTitle}
+                                changeTodoListTitle={changeTodoListTitleHandler}
                             />
                         </Grid>
                     )}

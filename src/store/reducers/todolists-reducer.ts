@@ -7,13 +7,7 @@ export const todoListsReducer = (state: TodoListsDomainType[] = [], action: Todo
         case 'REMOVE-TODOLIST':
             return state.filter(todo => todo.id !== action.payload.todoListId);
         case 'ADD-TODOLIST':
-            return [{
-                id: action.payload.todoListId,
-                title: action.payload.title,
-                filter: 'all',
-                addedDate: '',
-                order: 0
-            }, ...state];
+            return [{...action.payload.todoList, filter: 'all'}, ...state];
         case 'CHANGE-TODOLIST-TITLE':
             return state.map(todo => todo.id === action.payload.todoListId
                 ? {...todo, title: action.payload.title} : todo);
@@ -35,11 +29,10 @@ export const removeTodoListAC = (todoListId: string) => ({
     },
 } as const);
 
-export const addTodoListAC = (title: string) => ({
+export const addTodoListAC = (todoList: TodolistType) => ({
     type: 'ADD-TODOLIST',
     payload: {
-        todoListId: v1(),
-        title,
+        todoList,
     },
 } as const);
 
@@ -67,6 +60,14 @@ export const setTodoLists = (todoLists: TodolistType[]) => ({
 } as const);
 
 // ------- thunks
+export const addTodoList = (title: string) => (dispatch: Dispatch) => {
+    todolistAPI.createTodolist(title).then(res => {
+        if (res.data.resultCode === ResponseCode.Success) {
+            dispatch(addTodoListAC(res.data.data.item));
+        }
+    })
+}
+
 export const fetchTodoLists = () => (dispatch: Dispatch) => {
     todolistAPI.getTodolists().then(res => {
         dispatch(setTodoLists(res.data));
@@ -80,6 +81,14 @@ export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
         }
     })
 };
+
+export const changeTodoListTitle = (todoListId: string, title: string) => (dispatch: Dispatch) => {
+    todolistAPI.updateTodolistTitle(todoListId, title).then(res => {
+        if (res.data.resultCode === ResponseCode.Success) {
+            dispatch(changeTodoListTitleAC(todoListId, title));
+        }
+    })
+}
 
 // ------- types
 export type TodoListsDomainType = TodolistType & {
