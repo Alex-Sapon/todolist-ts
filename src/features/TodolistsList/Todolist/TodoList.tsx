@@ -7,7 +7,7 @@ import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {addTaskAC} from '../../../store/reducers/tasks-reducer';
+import {addTask, addTaskAC} from '../../../store/reducers/tasks-reducer';
 import {useAppDispatch} from '../../../store/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
 
@@ -37,8 +37,8 @@ export const TodoList = memo((props: TodoListProps) => {
         filterTasks(todoListId, 'completed');
     }, [filterTasks, todoListId])
 
-    const addTask = useCallback((value: string) => {
-        dispatch(addTaskAC(todoListId, value));
+    const addTaskHandler = useCallback((title: string) => {
+        dispatch(addTask(todoListId, title));
     }, [dispatch, todoListId])
 
     return (
@@ -49,7 +49,7 @@ export const TodoList = memo((props: TodoListProps) => {
                 todoListId={todoListId}
                 changeTodoListTitle={changeTodoListTitle}
             />
-            <AddItemForm addItem={addTask} title={'Add task'} errorText={'Todolist is required'} className={styles.todolist_addItem}/>
+            <AddItemForm addItem={addTaskHandler} title={'Add task'} errorText={'Todolist is required'} className={styles.todolist_addItem}/>
             <div className={styles.buttons}>
                 <Button
                     size={'small'}

@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {todolistAPI, TodolistType, ValueFilterType} from '../../api/todolist-api';
+import {ResponseCode, todolistAPI, TodolistType, ValueFilterType} from '../../api/todolist-api';
 import {Dispatch} from 'redux';
 
 export const todoListsReducer = (state: TodoListsDomainType[] = [], action: TodoListActionsType): TodoListsDomainType[] => {
@@ -27,12 +27,12 @@ export const todoListsReducer = (state: TodoListsDomainType[] = [], action: Todo
     }
 }
 
-// actions
+// ------- actions
 export const removeTodoListAC = (todoListId: string) => ({
     type: 'REMOVE-TODOLIST',
     payload: {
         todoListId,
-    }
+    },
 } as const);
 
 export const addTodoListAC = (title: string) => ({
@@ -40,7 +40,7 @@ export const addTodoListAC = (title: string) => ({
     payload: {
         todoListId: v1(),
         title,
-    }
+    },
 } as const);
 
 export const changeTodoListTitleAC = (todoListId: string, title: string) => ({
@@ -48,32 +48,40 @@ export const changeTodoListTitleAC = (todoListId: string, title: string) => ({
     payload: {
         todoListId,
         title,
-    }
+    },
 } as const);
 
 export const changeTodoListFilterAC = (todoListId: string, filter: ValueFilterType) => ({
     type: 'CHANGE-TODOLIST-FILTER',
     payload: {
         todoListId,
-        filter
-    }
+        filter,
+    },
 } as const);
 
 export const setTodoLists = (todoLists: TodolistType[]) => ({
     type: 'SET-TODOLISTS',
     payload: {
         todoLists,
-    }
+    },
 } as const);
 
-// thunks
+// ------- thunks
 export const fetchTodoLists = () => (dispatch: Dispatch) => {
     todolistAPI.getTodolists().then(res => {
         dispatch(setTodoLists(res.data));
     })
-}
+};
 
-// types
+export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
+    todolistAPI.deleteTodolist(todoListId).then(res => {
+        if (res.data.resultCode === ResponseCode.Success) {
+            dispatch(removeTodoListAC(todoListId));
+        }
+    })
+};
+
+// ------- types
 export type TodoListsDomainType = TodolistType & {
     filter: ValueFilterType
 }

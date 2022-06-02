@@ -6,8 +6,9 @@ import {ValueFilterType} from '../../api/todolist-api';
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, fetchTodoLists,
-    removeTodoListAC
+    changeTodoListTitleAC,
+    fetchTodoLists,
+    removeTodoList
 } from '../../store/reducers/todolists-reducer';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {selectTodoLists} from '../../store/selectors/selectTodoLists';
@@ -19,14 +20,14 @@ export const TodolistsList = () => {
 
     useEffect(() => {
         dispatch(fetchTodoLists())
-    }, [])
+    }, []);
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC(todoListId, filter));
     }, [dispatch])
 
-    const removeTodoList = useCallback((todoListId: string) => {
-        dispatch(removeTodoListAC(todoListId));
+    const deleteTodoList = useCallback((todoListId: string) => {
+        dispatch(removeTodoList(todoListId));
     }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
@@ -52,7 +53,7 @@ export const TodolistsList = () => {
                                 title={todo.title}
                                 filterTasks={changeFilter}
                                 filter={todo.filter}
-                                removeTodoList={removeTodoList}
+                                removeTodoList={deleteTodoList}
                                 changeTodoListTitle={changeTodoListTitle}
                             />
                         </Grid>
