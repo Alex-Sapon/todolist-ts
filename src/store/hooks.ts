@@ -1,5 +1,5 @@
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootStateType} from '../app/store';
+import {AppDispatch, RootStateType} from './store';
 import {ThunkDispatch} from 'redux-thunk';
 import {TodoListActionsType} from './reducers/todolists-reducer';
 import {TasksActionType} from './reducers/tasks-reducer';

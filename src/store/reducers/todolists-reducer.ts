@@ -1,5 +1,4 @@
-import {v1} from 'uuid';
-import {ResponseCode, todolistAPI, TodolistType, ValueFilterType} from '../../api/todolist-api';
+import {ResponseCode, todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
 import {Dispatch} from 'redux';
 
 export const todoListsReducer = (state: TodoListsDomainType[] = [], action: TodoListActionsType): TodoListsDomainType[] => {
@@ -21,7 +20,7 @@ export const todoListsReducer = (state: TodoListsDomainType[] = [], action: Todo
     }
 }
 
-// ------- actions
+// ------- actions -------
 export const removeTodoListAC = (todoListId: string) => ({
     type: 'REMOVE-TODOLIST',
     payload: {
@@ -29,7 +28,7 @@ export const removeTodoListAC = (todoListId: string) => ({
     },
 } as const);
 
-export const addTodoListAC = (todoList: TodolistType) => ({
+export const addTodoListAC = (todoList: TodoListType) => ({
     type: 'ADD-TODOLIST',
     payload: {
         todoList,
@@ -52,14 +51,14 @@ export const changeTodoListFilterAC = (todoListId: string, filter: ValueFilterTy
     },
 } as const);
 
-export const setTodoLists = (todoLists: TodolistType[]) => ({
+export const setTodoLists = (todoLists: TodoListType[]) => ({
     type: 'SET-TODOLISTS',
     payload: {
         todoLists,
     },
 } as const);
 
-// ------- thunks
+// ------- thunks -------
 export const addTodoList = (title: string) => (dispatch: Dispatch) => {
     todolistAPI.createTodolist(title).then(res => {
         if (res.data.resultCode === ResponseCode.Success) {
@@ -90,8 +89,8 @@ export const changeTodoListTitle = (todoListId: string, title: string) => (dispa
     })
 }
 
-// ------- types
-export type TodoListsDomainType = TodolistType & {
+// ------- types -------
+export type TodoListsDomainType = TodoListType & {
     filter: ValueFilterType
 }
 export type TodoListActionsType =

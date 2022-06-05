@@ -5,9 +5,8 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {ValueFilterType} from '../../api/todolist-api';
 import {
     addTodoList,
-    addTodoListAC,
-    changeTodoListFilterAC, changeTodoListTitle,
-    changeTodoListTitleAC,
+    changeTodoListFilterAC,
+    changeTodoListTitle,
     fetchTodoLists,
     removeTodoList
 } from '../../store/reducers/todolists-reducer';

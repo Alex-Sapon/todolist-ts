@@ -11,10 +11,10 @@ const instance = axios.create({
 
 export const todolistAPI = {
     getTodolists() {
-        return instance.get<TodolistType[]>('todo-lists');
+        return instance.get<TodoListType[]>('todo-lists');
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
+        return instance.post<ResponseType<{ item: TodoListType }>>('todo-lists', {title: title});
     },
     updateTodolistTitle(todolistId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title: title});
@@ -42,7 +42,7 @@ export enum ResponseCode {
     Error = 1,
 }
 
-export type TodolistType = {
+export type TodoListType = {
     id: string
     title: string
     order: number
