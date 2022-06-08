@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {TaskType, todolistAPI, TodolistType} from '../api/todolist-api';
+import {TaskType, todolistAPI, TodoListType} from '../api/todolist-api';
 import {Simulate} from 'react-dom/test-utils';
 
 export default {
@@ -7,7 +7,7 @@ export default {
 }
 
 export const GetTodolists = () => {
-    const [state, setState] = useState<TodolistType[]>([]);
+    const [state, setState] = useState<TodoListType[]>([]);
 
     useEffect(() => {
         todolistAPI.getTodolists().then(res => setState(res.data));

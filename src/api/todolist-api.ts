@@ -36,12 +36,6 @@ export const todolistAPI = {
     },
 };
 
-
-export enum ResponseCode {
-    Success = 0,
-    Error = 1,
-}
-
 export type TodoListType = {
     id: string
     title: string
@@ -49,7 +43,7 @@ export type TodoListType = {
     addedDate: string
 }
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
     fieldsErrors: string[]

@@ -17,17 +17,17 @@ export const Task = memo(({task, todoListId}: TaskPropsType) => {
     const dispatch = useAppDispatch();
 
     const removeTaskHandler = useCallback(() => {
-        dispatch(removeTask(todoListId, task.id))
-    }, [dispatch, todoListId, task.id]);
+        dispatch(removeTask(todoListId, task.id));
+    }, [dispatch, todoListId, task.id])
 
     const changeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(updateTaskStatus(todoListId, task.id, e.currentTarget.checked
             ? TaskStatus.Completed : TaskStatus.New));
-    }, [dispatch, todoListId, task.id]);
+    }, [dispatch, todoListId, task.id])
 
     const changeTitleHandler = useCallback((title: string) => {
         dispatch(updateTaskTitle(todoListId, task.id, title));
-    }, [dispatch, todoListId, task.id]);
+    }, [dispatch, todoListId, task.id])
 
     return (
         <ListItem>

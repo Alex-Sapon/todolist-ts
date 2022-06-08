@@ -1,20 +1,22 @@
-import React, {memo, useCallback} from 'react';
+import {memo, useCallback} from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { RequestStatusType } from '../../store/reducers/app-reducer';
 
 type TodoListHeaderType = {
     title: string
     todoListId: string
+    entityStatus: RequestStatusType
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todolistId: string, title: string) => void
 };
 
 export const TodoListHeader = memo((props: TodoListHeaderType) => {
-    const {title, removeTodoList, todoListId, changeTodoListTitle} = props;
+    const {title, removeTodoList, todoListId, changeTodoListTitle, entityStatus} = props;
 
     const removeTodoListHandler = useCallback(() => {
-        removeTodoList(todoListId);
+        entityStatus !== 'loading' && removeTodoList(todoListId);
     }, [removeTodoList, todoListId])
 
     const onChangeValueHandler = useCallback((title: string) => {

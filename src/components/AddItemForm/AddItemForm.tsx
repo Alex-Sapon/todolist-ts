@@ -5,12 +5,13 @@ import {AddBox} from '@mui/icons-material';
 
 export type AddItemFormType = {
     title: string
+    disabled?: boolean
     className?: string
     addItem: (value: string) => void
     errorText?: string
 };
 
-export const AddItemForm = React.memo(({title, className, addItem, errorText}: AddItemFormType) => {
+export const AddItemForm = React.memo(({title, className, addItem, errorText, disabled}: AddItemFormType) => {
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
 
@@ -29,7 +30,11 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
     };
 
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => setError(false);
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => e.key === 'Enter' && addTask();
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+        // disabling click of button after request for delete todolist
+        !disabled && e.key === 'Enter' && addTask()
+    };
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''} ${className ? className : ''}`;
 
@@ -41,6 +46,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText}: A
                 value={value}
                 error={error}
                 label={title}
+                disabled={disabled}
                 className={inputClasses}
                 helperText={error && errorText}
                 onKeyPress={onKeyPressHandler}

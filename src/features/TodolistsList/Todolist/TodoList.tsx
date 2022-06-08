@@ -7,13 +7,15 @@ import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {addTask, addTaskAC} from '../../../store/reducers/tasks-reducer';
+import {addTask} from '../../../store/reducers/tasks-reducer';
 import {useAppDispatch} from '../../../store/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
+import {RequestStatusType} from '../../../store/reducers/app-reducer';
 
 export type TodoListProps = {
     title: string
     todoListId: string
+    entityStatus: RequestStatusType
     filterTasks: (todoListId: string, title: ValueFilterType) => void
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
@@ -21,7 +23,7 @@ export type TodoListProps = {
 };
 
 export const TodoList = memo((props: TodoListProps) => {
-    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle} = props;
+    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle, entityStatus} = props;
 
     const dispatch = useAppDispatch();
 
@@ -48,22 +50,28 @@ export const TodoList = memo((props: TodoListProps) => {
                 removeTodoList={removeTodoList}
                 todoListId={todoListId}
                 changeTodoListTitle={changeTodoListTitle}
+                entityStatus={entityStatus}
             />
-            <AddItemForm addItem={addTaskHandler} title={'Add task'} errorText={'Todolist is required'} className={styles.todolist_addItem}/>
+            <AddItemForm
+                addItem={addTaskHandler}
+                title="Add task" errorText="Todolist is required"
+                className={styles.todolist_addItem}
+                disabled={entityStatus === 'loading'}
+            />
             <div className={styles.buttons}>
                 <Button
-                    size={'small'}
+                    size="small"
                     variant={filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
                 >All</Button>
                 <Button
-                    size={'small'}
+                    size="small"
                     variant={filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
-                    size={'small'}
+                    size="small"
                     variant={filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
                 >Completed</Button>

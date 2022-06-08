@@ -51,6 +51,7 @@ export const TodolistsList = () => {
                             <TodoList
                                 todoListId={todo.id}
                                 title={todo.title}
+                                entityStatus={todo.entityStatus}
                                 filterTasks={changeFilter}
                                 filter={todo.filter}
                                 removeTodoList={deleteTodoList}

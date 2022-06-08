@@ -5,16 +5,18 @@ import {v1} from 'uuid';
 import {tasksReducer} from '../../store/reducers/tasks-reducer';
 import {todoListsReducer} from '../../store/reducers/todolists-reducer';
 import {TaskPriority, TaskStatus} from '../../api/todolist-api';
+import { appReducer } from '../../store/reducers/app-reducer';
 
 const storyBookReducer = combineReducers({
     tasks: tasksReducer,
     todoLists: todoListsReducer,
+    app: appReducer,
 });
 
 const initialGlobalState: RootSBState = {
     todoLists: [
-        {id: 'todoListId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todoListId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0},
+        {id: 'todoListId1', title: 'What to learn', filter: 'all', entityStatus: 'idle',addedDate: '', order: 0},
+        {id: 'todoListId2', title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
     ],
     tasks: {
         ['todoListId1']: [
@@ -131,7 +133,11 @@ const initialGlobalState: RootSBState = {
                 addedDate: '',
             },
         ]
-    }
+    },
+    app: {
+        status: 'idle',
+        errorMessage: null,
+    },
 };
 
 type RootSBState = ReturnType<typeof storyBookReducer>;

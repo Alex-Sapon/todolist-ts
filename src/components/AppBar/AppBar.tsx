@@ -1,8 +1,14 @@
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from '@mui/material';
+import {AppBar, Box, Button, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import React from 'react';
+import {useSelector} from 'react-redux';
+import {RootStateType} from '../../store/store';
+import styles from './AppBar.module.css';
+
+const selectorStatus = (state: RootStateType) => state.app.status; 
 
 export const AppBarComponent = () => {
+    const status = useSelector(selectorStatus);
+
     return (
         <Box sx={{flexGrow: 1, mb: '2rem'}}>
             <AppBar position="static" style={{backgroundColor: '#045256'}}>
@@ -13,6 +19,7 @@ export const AppBarComponent = () => {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>Menu</Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress sx={{position: 'absolute', top: '60px', width: '100%'}}/>}
             </AppBar>
         </Box>
     )

@@ -1,30 +1,24 @@
 import {addTodoListAC, removeTodoListAC, setTodoLists} from './todolists-reducer';
-import {ResponseCode, TaskStatus, TaskType, todolistAPI} from '../../api/todolist-api';
+import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
 import {Dispatch} from 'redux';
 import {RootStateType} from '../store';
+import {ResponseCode} from '../../enums/response-code';
+import { setErrorMessage, setStatus } from './app-reducer';
 
 export const tasksReducer = (state: TasksStateType = {}, action: TasksActionType): TasksStateType => {
     switch (action.type) {
         case 'ADD-TASK':
-            return {
-                ...state,
-                [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]
-            };
+            return {...state,
+                [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]};
         case 'REMOVE-TASK':
-            return {
-                ...state, [action.payload.todoListId]: state[action.payload.todoListId]
-                    .filter(task => task.id !== action.payload.taskId)
-            };
+            return {...state, [action.payload.todoListId]: state[action.payload.todoListId]
+                    .filter(task => task.id !== action.payload.taskId)};
         case 'CHANGE-TASK-STATUS':
-            return {
-                ...state, [action.payload.todoListId]: state[action.payload.todoListId]
-                    .map(task => task.id === action.payload.taskId ? {...task, status: action.payload.status} : task)
-            };
+            return {...state, [action.payload.todoListId]: state[action.payload.todoListId]
+                    .map(task => task.id === action.payload.taskId ? {...task, status: action.payload.status} : task)};
         case 'CHANGE-VALUE-TASK':
-            return {
-                ...state, [action.payload.todoListId]: state[action.payload.todoListId]
-                    .map(task => task.id === action.payload.taskId ? {...task, title: action.payload.title} : task)
-            };
+            return {...state, [action.payload.todoListId]: state[action.payload.todoListId]
+                    .map(task => task.id === action.payload.taskId ? {...task, title: action.payload.title} : task)};
         case 'ADD-TODOLIST':
             return {[action.payload.todoList.id]: [], ...state};
         case 'REMOVE-TODOLIST':
@@ -84,45 +78,79 @@ export const setTasks = (todoListId: string, tasks: TaskType[]) => ({
     },
 } as const);
 
+
 // ------- thunks -------
 export const fetchTasks = (todoListId: string) => (dispatch: Dispatch) => {
+    dispatch(setStatus('loading'));
+
     todolistAPI.getTasks(todoListId).then(res => {
         dispatch(setTasks(todoListId, res.data.items));
+        dispatch(setStatus('succeeded'));
     })
 };
 
 export const removeTask = (todoListId: string, taskId: string) => (dispatch: Dispatch) => {
+    dispatch(setStatus('loading'));
+
     todolistAPI.deleteTask(todoListId, taskId).then(res => {
         if (res.data.resultCode === ResponseCode.Success) {
             dispatch(removeTaskAC(todoListId, taskId));
+            dispatch(setStatus('succeeded'));
         }
     })
 };
 
 export const addTask = (todoListId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setStatus('loading'));
+
     todolistAPI.createTask(todoListId, title).then(res => {
         if (res.data.resultCode === ResponseCode.Success) {
             dispatch(addTaskAC(res.data.data.item));
+            dispatch(setStatus('succeeded'));
+        }
+
+        if (res.data.resultCode === ResponseCode.Error) {
+            if (res.data.messages.length) {
+                dispatch(setErrorMessage(res.data.messages[0]));
+            } else {
+                dispatch(setErrorMessage('Some error occurred'));
+            }
+            
+            dispatch(setStatus('failed'));
         }
     })
 };
 
 export const updateTaskStatus = (todolistId: string, taskId: string, status: TaskStatus) =>
     (dispatch: Dispatch, getState: () => RootStateType) => {
-
+        dispatch(setStatus('loading'));
+    
         const task = getState().tasks[todolistId].find(task => task.id === taskId);
 
         if (task) {
-            todolistAPI.updateTask(todolistId, taskId, {
+            const model: UpdateTaskType = {
                 title: task.title,
                 description: task.description,
                 status: status,
                 priority: task.priority,
                 startDate: task.startDate,
                 deadline: task.deadline,
-            }).then(res => {
+            };
+
+            todolistAPI.updateTask(todolistId, taskId, model).then(res => {
                 if (res.data.resultCode === ResponseCode.Success) {
                     dispatch(changeStatusAC(todolistId, taskId, status));
+                    dispatch(setStatus('succeeded'));
+                }
+
+                if (res.data.resultCode === ResponseCode.Error) {
+                    if (res.data.messages.length) {
+                        dispatch(setErrorMessage(res.data.messages[0]));
+                    } else {
+                        dispatch(setErrorMessage('Some error occurred'));
+                    }
+
+                    dispatch(setStatus('failed'));
                 }
             })
         }
@@ -130,24 +158,44 @@ export const updateTaskStatus = (todolistId: string, taskId: string, status: Tas
 
 export const updateTaskTitle = (todolistId: string, taskId: string, title: string) =>
     (dispatch: Dispatch, getState: () => RootStateType) => {
+        dispatch(setStatus('loading'));
 
         const task = getState().tasks[todolistId].find(task => task.id === taskId);
 
         if (task) {
-            todolistAPI.updateTask(todolistId, taskId, {
+            const model: UpdateTaskType = {
                 title: title,
                 description: task.description,
                 status: task.status,
                 priority: task.priority,
                 startDate: task.startDate,
                 deadline: task.deadline,
-            }).then(res => {
+            };
+
+            todolistAPI.updateTask(todolistId, taskId, model)
+            .then(res => {
                 if (res.data.resultCode === ResponseCode.Success) {
                     dispatch(changeValueTaskAC(todolistId, taskId, title));
+                    dispatch(setStatus('succeeded'));
                 }
+
+                if (res.data.resultCode === ResponseCode.Error) {
+                    if (res.data.messages.length) {
+                        dispatch(setErrorMessage(res.data.messages[0]));
+                    } else {
+                        dispatch(setErrorMessage('Some error occurred'));
+                    }
+
+                    dispatch(setStatus('failed'));
+                }
+            })
+            .catch((error) => {
+                dispatch(setErrorMessage(error.message));
+                dispatch(setStatus('failed'));
             })
         }
     };
+
 
 // ------- types -------
 export type TasksStateType = {

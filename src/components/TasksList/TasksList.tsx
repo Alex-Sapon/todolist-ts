@@ -17,7 +17,7 @@ export const TasksList = memo(({todoListId, filter}: TasksList) => {
 
     useEffect(() => {
         dispatch(fetchTasks(todoListId));
-    }, [dispatch])
+    }, [])
 
     switch (filter) {
         case 'active':

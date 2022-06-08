@@ -1,4 +1,5 @@
 import {
+    addTask,
     addTaskAC,
     changeStatusAC,
     changeValueTaskAC,
@@ -139,7 +140,7 @@ test('correct task should be added', () => {
         id: '1',
         title: 'Git',
         description: '',
-        status: TaskStatus.Completed,
+        status: TaskStatus.New,
         priority: TaskPriority.Low,
         startDate: '',
         deadline: '',
@@ -151,7 +152,6 @@ test('correct task should be added', () => {
     expect(startState['todoListId1'].length).toBe(6);
     expect(endState['todoListId1'][0].title).toBe('Git');
     expect(endState['todoListId1'].length).toBe(7);
-
 });
 
 test('task should be removed', () => {
