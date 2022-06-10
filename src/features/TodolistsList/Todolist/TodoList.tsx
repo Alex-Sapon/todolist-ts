@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import {memo, useCallback} from 'react';
 
 import {TodoListHeader} from '../../../components/TodoListHeader/TodoListHeader';
 import {TasksList} from '../../../components/TasksList/TasksList';
@@ -44,7 +44,7 @@ export const TodoList = memo((props: TodoListProps) => {
     }, [dispatch, todoListId])
 
     return (
-        <Paper sx={{padding: '1rem', backgroundColor: '#DDF7F8'}} elevation={6}>
+        <Paper sx={{padding: '1rem'}} elevation={6}>
             <TodoListHeader
                 title={title}
                 removeTodoList={removeTodoList}
@@ -57,6 +57,7 @@ export const TodoList = memo((props: TodoListProps) => {
                 title="Add task" errorText="Todolist is required"
                 className={styles.todolist_addItem}
                 disabled={entityStatus === 'loading'}
+                entityStatus={entityStatus}
             />
             <div className={styles.buttons}>
                 <Button

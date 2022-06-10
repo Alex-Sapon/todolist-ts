@@ -31,6 +31,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -43,6 +44,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -55,7 +57,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
-
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -68,6 +70,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -80,6 +83,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -92,6 +96,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
         ],
         ['todoListId2']: [
@@ -106,6 +111,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId2',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: v1(),
@@ -118,6 +124,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId2',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
 
             },
             {
@@ -131,6 +138,7 @@ const initialGlobalState: RootSBState = {
                 todoListId: 'todoListId2',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
         ]
     },

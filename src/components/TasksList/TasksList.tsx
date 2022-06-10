@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react';
+import {memo, useEffect} from 'react';
 import {List, Typography} from '@mui/material';
 import {Task} from './Task/Task';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';

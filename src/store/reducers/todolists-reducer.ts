@@ -1,7 +1,9 @@
 import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
 import {Dispatch} from 'redux';
-import {ResponseCode} from '../../enums/response-code';
-import {RequestStatusType, setErrorMessage, setStatus} from './app-reducer';
+import {ResultCode} from '../../enums/result-code';
+import {RequestStatusType, setAppErrorMessage, setAppStatus} from './app-reducer';
+import { handleAppError } from '../../utils/error-utils';
+import { AxiosError } from 'axios';
 
 export const todoListsReducer = (state: TodoListsDomainType[] = [], action: TodoListActionsType): TodoListsDomainType[] => {
     switch (action.type) {
@@ -73,56 +75,82 @@ export const changeTodoListEntityStatus = (todoListId: string, status: RequestSt
 
 // ------- thunks -------
 export const fetchTodoLists = () => (dispatch: Dispatch) => {
-    dispatch(setStatus('loading'));
+    dispatch(setAppStatus('loading'));
     
-    todolistAPI.getTodolists().then(res => {
-        dispatch(setTodoLists(res.data));
-        dispatch(setStatus('succeeded'));
-    })
+    todolistAPI.getTodolists()
+        .then(res => {
+            dispatch(setTodoLists(res.data));
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorMessage(err.message));
+        })
+        .finally(() => {
+            dispatch(setAppStatus('idle'));
+        })
 };
 
 export const addTodoList = (title: string) => (dispatch: Dispatch) => {
-    dispatch(setStatus('loading'));
+    dispatch(setAppStatus('loading'));
 
-    todolistAPI.createTodolist(title).then(res => {
-        if (res.data.resultCode === ResponseCode.Success) {
-            dispatch(addTodoListAC(res.data.data.item));
-            dispatch(setStatus('succeeded'));
-        }
-
-        if (res.data.resultCode === ResponseCode.Error) {
-            if (res.data.messages.length) {
-                dispatch(setErrorMessage(res.data.messages[0]));
-            } else {
-                dispatch(setErrorMessage('Some error occurred'));
+    todolistAPI.createTodolist(title)
+        .then(res => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(addTodoListAC(res.data.data.item));
             }
 
-            dispatch(setStatus('failed'));
-        }
-    })
+            if (res.data.resultCode === ResultCode.Error) {
+                handleAppError(res.data, dispatch);
+            }
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorMessage(err.message));
+        })
+        .finally(() => {
+            dispatch(setAppStatus('idle'));
+        })
 };
 
 export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
-    dispatch(setStatus('loading'));
+    dispatch(setAppStatus('loading'));
     dispatch(changeTodoListEntityStatus(todoListId, 'loading'));
 
-    todolistAPI.deleteTodolist(todoListId).then(res => {
-        if (res.data.resultCode === ResponseCode.Success) {
-            dispatch(removeTodoListAC(todoListId));
-            dispatch(setStatus('succeeded'));
-        }
-    })
+    todolistAPI.deleteTodolist(todoListId)
+        .then(res => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(removeTodoListAC(todoListId));
+            }
+
+            if (res.data.resultCode === ResultCode.Error) {
+                handleAppError(res.data, dispatch);
+            }
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorMessage(err.message));
+        })
+        .finally(() => {
+            dispatch(setAppStatus('idle'));
+        })
 };
 
 export const changeTodoListTitle = (todoListId: string, title: string) => (dispatch: Dispatch) => {
-    dispatch(setStatus('loading'));
+    dispatch(setAppStatus('loading'));
 
-    todolistAPI.updateTodolistTitle(todoListId, title).then(res => {
-        if (res.data.resultCode === ResponseCode.Success) {
-            dispatch(changeTodoListTitleAC(todoListId, title));
-            dispatch(setStatus('succeeded'));
-        }
-    })
+    todolistAPI.updateTodolistTitle(todoListId, title)
+        .then(res => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(changeTodoListTitleAC(todoListId, title));
+            }
+
+            if (res.data.resultCode === ResultCode.Error) {
+                handleAppError(res.data, dispatch);
+            }
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorMessage(err.message));
+        })
+        .finally(() => {
+            dispatch(setAppStatus('idle'));
+        })
 };
 
 // ------- types -------

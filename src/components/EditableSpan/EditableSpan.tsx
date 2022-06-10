@@ -1,5 +1,7 @@
 import {TextField, Typography} from '@mui/material';
 import React, {ChangeEvent, memo, useState} from 'react';
+import {useAppSelector} from '../../store/hooks';
+import {selectStatus} from '../../store/selectors/select-status';
 
 export type EditableSpanType = {
     title: string
@@ -12,6 +14,8 @@ export type EditableSpanType = {
 export const EditableSpan = memo((props: EditableSpanType) => {
     const {title, changeValue, textStyles, inputStyles, children} = props;
 
+    const status = useAppSelector(selectStatus);
+
     const [value, setValue] = useState<string>('');
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -22,7 +26,7 @@ export const EditableSpan = memo((props: EditableSpanType) => {
         setValue(title);
     };
 
-    const deactiveEditMode = () => {
+    const deactivateEditMode = () => {
         setEditMode(false);
         value.trim() !== '' && changeValue(value);
     };
@@ -30,14 +34,14 @@ export const EditableSpan = memo((props: EditableSpanType) => {
     const finalInputStyles = `${inputStyles ? inputStyles : ''}`;
     const finalTextStyles = `${textStyles ? textStyles : ''}`;
 
-    return editMode
+    return status !== 'loading' && editMode
         ? <TextField
             fullWidth
-            variant={'standard'}
-            size={'small'}
+            variant='standard'
+            size='small'
             value={value}
             onChange={onChangeHandler}
-            onBlur={deactiveEditMode}
+            onBlur={deactivateEditMode}
             autoFocus
             className={finalInputStyles}
         />

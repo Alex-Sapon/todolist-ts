@@ -15,14 +15,14 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 }
 
 // actions
-export const setStatus = (status: RequestStatusType) => ({
+export const setAppStatus = (status: RequestStatusType) => ({
     type: 'APP/SET-STATUS',
     payload: {
         status,
     }
 } as const);
 
-export const setErrorMessage = (errorMessage: string | null) => ({
+export const setAppErrorMessage = (errorMessage: string | null) => ({
     type: 'APP/SET-ERROR-MESSAGE',
     payload: {
         errorMessage,
@@ -31,8 +31,8 @@ export const setErrorMessage = (errorMessage: string | null) => ({
 
 // types
 export type AppActionsType = 
-    | ReturnType<typeof setStatus>
-    | ReturnType<typeof setErrorMessage>;
+    | ReturnType<typeof setAppStatus>
+    | ReturnType<typeof setAppErrorMessage>;
 
 type InitialStateType = {
     status: RequestStatusType

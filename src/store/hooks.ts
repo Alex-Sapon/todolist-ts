@@ -10,3 +10,4 @@ type AppActionsType = TodoListActionsType | TasksActionType;
 // typing hooks
 export const useAppDispatch = () => useDispatch<ThunkDispatch<RootStateType, unknown, AppActionsType> & AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
+

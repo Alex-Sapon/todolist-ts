@@ -1,17 +1,19 @@
-import React, {useState, KeyboardEvent, FocusEvent, ChangeEvent} from 'react';
+import React, {ChangeEvent, FocusEvent, KeyboardEvent, useState} from 'react';
 import styles from './AddItemForm.module.css';
 import {Container, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
+import {LoadingButton} from '@mui/lab';
 
 export type AddItemFormType = {
     title: string
+    entityStatus?: string
     disabled?: boolean
     className?: string
     addItem: (value: string) => void
     errorText?: string
 };
 
-export const AddItemForm = React.memo(({title, className, addItem, errorText, disabled}: AddItemFormType) => {
+export const AddItemForm = React.memo(({title, className, addItem, errorText, disabled, entityStatus}: AddItemFormType) => {
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
 
@@ -32,8 +34,7 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText, di
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => setError(false);
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-        // disabling click of button after request for delete todolist
-        !disabled && e.key === 'Enter' && addTask()
+        e.key === 'Enter' && addTask()
     };
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''} ${className ? className : ''}`;
@@ -54,7 +55,9 @@ export const AddItemForm = React.memo(({title, className, addItem, errorText, di
                 onBlur={onBlurHandler}
                 sx={{mr: '1rem'}}
             />
-            <AddBox className={styles.add_button} onClick={addTask}/>
+            {entityStatus === 'loading'
+                ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+                : <AddBox className={styles.add_button} onClick={addTask}/>}
         </Container>
     )
 });

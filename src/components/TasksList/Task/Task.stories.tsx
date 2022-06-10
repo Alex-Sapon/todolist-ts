@@ -5,6 +5,8 @@ import {ReduxStoreProviderDecorator} from '../../../stories/decorators/ReduxStor
 import {action} from '@storybook/addon-actions';
 import {Meta} from '@storybook/react/types-6-0';
 import {TaskPriority, TaskStatus, TaskType} from '../../../api/todolist-api';
+import {RequestStatusType} from '../../../store/reducers/app-reducer';
+import { TaskDomainStateType } from '../../../store/reducers/tasks-reducer';
 
 export default {
     title: 'TodoList/Todolist',
@@ -13,7 +15,7 @@ export default {
 } as Meta;
 
 type TaskPropsType = {
-    task: TaskType
+    task: TaskDomainStateType
     todoListId: string
     changeTaskStatus: () => void
     changeTaskTitle: () => void
@@ -46,7 +48,8 @@ TaskIsDoneExample.args = {
         deadline: '',
         startDate: '',
         addedDate: '',
-        order: 0
+        order: 0,
+        entityStatus: 'idle',
     },
     todoListId: 'todoListId1',
 };

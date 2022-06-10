@@ -2,7 +2,8 @@ import {memo, useCallback} from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { RequestStatusType } from '../../store/reducers/app-reducer';
+import {RequestStatusType} from '../../store/reducers/app-reducer';
+import {IconButton} from '@mui/material';
 
 type TodoListHeaderType = {
     title: string
@@ -16,7 +17,7 @@ export const TodoListHeader = memo((props: TodoListHeaderType) => {
     const {title, removeTodoList, todoListId, changeTodoListTitle, entityStatus} = props;
 
     const removeTodoListHandler = useCallback(() => {
-        entityStatus !== 'loading' && removeTodoList(todoListId);
+        removeTodoList(todoListId);
     }, [removeTodoList, todoListId])
 
     const onChangeValueHandler = useCallback((title: string) => {
@@ -26,7 +27,7 @@ export const TodoListHeader = memo((props: TodoListHeaderType) => {
     return (
         <div className={styles.header_container}>
             <EditableSpan title={title} changeValue={onChangeValueHandler} textStyles={styles.header_title}/>
-            <DeleteIcon className={styles.delete} onClick={removeTodoListHandler}/>
+            <IconButton disabled={entityStatus === 'loading'}><DeleteIcon onClick={removeTodoListHandler}/></IconButton>
         </div>
     )
 });

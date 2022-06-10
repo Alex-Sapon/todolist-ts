@@ -6,7 +6,7 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 
 export const App = () => {
     return (
-        <div style={{height: ' 100vh'}}>
+        <div style={{height: '100vh'}}>
             <ErrorSnackbar/>
             <AppBarComponent/>
             <Container sx={{mb: '2rem'}} fixed>
