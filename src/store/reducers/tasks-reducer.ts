@@ -170,7 +170,6 @@ export const addTask = (todoListId: string, title: string) => (dispatch: Dispatc
 
 export const updateTaskStatus = (todolistId: string, taskId: string, status: TaskStatus) =>
     (dispatch: Dispatch, getState: () => RootStateType) => {
-        dispatch(setAppStatus('loading'));
         dispatch(changeTaskEntityStatus(todolistId, taskId, 'loading'));
 
         const task = getState().tasks[todolistId].find(task => task.id === taskId);
@@ -199,7 +198,6 @@ export const updateTaskStatus = (todolistId: string, taskId: string, status: Tas
                     dispatch(setAppErrorMessage(err.message));
                 })
                 .finally(() => {
-                    dispatch(setAppStatus('idle'));
                     dispatch(changeTaskEntityStatus(todolistId, taskId, 'idle'));
                 })
         }

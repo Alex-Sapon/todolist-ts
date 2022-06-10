@@ -1,5 +1,5 @@
 import {removeTask, TaskDomainStateType, updateTaskStatus, updateTaskTitle} from '../../../store/reducers/tasks-reducer';
-import {ChangeEvent, memo, useCallback} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
 import {EditableSpan} from '../../EditableSpan/EditableSpan';
@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {useAppDispatch} from '../../../store/hooks';
 import {TaskStatus} from '../../../api/todolist-api';
+import {LoadingButton} from '@mui/lab';
+import {AddBox} from '@mui/icons-material';
 
 export type TaskPropsType = {
     task: TaskDomainStateType
@@ -45,7 +47,10 @@ export const Task = memo(({task, todoListId}: TaskPropsType) => {
                 >
                     <EditIcon className={styles.item_edit}/>
                 </EditableSpan>
-                <DeleteIcon className={styles.item_delete} onClick={removeTaskHandler}/>
+                {task.entityStatus === 'loading'
+                    ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+                    : <DeleteIcon className={styles.item_delete} onClick={removeTaskHandler}/>
+                }
             </Paper>
         </ListItem>
     )

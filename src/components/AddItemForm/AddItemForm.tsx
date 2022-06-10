@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FocusEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, FocusEvent, KeyboardEvent, memo, useState} from 'react';
 import styles from './AddItemForm.module.css';
 import {Container, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
@@ -13,7 +13,9 @@ export type AddItemFormType = {
     errorText?: string
 };
 
-export const AddItemForm = React.memo(({title, className, addItem, errorText, disabled, entityStatus}: AddItemFormType) => {
+export const AddItemForm = memo((props: AddItemFormType) => {
+    const {title, className, addItem, errorText, disabled, entityStatus} = props;
+
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
 
