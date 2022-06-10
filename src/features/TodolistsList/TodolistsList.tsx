@@ -13,12 +13,20 @@ import {
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {selectTodoLists} from '../../store/selectors/select-todoLists';
 
-export const TodolistsList = () => {
+type TodolistsListType = {
+    demo?: boolean
+}
+
+export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const dispatch = useAppDispatch();
 
     const todoLists = useAppSelector(selectTodoLists);
 
     useEffect(() => {
+        if (demo) {
+            return;
+        }
+
         dispatch(fetchTodoLists())
     }, []);
 
@@ -56,6 +64,7 @@ export const TodolistsList = () => {
                                 filter={todo.filter}
                                 removeTodoList={deleteTodoList}
                                 changeTodoListTitle={changeTodoListTitleHandler}
+                                demo={demo}
                             />
                         </Grid>
                     )}

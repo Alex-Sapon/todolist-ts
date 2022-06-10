@@ -1,19 +1,16 @@
-import {EditableSpan} from './EditableSpan';
+import {EditableSpan, EditableSpanType} from './EditableSpan';
 import {Meta} from '@storybook/react/types-6-0';
 import {Story} from '@storybook/react';
 import React from 'react';
 import {action} from '@storybook/addon-actions';
-
-type EditableSpanType = {
-    title: string
-    changeValue: (value: string) => void
-};
+import {ReduxStoreProviderDecorator} from '../../stories/decorators/ReduxStoreProviderDecorator';
 
 export default {
     title: 'TodoList/EditableSpan',
     component: EditableSpan,
+    decorators: [ReduxStoreProviderDecorator],
     argTypes: {
-        changeValue: {
+        onClick: {
             description: 'Value EditableSpan changed',
         },
         value: {
@@ -24,6 +21,7 @@ export default {
 } as Meta;
 
 const Template: Story<EditableSpanType> = (args) => <EditableSpan {...args}/>;
+
 export const EditableSpanExample = Template.bind({});
 EditableSpanExample.args = {
     title: 'HTML',

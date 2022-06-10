@@ -8,14 +8,19 @@ import {fetchTasks} from '../../store/reducers/tasks-reducer';
 export type TasksList = {
     filter: ValueFilterType
     todoListId: string
+    demo?: boolean
 };
 
-export const TasksList = memo(({todoListId, filter}: TasksList) => {
+export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
     const dispatch = useAppDispatch();
 
     let tasks = useAppSelector(state => state.tasks[todoListId]);
 
     useEffect(() => {
+        if (demo) {
+            return;
+        }
+
         dispatch(fetchTasks(todoListId));
     }, [])
 

@@ -205,7 +205,6 @@ export const updateTaskStatus = (todolistId: string, taskId: string, status: Tas
 
 export const updateTaskTitle = (todolistId: string, taskId: string, title: string) =>
     (dispatch: Dispatch, getState: () => RootStateType) => {
-        dispatch(setAppStatus('loading'));
         dispatch(changeTaskEntityStatus(todolistId, taskId, 'loading'));
 
         const task = getState().tasks[todolistId].find(task => task.id === taskId);
@@ -234,7 +233,6 @@ export const updateTaskTitle = (todolistId: string, taskId: string, title: strin
                     dispatch(setAppErrorMessage(error.message));
                 })
                 .finally(() => {
-                    dispatch(setAppStatus('idle'));
                     dispatch(changeTaskEntityStatus(todolistId, taskId, 'idle'));
                 })
         }

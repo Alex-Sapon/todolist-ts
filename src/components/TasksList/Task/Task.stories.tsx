@@ -4,9 +4,8 @@ import React from 'react';
 import {ReduxStoreProviderDecorator} from '../../../stories/decorators/ReduxStoreProviderDecorator';
 import {action} from '@storybook/addon-actions';
 import {Meta} from '@storybook/react/types-6-0';
-import {TaskPriority, TaskStatus, TaskType} from '../../../api/todolist-api';
-import {RequestStatusType} from '../../../store/reducers/app-reducer';
-import { TaskDomainStateType } from '../../../store/reducers/tasks-reducer';
+import {TaskPriority, TaskStatus} from '../../../api/todolist-api';
+import {TaskDomainStateType} from '../../../store/reducers/tasks-reducer';
 
 export default {
     title: 'TodoList/Todolist',

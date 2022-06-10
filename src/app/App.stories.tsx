@@ -14,4 +14,6 @@ const Template: Story = (args) => <App {...args}/>;
 
 export const AppBaseExample = Template.bind({});
 
-AppBaseExample.args = {};
+AppBaseExample.args = {
+    demo: true,
+};

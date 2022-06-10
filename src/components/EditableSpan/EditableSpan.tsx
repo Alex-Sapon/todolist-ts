@@ -37,8 +37,8 @@ export const EditableSpan = memo((props: EditableSpanType) => {
     return status !== 'loading' && editMode
         ? <TextField
             fullWidth
-            variant='standard'
-            size='small'
+            variant="standard"
+            size="small"
             value={value}
             onChange={onChangeHandler}
             onBlur={deactivateEditMode}

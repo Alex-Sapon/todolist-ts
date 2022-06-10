@@ -34,7 +34,7 @@ export type AppActionsType =
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setAppErrorMessage>;
 
-type InitialStateType = {
+export type InitialStateType = {
     status: RequestStatusType
     errorMessage: string | null
 }

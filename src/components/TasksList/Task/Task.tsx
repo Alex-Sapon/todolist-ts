@@ -1,4 +1,9 @@
-import {removeTask, TaskDomainStateType, updateTaskStatus, updateTaskTitle} from '../../../store/reducers/tasks-reducer';
+import {
+    removeTask,
+    TaskDomainStateType,
+    updateTaskStatus,
+    updateTaskTitle
+} from '../../../store/reducers/tasks-reducer';
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
@@ -8,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useAppDispatch} from '../../../store/hooks';
 import {TaskStatus} from '../../../api/todolist-api';
 import {LoadingButton} from '@mui/lab';
-import {AddBox} from '@mui/icons-material';
+import {grey} from '@mui/material/colors';
 
 export type TaskPropsType = {
     task: TaskDomainStateType
@@ -39,6 +44,12 @@ export const Task = memo(({task, todoListId}: TaskPropsType) => {
                     disabled={task.entityStatus === 'loading'}
                     checked={task.status === TaskStatus.Completed}
                     onChange={changeStatusHandler}
+                    sx={{
+                        color: grey[100],
+                        '&.Mui-checked': {
+                            color: grey[600],
+                        },
+                    }}
                 />
                 <EditableSpan 
                     title={task.title} 

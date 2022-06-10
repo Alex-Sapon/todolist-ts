@@ -1,11 +1,12 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {combineReducers, legacy_createStore as createStore} from 'redux';
+import {applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
 import {v1} from 'uuid';
 import {tasksReducer} from '../../store/reducers/tasks-reducer';
 import {todoListsReducer} from '../../store/reducers/todolists-reducer';
 import {TaskPriority, TaskStatus} from '../../api/todolist-api';
-import { appReducer } from '../../store/reducers/app-reducer';
+import {appReducer} from '../../store/reducers/app-reducer';
+import thunk from 'redux-thunk';
 
 const storyBookReducer = combineReducers({
     tasks: tasksReducer,
@@ -16,7 +17,7 @@ const storyBookReducer = combineReducers({
 const initialGlobalState: RootSBState = {
     todoLists: [
         {id: 'todoListId1', title: 'What to learn', filter: 'all', entityStatus: 'idle',addedDate: '', order: 0},
-        {id: 'todoListId2', title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
+        {id: 'todoListId2', title: 'What to buy', filter: 'all', entityStatus: 'loading', addedDate: '', order: 0},
     ],
     tasks: {
         ['todoListId1']: [
@@ -59,45 +60,6 @@ const initialGlobalState: RootSBState = {
                 addedDate: '',
                 entityStatus: 'idle',
             },
-            {
-                id: v1(),
-                title: 'TypeScript',
-                description: '',
-                status: TaskStatus.New,
-                priority: TaskPriority.Middle,
-                startDate: '',
-                deadline: '',
-                todoListId: 'todoListId1',
-                order: 0,
-                addedDate: '',
-                entityStatus: 'idle',
-            },
-            {
-                id: v1(),
-                title: 'Redux',
-                description: '',
-                status: TaskStatus.New,
-                priority: TaskPriority.Middle,
-                startDate: '',
-                deadline: '',
-                todoListId: 'todoListId1',
-                order: 0,
-                addedDate: '',
-                entityStatus: 'idle',
-            },
-            {
-                id: v1(),
-                title: 'Rest API',
-                description: '',
-                status: TaskStatus.New,
-                priority: TaskPriority.Middle,
-                startDate: '',
-                deadline: '',
-                todoListId: 'todoListId1',
-                order: 0,
-                addedDate: '',
-                entityStatus: 'idle',
-            },
         ],
         ['todoListId2']: [
             {
@@ -127,19 +89,6 @@ const initialGlobalState: RootSBState = {
                 entityStatus: 'idle',
 
             },
-            {
-                id: v1(),
-                title: 'Phone',
-                description: '',
-                status: TaskStatus.New,
-                priority: TaskPriority.Middle,
-                startDate: '',
-                deadline: '',
-                todoListId: 'todoListId2',
-                order: 0,
-                addedDate: '',
-                entityStatus: 'idle',
-            },
         ]
     },
     app: {
@@ -150,7 +99,7 @@ const initialGlobalState: RootSBState = {
 
 type RootSBState = ReturnType<typeof storyBookReducer>;
 
-const storyBookStore = createStore(storyBookReducer, initialGlobalState);
+const storyBookStore = createStore(storyBookReducer, initialGlobalState, applyMiddleware(thunk));
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>

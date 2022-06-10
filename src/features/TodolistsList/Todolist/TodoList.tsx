@@ -20,10 +20,11 @@ export type TodoListProps = {
     filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, title: string) => void
+    demo?: boolean
 };
 
 export const TodoList = memo((props: TodoListProps) => {
-    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle, entityStatus} = props;
+    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle, entityStatus, demo} = props;
 
     const dispatch = useAppDispatch();
 
@@ -54,7 +55,8 @@ export const TodoList = memo((props: TodoListProps) => {
             />
             <AddItemForm
                 addItem={addTaskHandler}
-                title="Add task" errorText="Todolist is required"
+                title="Enter task"
+                errorText="Task is required"
                 className={styles.todolist_addItem}
                 disabled={entityStatus === 'loading'}
                 entityStatus={entityStatus}
@@ -77,7 +79,7 @@ export const TodoList = memo((props: TodoListProps) => {
                     onClick={completedFilterTasks}
                 >Completed</Button>
             </div>
-            <TasksList filter={filter} todoListId={todoListId}/>
+            <TasksList filter={filter} todoListId={todoListId} demo={demo}/>
         </Paper>
     )
 });
