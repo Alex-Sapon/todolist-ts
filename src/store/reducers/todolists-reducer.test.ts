@@ -1,5 +1,5 @@
 import {
-    addTodoListAC,
+    addTodoListAC, changeTodoListEntityStatus,
     changeTodoListFilterAC,
     changeTodoListTitleAC,
     removeTodoListAC,
@@ -22,11 +22,18 @@ beforeEach(() => {
     newFilter = 'completed';
 
     startState = [
-        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
     ];
 
-    newTodoList = {id: 'todolistId3', title: 'newTodoList', filter: 'all', addedDate: '', order: 0};
+    newTodoList = {
+        id: 'todolistId3',
+        title: 'newTodoList',
+        filter: 'all',
+        addedDate: '',
+        order: 0,
+        entityStatus: 'idle',
+    };
 });
 
 test('correct todolist should be removed', () => {
@@ -57,8 +64,14 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[1].filter).toBe(newFilter);
 });
 
-test('todoLists should be added', () => {
+test('todolist should be set', () => {
     const endState = todoListsReducer([], setTodoLists(startState));
 
-    expect(endState.length).toBe(2)
-})
+    expect(endState.length).toBe(2);
+});
+
+test('entity status of todolist should be changed', () => {
+    const endState = todoListsReducer(startState, changeTodoListEntityStatus('todolistId2', 'failed'));
+
+    expect(endState[1].entityStatus).toBe('failed');
+});

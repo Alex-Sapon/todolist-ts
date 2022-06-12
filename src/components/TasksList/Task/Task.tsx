@@ -1,6 +1,6 @@
 import {
     removeTask,
-    TaskDomainStateType,
+    TaskDomainType,
     updateTaskStatus,
     updateTaskTitle
 } from '../../../store/reducers/tasks-reducer';
@@ -16,25 +16,24 @@ import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
 
 export type TaskPropsType = {
-    task: TaskDomainStateType
-    todoListId: string
+    task: TaskDomainType
 };
 
-export const Task = memo(({task, todoListId}: TaskPropsType) => {
+export const Task = memo(({task}: TaskPropsType) => {
     const dispatch = useAppDispatch();
 
     const removeTaskHandler = useCallback(() => {
-        dispatch(removeTask(todoListId, task.id));
-    }, [dispatch, todoListId, task.id])
+        dispatch(removeTask(task.todoListId, task.id));
+    }, [dispatch, task.todoListId, task.id])
 
     const changeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTaskStatus(todoListId, task.id, e.currentTarget.checked
+        dispatch(updateTaskStatus(task.todoListId, task.id, e.currentTarget.checked
             ? TaskStatus.Completed : TaskStatus.New));
-    }, [dispatch, todoListId, task.id])
+    }, [dispatch, task.todoListId, task.id])
 
     const changeTitleHandler = useCallback((title: string) => {
-        dispatch(updateTaskTitle(todoListId, task.id, title));
-    }, [dispatch, todoListId, task.id])
+        dispatch(updateTaskTitle(task.todoListId, task.id, title));
+    }, [dispatch, task.todoListId, task.id])
 
     return (
         <ListItem>

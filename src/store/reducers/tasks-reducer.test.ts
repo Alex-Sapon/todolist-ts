@@ -1,7 +1,6 @@
 import {
-    addTask,
     addTaskAC,
-    changeStatusAC,
+    changeStatusAC, changeTaskEntityStatus,
     changeValueTaskAC,
     removeTaskAC,
     setTasks,
@@ -28,6 +27,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: '2',
@@ -40,6 +40,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: '3',
@@ -52,6 +53,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: '4',
@@ -64,6 +66,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
 
             },
             {
@@ -77,7 +80,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
-
+                entityStatus: 'idle',
             },
             {
                 id: '6',
@@ -90,6 +93,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
         ],
         ['todoListId2']: [
@@ -104,6 +108,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: '2',
@@ -116,6 +121,7 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
             {
                 id: '3',
@@ -128,11 +134,19 @@ beforeEach(() => {
                 todoListId: 'todoListId1',
                 order: 0,
                 addedDate: '',
+                entityStatus: 'idle',
             },
         ]
     });
 
-    newTodoList = {id: 'todoListId3', title: 'newTodoList', filter: 'all', addedDate: '', order: 0};
+    newTodoList = {
+        id: 'todoListId3',
+        title: 'newTodoList',
+        filter: 'all',
+        addedDate: '',
+        order: 0,
+        entityStatus: 'idle'
+    };
 });
 
 test('correct task should be added', () => {
@@ -169,7 +183,7 @@ test('status of task should be changed', () => {
 })
 
 test('title of task should be changed', () => {
-    const endState = tasksReducer(startState, changeValueTaskAC('todoListId2', '3','Honey'));
+    const endState = tasksReducer(startState, changeValueTaskAC('todoListId2', '3', 'Honey'));
 
     expect(startState['todoListId2'][2].title).toBe('Phone');
     expect(endState['todoListId2'][2].title).toBe('Honey');
@@ -202,4 +216,10 @@ test('tasks should be added for todoList', () => {
 
     expect(endState['todoListId1'].length).toBe(6);
     expect(endState['todoListId2'].length).toBe(0);
+})
+
+test('entity status for task should be changed', () => {
+    const endState = tasksReducer(startState, changeTaskEntityStatus('todoListId1', '6', 'succeeded'))
+
+    expect(endState['todoListId1'][5].entityStatus).toBe('succeeded');
 })

@@ -37,7 +37,7 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
 
     return (
         <List>
-            {tasks.map(task => <Task key={task.id} task={task} todoListId={todoListId}/>)}
+            {tasks.map(task => <Task key={task.id} task={task}/>)}
         </List>
     )
 });

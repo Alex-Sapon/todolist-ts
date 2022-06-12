@@ -240,12 +240,12 @@ export const updateTaskTitle = (todolistId: string, taskId: string, title: strin
 
 
 // ------- types -------
-export type TaskDomainStateType = TaskType & {
+export type TaskDomainType = TaskType & {
     entityStatus: RequestStatusType
 }
 
 export type TasksStateType = {
-    [key: string]: TaskDomainStateType[]
+    [key: string]: TaskDomainType[]
 }
 
 export type TasksActionType =
