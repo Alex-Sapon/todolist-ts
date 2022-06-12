@@ -1,4 +1,4 @@
-import {addTodoListAC, removeTodoListAC, setTodoLists} from './todolists-reducer';
+import {addTodoListAC, changeTodoListEntityStatus, removeTodoListAC, setTodoLists} from './todolists-reducer';
 import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
 import {Dispatch} from 'redux';
 import {RootStateType} from '../store';
@@ -148,7 +148,7 @@ export const removeTask = (todoListId: string, taskId: string) => (dispatch: Dis
 };
 
 export const addTask = (todoListId: string, title: string) => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'));
+    dispatch(changeTodoListEntityStatus(todoListId, 'loading'));
 
     todolistAPI.createTask(todoListId, title)
         .then(res => {
@@ -164,7 +164,7 @@ export const addTask = (todoListId: string, title: string) => (dispatch: Dispatc
             dispatch(setAppErrorMessage(err.message));
         })
         .finally(() => {
-            dispatch(setAppStatus('idle'));
+            dispatch(changeTodoListEntityStatus(todoListId, 'idle'));
         })
 };
 

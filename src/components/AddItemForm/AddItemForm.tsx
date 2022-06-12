@@ -19,7 +19,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
 
-    const addTask = () => {
+    const addItemHandler = () => {
         if (value.trim() !== '') {
             addItem(value);
             setValue('');
@@ -36,7 +36,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
     const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => setError(false);
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-        e.key === 'Enter' && addTask()
+        e.key === 'Enter' && addItemHandler()
     };
 
     const inputClasses = `${styles.input} ${error ? styles.error : ''} ${className ? className : ''}`;
@@ -59,7 +59,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
             />
             {entityStatus === 'loading'
                 ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
-                : <AddBox className={styles.add_button} onClick={addTask}/>}
+                : <AddBox className={styles.add_button} onClick={addItemHandler}/>}
         </Container>
     )
 });

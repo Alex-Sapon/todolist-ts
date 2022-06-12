@@ -57,11 +57,8 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
                     : todoLists.map(todo =>
                         <Grid item xs={12} md={6} sm={12} lg={4}>
                             <TodoList
-                                todoListId={todo.id}
-                                title={todo.title}
-                                entityStatus={todo.entityStatus}
+                                todolist={todo}
                                 filterTasks={changeFilter}
-                                filter={todo.filter}
                                 removeTodoList={deleteTodoList}
                                 changeTodoListTitle={changeTodoListTitleHandler}
                                 demo={demo}

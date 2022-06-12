@@ -10,76 +10,73 @@ import {Button, Paper} from '@mui/material';
 import {addTask} from '../../../store/reducers/tasks-reducer';
 import {useAppDispatch} from '../../../store/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
-import {RequestStatusType} from '../../../store/reducers/app-reducer';
+import {TodoListsDomainType} from '../../../store/reducers/todolists-reducer';
 
 export type TodoListProps = {
-    title: string
-    todoListId: string
-    entityStatus: RequestStatusType
+    todolist: TodoListsDomainType
     filterTasks: (todoListId: string, title: ValueFilterType) => void
-    filter: ValueFilterType
     removeTodoList: (todoListId: string) => void
     changeTodoListTitle: (todoListId: string, title: string) => void
     demo?: boolean
 };
 
 export const TodoList = memo((props: TodoListProps) => {
-    const {title, todoListId, filterTasks, filter, removeTodoList, changeTodoListTitle, entityStatus, demo} = props;
+    const {filterTasks, removeTodoList, changeTodoListTitle, demo, todolist} = props;
 
     const dispatch = useAppDispatch();
 
     const allFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'all');
-    }, [filterTasks, todoListId])
+        filterTasks(todolist.id, 'all');
+    }, [filterTasks, todolist.id])
 
     const activeFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'active');
-    }, [filterTasks, todoListId])
+        filterTasks(todolist.id, 'active');
+    }, [filterTasks, todolist.id])
 
     const completedFilterTasks = useCallback(() => {
-        filterTasks(todoListId, 'completed');
-    }, [filterTasks, todoListId])
+        filterTasks(todolist.id, 'completed');
+    }, [filterTasks, todolist.id])
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTask(todoListId, title));
-    }, [dispatch, todoListId])
+        dispatch(addTask(todolist.id, title));
+    }, [dispatch, todolist.id])
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={6}>
             <TodoListHeader
-                title={title}
+                title={todolist.title}
                 removeTodoList={removeTodoList}
-                todoListId={todoListId}
+                todoListId={todolist.id}
                 changeTodoListTitle={changeTodoListTitle}
-                entityStatus={entityStatus}
+                entityStatus={todolist.entityStatus}
             />
             <AddItemForm
                 addItem={addTaskHandler}
                 title="Enter task"
                 errorText="Task is required"
                 className={styles.todolist_addItem}
-                disabled={entityStatus === 'loading'}
-                entityStatus={entityStatus}
+                disabled={todolist.entityStatus === 'loading'}
+                entityStatus={todolist.entityStatus}
             />
             <div className={styles.buttons}>
                 <Button
                     size="small"
-                    variant={filter === 'all' ? 'contained' : 'text'}
+                    variant={todolist.filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
                 >All</Button>
                 <Button
                     size="small"
-                    variant={filter === 'active' ? 'contained' : 'text'}
+                    variant={todolist.filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size="small"
-                    variant={filter === 'completed' ? 'contained' : 'text'}
+                    variant={todolist.filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
                 >Completed</Button>
             </div>
-            <TasksList filter={filter} todoListId={todoListId} demo={demo}/>
+            <TasksList filter={todolist.filter} todoListId={todolist.id} demo={demo}/>
         </Paper>
     )
 });
