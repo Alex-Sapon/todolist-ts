@@ -3,15 +3,15 @@ import {
     TaskDomainType,
     updateTaskStatus,
     updateTaskTitle
-} from '../../../store/reducers/tasks-reducer';
+} from '../../../../store/reducers/tasks-reducer';
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
-import {EditableSpan} from '../../EditableSpan/EditableSpan';
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import {useAppDispatch} from '../../../store/hooks';
-import {TaskStatus} from '../../../api/todolist-api';
+import {useAppDispatch} from '../../../../store/hooks';
+import {TaskStatus} from '../../../../api/todolist-api';
 import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
 

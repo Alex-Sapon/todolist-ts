@@ -6,8 +6,8 @@ import {
     setTodoLists,
     TodoListsDomainType,
     todoListsReducer
-} from './todolists-reducer';
-import {ValueFilterType} from '../../api/todolist-api';
+} from '../todolists-reducer';
+import {ValueFilterType} from '../../../api/todolist-api';
 
 let startState: TodoListsDomainType[];
 let newTodoList: TodoListsDomainType;

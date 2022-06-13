@@ -2,8 +2,9 @@ import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api
 import {Dispatch} from 'redux';
 import {ResultCode} from '../../enums/result-code';
 import {RequestStatusType, setAppErrorMessage, setAppStatus} from './app-reducer';
-import { handleAppError } from '../../utils/error-utils';
-import { AxiosError } from 'axios';
+import {handleAppError} from '../../utils/error-utils';
+import {AxiosError} from 'axios';
+import {AppThunk} from '../store';
 
 export const todoListsReducer = (state: TodoListsDomainType[] = [], action: TodoListActionsType): TodoListsDomainType[] => {
     switch (action.type) {
@@ -20,7 +21,7 @@ export const todoListsReducer = (state: TodoListsDomainType[] = [], action: Todo
         case 'SET-TODOLISTS':
             return action.payload.todoLists.map(todo => ({...todo, filter: 'all', entityStatus: 'idle'}));
         case 'CHANGE-TODOLIST-ENTITY-STATUS':
-            return state.map(todo => todo.id === action.payload.todoListId 
+            return state.map(todo => todo.id === action.payload.todoListId
                 ? {...todo, entityStatus: action.payload.status} : todo);
         default:
             return state;
@@ -74,9 +75,9 @@ export const changeTodoListEntityStatus = (todoListId: string, status: RequestSt
 } as const);
 
 // ------- thunks -------
-export const fetchTodoLists = () => (dispatch: Dispatch) => {
+export const fetchTodoLists = (): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'));
-    
+
     todolistAPI.getTodolists()
         .then(res => {
             dispatch(setTodoLists(res.data));
@@ -89,7 +90,7 @@ export const fetchTodoLists = () => (dispatch: Dispatch) => {
         })
 };
 
-export const addTodoList = (title: string) => (dispatch: Dispatch) => {
+export const addTodoList = (title: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'));
 
     todolistAPI.createTodolist(title)
@@ -110,7 +111,7 @@ export const addTodoList = (title: string) => (dispatch: Dispatch) => {
         })
 };
 
-export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
+export const removeTodoList = (todoListId: string): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'));
     dispatch(changeTodoListEntityStatus(todoListId, 'loading'));
 
@@ -132,8 +133,8 @@ export const removeTodoList = (todoListId: string) => (dispatch: Dispatch) => {
         })
 };
 
-export const changeTodoListTitle = (todoListId: string, title: string) => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'));
+export const changeTodoListTitle = (todoListId: string, title: string): AppThunk => dispatch => {
+    dispatch(changeTodoListEntityStatus(todoListId, 'loading'));
 
     todolistAPI.updateTodolistTitle(todoListId, title)
         .then(res => {
@@ -149,7 +150,7 @@ export const changeTodoListTitle = (todoListId: string, title: string) => (dispa
             dispatch(setAppErrorMessage(err.message));
         })
         .finally(() => {
-            dispatch(setAppStatus('idle'));
+            dispatch(changeTodoListEntityStatus(todoListId, 'idle'));
         })
 };
 

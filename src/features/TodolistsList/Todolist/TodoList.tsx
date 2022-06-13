@@ -1,7 +1,7 @@
 import {memo, useCallback} from 'react';
 
-import {TodoListHeader} from '../../../components/TodoListHeader/TodoListHeader';
-import {TasksList} from '../../../components/TasksList/TasksList';
+import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
+import {TasksList} from '../TasksList/TasksList';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 
 import styles from './TodoList.module.css';

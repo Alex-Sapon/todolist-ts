@@ -46,25 +46,29 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
         dispatch(changeTodoListTitle(todoListId, title));
     }, [dispatch])
 
+    if (todoLists.length === 0) {
+        return (
+            <Grid item xs={12} md={12} sm={12} lg={12}>
+                <Typography sx={{textAlign: 'center', mt: '2rem'}} variant="h5">Add TodoList.</Typography>
+            </Grid>
+        )
+    }
+
     return (
         <>
             <AddItemForm title="Add todo list" addItem={addTodoListHandler}/>
             <Grid container spacing={3} columns={12}>
-                {todoLists.length === 0
-                    ? <Grid item xs={12} md={12} sm={12} lg={12}>
-                        <Typography sx={{textAlign: 'center', mt: '2rem'}} variant="h5">Add TodoList.</Typography>
+                {todoLists.map(todo =>
+                    <Grid item xs={12} md={6} sm={12} lg={4}>
+                        <TodoList
+                            todolist={todo}
+                            filterTasks={changeFilter}
+                            removeTodoList={deleteTodoList}
+                            changeTodoListTitle={changeTodoListTitleHandler}
+                            demo={demo}
+                        />
                     </Grid>
-                    : todoLists.map(todo =>
-                        <Grid item xs={12} md={6} sm={12} lg={4}>
-                            <TodoList
-                                todolist={todo}
-                                filterTasks={changeFilter}
-                                removeTodoList={deleteTodoList}
-                                changeTodoListTitle={changeTodoListTitleHandler}
-                                demo={demo}
-                            />
-                        </Grid>
-                    )}
+                )}
             </Grid>
         </>
     )
