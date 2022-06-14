@@ -7,10 +7,10 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { login } from '../../store/reducers/auth-reducer';
-import { RootStateType } from '../../store/store';
-import { Navigate } from 'react-router';
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {login} from '../../store/reducers/auth-reducer';
+import {RootStateType} from '../../store/store';
+import {Navigate} from 'react-router';
 
 type FormikErrorType = {
     email?: string
@@ -55,7 +55,7 @@ export const Login = () => {
     });
 
     if (isLoggedIn) {
-        return <Navigate to='/' />
+        return <Navigate to="/"/>
     }
 
     return (

@@ -50,6 +50,27 @@ export const login = (data: LoginParamsType): AppThunk => dispatch => {
         })
 };
 
+export const logout = (): AppThunk => dispatch => {
+    dispatch(setAppStatus('loading'));
+
+    authAPI.logout()
+        .then(res => {
+            if (res.data.resultCode === ResultCode.Success) {
+                dispatch(setIsLoggedIn(false));
+            }
+
+            if (res.data.resultCode === ResultCode.Error) {
+                handleAppError(res.data, dispatch);
+            }
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorMessage(err.message));
+        })
+        .finally(() => {
+            dispatch(setAppStatus('idle'));
+        })
+};
+
 
 // ------- types -------
 type AuthStateType = {
