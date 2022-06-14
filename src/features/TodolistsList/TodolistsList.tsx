@@ -12,18 +12,23 @@ import {
 } from '../../store/reducers/todolists-reducer';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {selectTodoLists} from '../../store/selectors/select-todoLists';
+import {RootStateType} from '../../store/store';
+import {Navigate} from 'react-router';
 
 type TodolistsListType = {
     demo?: boolean
 }
 
+export const selectIsLoggedIn = (state: RootStateType) => state.auth.isLoggedIn;
+
 export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const dispatch = useAppDispatch();
 
     const todoLists = useAppSelector(selectTodoLists);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn) {
             return;
         }
 
@@ -45,6 +50,10 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const changeTodoListTitleHandler = useCallback((todoListId: string, title: string) => {
         dispatch(changeTodoListTitle(todoListId, title));
     }, [dispatch])
+
+    if (!isLoggedIn) {
+        return <Navigate to="/login"/>
+    }
 
     if (todoLists.length === 0) {
         return (

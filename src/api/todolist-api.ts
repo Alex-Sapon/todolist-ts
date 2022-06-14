@@ -37,7 +37,7 @@ export const todolistAPI = {
 };
 
 export const authAPI = {
-    login(data: LoginParametersType) {
+    login(data: LoginParamsType) {
         return instance.post<ResponseType<{ userId: number }>>('auth/login', data);
     },
     logout() {
@@ -48,7 +48,7 @@ export const authAPI = {
     },
 }
 
-export type LoginParametersType = {
+export type LoginParamsType = {
     email: string
     password: string
     rememberMe: boolean

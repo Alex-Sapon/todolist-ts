@@ -7,11 +7,13 @@ import {todoListsReducer} from '../../store/reducers/todolists-reducer';
 import {TaskPriority, TaskStatus} from '../../api/todolist-api';
 import {appReducer} from '../../store/reducers/app-reducer';
 import thunk from 'redux-thunk';
+import {authReducer} from '../../store/reducers/auth-reducer';
 
 const storyBookReducer = combineReducers({
     tasks: tasksReducer,
     todoLists: todoListsReducer,
     app: appReducer,
+    auth: authReducer,
 });
 
 const initialGlobalState: RootSBState = {
@@ -94,7 +96,11 @@ const initialGlobalState: RootSBState = {
     app: {
         status: 'idle',
         errorMessage: null,
+        isInitialized: true,
     },
+    auth: {
+        isLoggedIn: true,
+    }
 };
 
 type RootSBState = ReturnType<typeof storyBookReducer>;
