@@ -1,9 +1,4 @@
-import {
-    removeTask,
-    TaskDomainType,
-    updateTaskStatus,
-    updateTaskTitle
-} from '../../../../store/reducers/tasks-reducer';
+import {removeTask, TaskDomainType, updateTaskStatus, updateTaskTitle} from '../../../../store/reducers/tasks-reducer';
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
@@ -17,48 +12,39 @@ import {grey} from '@mui/material/colors';
 
 export type TaskPropsType = {
     task: TaskDomainType
-};
+}
 
 export const Task = memo(({task}: TaskPropsType) => {
+    const {id, todoListId, title, entityStatus, status} = task;
+
     const dispatch = useAppDispatch();
 
-    const removeTaskHandler = useCallback(() => {
-        dispatch(removeTask(task.todoListId, task.id));
-    }, [dispatch, task.todoListId, task.id])
+    const removeTaskHandler = () => dispatch(removeTask(todoListId, id));
 
-    const changeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTaskStatus(task.todoListId, task.id, e.currentTarget.checked
+    const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(updateTaskStatus(todoListId, id, e.currentTarget.checked
             ? TaskStatus.Completed : TaskStatus.New));
-    }, [dispatch, task.todoListId, task.id])
+    }
 
     const changeTitleHandler = useCallback((title: string) => {
-        dispatch(updateTaskTitle(task.todoListId, task.id, title));
-    }, [dispatch, task.todoListId, task.id])
+        dispatch(updateTaskTitle(todoListId, id, title));
+    }, [dispatch, todoListId, id])
 
     return (
         <ListItem>
             <Paper className={styles.item_container} sx={{backgroundColor: '#9AB8BA'}}>
                 <Checkbox
                     size="small"
-                    disabled={task.entityStatus === 'loading'}
-                    checked={task.status === TaskStatus.Completed}
+                    disabled={entityStatus === 'loading'}
+                    checked={status === TaskStatus.Completed}
                     onChange={changeStatusHandler}
-                    sx={{
-                        color: grey[100],
-                        '&.Mui-checked': {
-                            color: grey[600],
-                        },
-                    }}
+                    sx={{color: grey[100], '&.Mui-checked': {color: grey[600]}}}
                 />
-                <EditableSpan 
-                    title={task.title} 
-                    changeValue={changeTitleHandler} 
-                    textStyles={styles.item_title}
-                >
+                <EditableSpan title={title} changeValue={changeTitleHandler} textStyles={styles.item_title}>
                     <EditIcon className={styles.item_edit}/>
                 </EditableSpan>
-                {task.entityStatus === 'loading'
-                    ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+                {entityStatus === 'loading'
+                    ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
                     : <DeleteIcon className={styles.item_delete} onClick={removeTaskHandler}/>
                 }
             </Paper>

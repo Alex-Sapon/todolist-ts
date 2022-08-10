@@ -45,7 +45,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
         <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
             <TextField
                 fullWidth
-                size={'small'}
+                size='small'
                 value={value}
                 error={error}
                 label={title}

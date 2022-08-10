@@ -1,7 +1,6 @@
 import {AxiosError} from 'axios';
 import {authAPI} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
-import {handleAppError} from '../../utils/error-utils';
 import {AppThunk} from '../store';
 import {setIsLoggedIn} from './auth-reducer';
 
@@ -24,7 +23,6 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
     }
 }
 
-// ------- actions -------
 export const setAppStatus = (status: RequestStatusType) => ({
     type: 'APP/SET-STATUS',
     payload: {
@@ -46,13 +44,11 @@ export const setInitialized = (initialized: boolean) => ({
     }
 } as const);
 
-
-// ------- thunks -------
 export const initializeApp = (): AppThunk => dispatch => {
     authAPI.me()
         .then(res => {
             if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn(true));
+                dispatch(setIsLoggedIn({isLoggedIn: true}));
             }
         })
         .catch((err: AxiosError) => {
@@ -63,11 +59,10 @@ export const initializeApp = (): AppThunk => dispatch => {
         })
 }
 
-// ------- types -------
 export type AppActionsType =
     | ReturnType<typeof setAppStatus>
     | ReturnType<typeof setAppErrorMessage>
-    | ReturnType<typeof setInitialized>;
+    | ReturnType<typeof setInitialized>
 
 export type InitialStateType = {
     status: RequestStatusType
@@ -75,4 +70,4 @@ export type InitialStateType = {
     isInitialized: boolean
 }
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

@@ -9,8 +9,8 @@ import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {login} from '../../store/reducers/auth-reducer';
-import {RootStateType} from '../../store/store';
 import {Navigate} from 'react-router';
+import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
 
 type FormikErrorType = {
     email?: string
@@ -18,12 +18,10 @@ type FormikErrorType = {
     rememberMe?: boolean
 }
 
-const selectorIsLoggedIn = (state: RootStateType) => state.auth.isLoggedIn;
-
 export const Login = () => {
     const dispatch = useAppDispatch();
 
-    const isLoggedIn = useAppSelector(selectorIsLoggedIn);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +41,7 @@ export const Login = () => {
             if (!values.password) {
                 errors.password = 'Required';
             } else if (values.password.length <= 2) {
-                errors.password = 'Password should be more than 2 simbols';
+                errors.password = 'Password should be more than 2 symbols';
             }
 
             return errors;
@@ -92,9 +90,7 @@ export const Login = () => {
                                 label="Remember me"
                                 control={<Checkbox{...formik.getFieldProps('rememberMe')}/>}
                             />
-                            <Button type="submit" variant="contained" color="primary">
-                                Login
-                            </Button>
+                            <Button type="submit" variant="contained" color="primary">Login</Button>
                         </FormGroup>
                     </FormControl>
                 </form>

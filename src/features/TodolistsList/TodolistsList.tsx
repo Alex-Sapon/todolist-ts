@@ -12,14 +12,12 @@ import {
 } from '../../store/reducers/todolists-reducer';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {selectTodoLists} from '../../store/selectors/select-todoLists';
-import {RootStateType} from '../../store/store';
 import {Navigate} from 'react-router';
+import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
 
 type TodolistsListType = {
     demo?: boolean
 }
-
-export const selectIsLoggedIn = (state: RootStateType) => state.auth.isLoggedIn;
 
 export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const dispatch = useAppDispatch();
@@ -28,15 +26,13 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
     useEffect(() => {
-        if (demo || !isLoggedIn) {
-            return;
-        }
+        if (demo || !isLoggedIn) return;
 
-        dispatch(fetchTodoLists())
+        dispatch(fetchTodoLists());
     }, []);
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
-        dispatch(changeTodoListFilterAC(todoListId, filter));
+        dispatch(changeTodoListFilterAC({todoListId: todoListId, filter: filter}));
     }, [dispatch])
 
     const deleteTodoList = useCallback((todoListId: string) => {
@@ -55,10 +51,10 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
         return <Navigate to="/login"/>
     }
 
-    if (todoLists.length === 0) {
+    if (!todoLists.length) {
         return (
             <Grid item xs={12} md={12} sm={12} lg={12}>
-                <Typography sx={{textAlign: 'center', mt: '2rem'}} variant="h5">Add TodoList.</Typography>
+                <Typography sx={{textAlign: 'center', mt: '2rem'}} variant="h5">Add todoList</Typography>
             </Grid>
         )
     }
@@ -68,7 +64,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
             <AddItemForm title="Add todo list" addItem={addTodoListHandler}/>
             <Grid container spacing={3} columns={12}>
                 {todoLists.map(todo =>
-                    <Grid item xs={12} md={6} sm={12} lg={4}>
+                    <Grid item xs={12} md={6} sm={12} lg={4} key={todo.id}>
                         <TodoList
                             todolist={todo}
                             filterTasks={changeFilter}

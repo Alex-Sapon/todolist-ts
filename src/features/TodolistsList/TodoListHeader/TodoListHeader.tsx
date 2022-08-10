@@ -27,7 +27,9 @@ export const TodoListHeader = memo((props: TodoListHeaderType) => {
     return (
         <div className={styles.header_container}>
             <EditableSpan title={title} changeValue={onChangeValueHandler} textStyles={styles.header_title}/>
-            <IconButton disabled={entityStatus === 'loading'}><DeleteIcon onClick={removeTodoListHandler}/></IconButton>
+            <IconButton disabled={entityStatus === 'loading'} onClick={removeTodoListHandler}>
+                <DeleteIcon/>
+            </IconButton>
         </div>
     )
 });

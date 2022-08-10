@@ -14,10 +14,10 @@ export type EditableSpanType = {
 export const EditableSpan = memo((props: EditableSpanType) => {
     const {title, changeValue, textStyles, inputStyles, children} = props;
 
-    const status = useAppSelector(selectStatus);
-
     const [value, setValue] = useState<string>('');
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    const status = useAppSelector(selectStatus);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
 

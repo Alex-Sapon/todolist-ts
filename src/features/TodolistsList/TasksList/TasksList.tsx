@@ -4,22 +4,23 @@ import {Task} from './Task/Task';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 import {TaskStatus, ValueFilterType} from '../../../api/todolist-api';
 import {fetchTasks} from '../../../store/reducers/tasks-reducer';
+import {selectIsLoggedIn} from '../../../store/selectors/select-isLoggedIn';
 
 export type TasksList = {
     filter: ValueFilterType
     todoListId: string
     demo?: boolean
-};
+}
 
 export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
     const dispatch = useAppDispatch();
 
     let tasks = useAppSelector(state => state.tasks[todoListId]);
 
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+
     useEffect(() => {
-        if (demo) {
-            return;
-        }
+        if (demo || !isLoggedIn) return;
 
         dispatch(fetchTasks(todoListId));
     }, [])
@@ -33,7 +34,7 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
             break;
     }
 
-    if (tasks.length === 0) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
+    if (!tasks.length) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 
     return (
         <List>

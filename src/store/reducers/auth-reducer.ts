@@ -1,41 +1,35 @@
-import { AxiosError } from 'axios';
+import {AxiosError} from 'axios';
 import {authAPI, LoginParamsType} from '../../api/todolist-api';
-import { ResultCode } from '../../enums/result-code';
-import { handleAppError } from '../../utils/error-utils';
-import { AppThunk } from '../store';
-import { setAppErrorMessage, setAppStatus } from './app-reducer';
+import {ResultCode} from '../../enums/result-code';
+import {handleAppError} from '../../utils/error-utils';
+import {AppThunk} from '../store';
+import {setAppErrorMessage, setAppStatus} from './app-reducer';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const InitialState: AuthStateType = {
+const initialState = {
     isLoggedIn: false
 }
 
-export const authReducer = (state: AuthStateType = InitialState, action: AuthActionsType): AuthStateType => {
-    switch(action.type) {
-        case 'AUTH/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.payload.isLoggedIn};
-        default:
-            return state;
-    }
-}
-
-
-// ------- actions -------
-export const setIsLoggedIn = (isLoggedIn: boolean) => ({
-    type: 'AUTH/SET-IS-LOGGED-IN',
-    payload: {
-        isLoggedIn,
+const authSlice = createSlice({
+    name: 'auth',
+    initialState: initialState,
+    reducers: {
+        setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
+            state.isLoggedIn = action.payload.isLoggedIn
+        },
     },
-} as const);
+})
 
+export const {setIsLoggedIn} = authSlice.actions;
+export const authReducer = authSlice.reducer;
 
-// ------- thunks -------
 export const login = (data: LoginParamsType): AppThunk => dispatch => {
     dispatch(setAppStatus('loading'));
 
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn(true));
+                dispatch(setIsLoggedIn({isLoggedIn: true}));
             }
 
             if (res.data.resultCode === ResultCode.Error) {
@@ -56,7 +50,7 @@ export const logout = (): AppThunk => dispatch => {
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn(false));
+                dispatch(setIsLoggedIn({isLoggedIn: false}));
             }
 
             if (res.data.resultCode === ResultCode.Error) {
@@ -71,8 +65,6 @@ export const logout = (): AppThunk => dispatch => {
         })
 };
 
-
-// ------- types -------
 type AuthStateType = {
     isLoggedIn: boolean
 }
