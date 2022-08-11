@@ -3,6 +3,7 @@ import {authAPI} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
 import {AppThunk} from '../store';
 import {setIsLoggedIn} from './auth-reducer';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState: InitialStateType = {
     status: 'idle',
@@ -10,39 +11,25 @@ const initialState: InitialStateType = {
     isInitialized: false,
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.payload.status};
-        case 'APP/SET-ERROR-MESSAGE':
-            return {...state, errorMessage: action.payload.errorMessage};
-        case 'APP/SET-IS-INITIALIZED':
-            return {...state, isInitialized: action.payload.initialized};
-        default:
-            return state;
-    }
-}
+const appSlice = createSlice({
+    name: 'app',
+    initialState: initialState,
+    reducers: {
+        setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
+            state.status = action.payload.status;
+        },
+        setAppErrorMessage(state, action: PayloadAction<{ error: string | null }>) {
+            state.errorMessage = action.payload.error;
+        },
+        setInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
+            state.isInitialized = action.payload.initialized;
+        },
+    },
+})
 
-export const setAppStatus = (status: RequestStatusType) => ({
-    type: 'APP/SET-STATUS',
-    payload: {
-        status,
-    }
-} as const);
+export const {setAppStatus, setAppErrorMessage, setInitialized} = appSlice.actions;
 
-export const setAppErrorMessage = (errorMessage: string | null) => ({
-    type: 'APP/SET-ERROR-MESSAGE',
-    payload: {
-        errorMessage,
-    }
-} as const);
-
-export const setInitialized = (initialized: boolean) => ({
-    type: 'APP/SET-IS-INITIALIZED',
-    payload: {
-        initialized,
-    }
-} as const);
+export const appReducer = appSlice.reducer;
 
 export const initializeApp = (): AppThunk => dispatch => {
     authAPI.me()
@@ -52,10 +39,10 @@ export const initializeApp = (): AppThunk => dispatch => {
             }
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
+            dispatch(setAppErrorMessage({error: err.message}));
         })
         .finally(() => {
-            dispatch(setInitialized(true));
+            dispatch(setInitialized({initialized: true}));
         })
 }
 

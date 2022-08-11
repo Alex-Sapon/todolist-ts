@@ -14,7 +14,7 @@ const todoListsReducerSlice = createSlice({
     reducers: {
         removeTodoListAC(state, action: PayloadAction<{ todoListId: string }>) {
             const index = state.findIndex(todo => todo.id === action.payload.todoListId);
-            state.splice(index, 1);
+            if (index > -1) state.splice(index, 1);
         },
         addTodoListAC(state, action: PayloadAction<{ todoList: TodoListType }>) {
             state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'});
@@ -49,22 +49,22 @@ export const {
 export const todoListsReducer = todoListsReducerSlice.reducer;
 
 export const fetchTodoLists = (): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+    dispatch(setAppStatus({status: 'loading'}));
 
     todolistAPI.getTodolists()
         .then(res => {
             dispatch(setTodoLists({todoLists: res.data}));
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
+            dispatch(setAppErrorMessage({error: err.message}));
         })
         .finally(() => {
-            dispatch(setAppStatus('idle'));
+            dispatch(setAppStatus({status: 'idle'}));
         })
 };
 
 export const addTodoList = (title: string): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+    dispatch(setAppStatus({status: 'loading'}));
 
     todolistAPI.createTodolist(title)
         .then(res => {
@@ -77,15 +77,15 @@ export const addTodoList = (title: string): AppThunk => dispatch => {
             }
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
+            dispatch(setAppErrorMessage({error: err.message}));
         })
         .finally(() => {
-            dispatch(setAppStatus('idle'));
+            dispatch(setAppStatus({status: 'idle'}));
         })
 };
 
 export const removeTodoList = (todoListId: string): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+    dispatch(setAppStatus({status: 'loading'}));
     dispatch(changeTodoListEntityStatus({todoListId: todoListId, status: 'loading'}));
 
     todolistAPI.deleteTodolist(todoListId)
@@ -99,10 +99,10 @@ export const removeTodoList = (todoListId: string): AppThunk => dispatch => {
             }
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
+            dispatch(setAppErrorMessage({error: err.message}));
         })
         .finally(() => {
-            dispatch(setAppStatus('idle'));
+            dispatch(setAppStatus({status: 'idle'}));
         })
 };
 
@@ -120,7 +120,7 @@ export const changeTodoListTitle = (todoListId: string, title: string): AppThunk
             }
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
+            dispatch(setAppErrorMessage({error: err.message}));
         })
         .finally(() => {
             dispatch(changeTodoListEntityStatus({todoListId: todoListId, status: 'idle'}));

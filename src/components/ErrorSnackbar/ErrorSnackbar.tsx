@@ -22,7 +22,7 @@ export const ErrorSnackbar = () => {
             return;
         }
 
-        dispatch(setAppErrorMessage(null));
+        dispatch(setAppErrorMessage({error: null}));
     };
 
     return (

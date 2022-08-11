@@ -6,7 +6,7 @@ import {AppThunk} from '../store';
 import {setAppErrorMessage, setAppStatus} from './app-reducer';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState = {
+const initialState: AuthStateType = {
     isLoggedIn: false
 }
 
@@ -15,7 +15,7 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
-            state.isLoggedIn = action.payload.isLoggedIn
+            state.isLoggedIn = action.payload.isLoggedIn;
         },
     },
 })
@@ -23,46 +23,44 @@ const authSlice = createSlice({
 export const {setIsLoggedIn} = authSlice.actions;
 export const authReducer = authSlice.reducer;
 
-export const login = (data: LoginParamsType): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+export const login = (data: LoginParamsType): AppThunk => async dispatch => {
+    dispatch(setAppStatus({status: 'loading'}));
 
-    authAPI.login(data)
-        .then(res => {
-            if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn({isLoggedIn: true}));
-            }
+    try {
+        const res = await authAPI.login(data);
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setIsLoggedIn({isLoggedIn: true}));
+        }
 
-            if (res.data.resultCode === ResultCode.Error) {
-                handleAppError(res.data, dispatch);
-            }
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
-        })
-        .finally(() => {
-            dispatch(setAppStatus('idle'));
-        })
+        if (res.data.resultCode === ResultCode.Error) {
+            handleAppError(res.data, dispatch);
+        }
+    } catch (e) {
+        const err = e as Error | AxiosError;
+        dispatch(setAppErrorMessage({error: err.message}));
+    } finally {
+        dispatch(setAppStatus({status: 'idle'}));
+    }
 };
 
-export const logout = (): AppThunk => dispatch => {
-    dispatch(setAppStatus('loading'));
+export const logout = (): AppThunk => async dispatch => {
+    dispatch(setAppStatus({status: 'loading'}));
 
-    authAPI.logout()
-        .then(res => {
-            if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn({isLoggedIn: false}));
-            }
+    try {
+        const res = await authAPI.logout();
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setIsLoggedIn({isLoggedIn: false}));
+        }
 
-            if (res.data.resultCode === ResultCode.Error) {
-                handleAppError(res.data, dispatch);
-            }
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage(err.message));
-        })
-        .finally(() => {
-            dispatch(setAppStatus('idle'));
-        })
+        if (res.data.resultCode === ResultCode.Error) {
+            handleAppError(res.data, dispatch);
+        }
+    } catch (e) {
+        const err = e as Error | AxiosError;
+        dispatch(setAppErrorMessage({error: err.message}));
+    } finally {
+        dispatch(setAppStatus({status: 'idle'}));
+    }
 };
 
 type AuthStateType = {

@@ -8,9 +8,9 @@ import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
 import {addTask} from '../../../store/reducers/tasks-reducer';
-import {useAppDispatch} from '../../../store/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
 import {TodoListsDomainType} from '../../../store/reducers/todolists-reducer';
+import {useAppDispatch} from '../../../store/hooks';
 
 export type TodoListProps = {
     todolist: TodoListsDomainType
