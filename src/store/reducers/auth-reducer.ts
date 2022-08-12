@@ -21,6 +21,7 @@ const authSlice = createSlice({
 })
 
 export const {setIsLoggedIn} = authSlice.actions;
+
 export const authReducer = authSlice.reducer;
 
 export const login = (data: LoginParamsType): AppThunk => async dispatch => {

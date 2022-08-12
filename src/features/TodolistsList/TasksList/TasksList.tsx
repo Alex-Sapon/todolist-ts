@@ -19,12 +19,6 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
 
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
-    useEffect(() => {
-        if (demo || !isLoggedIn) return;
-
-        dispatch(fetchTasks(todoListId));
-    }, [])
-
     switch (filter) {
         case 'active':
             tasks = tasks.filter(task => task.status === TaskStatus.New);
@@ -33,6 +27,12 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
             tasks = tasks.filter(task => task.status === TaskStatus.Completed);
             break;
     }
+
+    useEffect(() => {
+        if (demo || !isLoggedIn) return;
+
+        dispatch(fetchTasks(todoListId));
+    }, [demo, isLoggedIn, dispatch])
 
     if (!tasks.length) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 

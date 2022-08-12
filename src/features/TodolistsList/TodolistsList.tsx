@@ -25,12 +25,6 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const todoLists = useAppSelector(selectTodoLists);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
-    useEffect(() => {
-        if (demo || !isLoggedIn) return;
-
-        dispatch(fetchTodoLists());
-    }, []);
-
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
         dispatch(changeTodoListFilterAC({todoListId: todoListId, filter: filter}));
     }, [dispatch])
@@ -47,9 +41,13 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
         dispatch(changeTodoListTitle(todoListId, title));
     }, [dispatch])
 
-    if (!isLoggedIn) {
-        return <Navigate to="/login"/>
-    }
+    useEffect(() => {
+        if (demo || !isLoggedIn) return;
+
+        dispatch(fetchTodoLists());
+    }, [demo, isLoggedIn, dispatch]);
+
+    if (!isLoggedIn) return <Navigate to="/login"/>
 
     if (!todoLists.length) {
         return (
