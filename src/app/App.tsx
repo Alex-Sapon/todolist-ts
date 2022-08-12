@@ -19,8 +19,10 @@ export const App = ({demo = false}: AppType) => {
     const isInitialized = useAppSelector(selectIsInitialized);
 
     useEffect(() => {
-        dispatch(initializeApp())
-    }, [])
+        if (!demo) {
+            dispatch(initializeApp())
+        }
+    }, [demo])
 
     if (!isInitialized) {
         return (

@@ -30,15 +30,10 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
 
     useEffect(() => {
         if (demo || !isLoggedIn) return;
-
         dispatch(fetchTasks(todoListId));
     }, [demo, isLoggedIn, dispatch])
 
     if (!tasks.length) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 
-    return (
-        <List>
-            {tasks.map(task => <Task key={task.id} task={task}/>)}
-        </List>
-    )
+    return <List>{tasks.map(task => <Task key={task.id} task={task}/>)}</List>
 });

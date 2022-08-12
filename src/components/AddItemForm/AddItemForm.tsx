@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FocusEvent, KeyboardEvent, memo, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import styles from './AddItemForm.module.css';
 import {Container, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
@@ -33,7 +33,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
         setValue(e.currentTarget.value);
     };
 
-    const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => setError(false);
+    const onBlurHandler = () => setError(false);
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
         e.key === 'Enter' && addItemHandler()
@@ -45,7 +45,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
         <Container sx={{mb: '2rem', display: 'flex', alignItems: 'center', height: '2rem'}} fixed>
             <TextField
                 fullWidth
-                size='small'
+                size="small"
                 value={value}
                 error={error}
                 label={title}
@@ -58,7 +58,7 @@ export const AddItemForm = memo((props: AddItemFormType) => {
                 sx={{mr: '1rem'}}
             />
             {entityStatus === 'loading'
-                ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}></LoadingButton>
+                ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
                 : <AddBox className={styles.add_button} onClick={addItemHandler}/>}
         </Container>
     )

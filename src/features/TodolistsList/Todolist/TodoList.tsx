@@ -10,7 +10,7 @@ import {Button, Paper} from '@mui/material';
 import {addTask} from '../../../store/reducers/tasks-reducer';
 import {ValueFilterType} from '../../../api/todolist-api';
 import {TodoListsDomainType} from '../../../store/reducers/todolists-reducer';
-import {useAppDispatch} from '../../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 
 export type TodoListProps = {
     todolist: TodoListsDomainType
@@ -25,6 +25,8 @@ export const TodoList = memo((props: TodoListProps) => {
 
     const dispatch = useAppDispatch();
 
+    const status = useAppSelector(state => state.app.status);
+
     const allFilterTasks = useCallback(() => {
         filterTasks(todolist.id, 'all');
     }, [filterTasks, todolist.id])
@@ -38,7 +40,7 @@ export const TodoList = memo((props: TodoListProps) => {
     }, [filterTasks, todolist.id])
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTask(todolist.id, title));
+        !demo && dispatch(addTask(todolist.id, title));
     }, [dispatch, todolist.id])
 
     return (
@@ -61,17 +63,20 @@ export const TodoList = memo((props: TodoListProps) => {
             <div className={styles.buttons}>
                 <Button
                     size="small"
+                    disabled={status === 'loading'}
                     variant={todolist.filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
                 >All</Button>
                 <Button
                     size="small"
+                    disabled={status === 'loading'}
                     variant={todolist.filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size="small"
+                    disabled={status === 'loading'}
                     variant={todolist.filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
                 >Completed</Button>
