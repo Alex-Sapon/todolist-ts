@@ -5,15 +5,13 @@ import {AppThunk} from '../store';
 import {setIsLoggedIn} from './auth-reducer';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState: InitialStateType = {
-    status: 'idle',
-    errorMessage: null,
-    isInitialized: false,
-}
-
 const appSlice = createSlice({
     name: 'app',
-    initialState: initialState,
+    initialState: {
+        status: 'idle',
+        errorMessage: null,
+        isInitialized: false,
+    } as InitialStateType,
     reducers: {
         setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status;

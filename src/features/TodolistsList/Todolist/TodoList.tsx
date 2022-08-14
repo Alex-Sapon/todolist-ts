@@ -40,7 +40,7 @@ export const TodoList = memo((props: TodoListProps) => {
     }, [filterTasks, todolist.id])
 
     const addTaskHandler = useCallback((title: string) => {
-        !demo && dispatch(addTask(todolist.id, title));
+        !demo && dispatch(addTask({todoListId: todolist.id, title}));
     }, [dispatch, todolist.id])
 
     return (

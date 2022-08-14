@@ -16,8 +16,8 @@ export type AddItemFormType = {
 export const AddItemForm = memo((props: AddItemFormType) => {
     const {title, className, addItem, errorText, disabled, entityStatus} = props;
 
-    const [value, setValue] = useState<string>('');
-    const [error, setError] = useState<boolean>(false);
+    const [value, setValue] = useState('');
+    const [error, setError] = useState(false);
 
     const addItemHandler = () => {
         if (value.trim() !== '') {
