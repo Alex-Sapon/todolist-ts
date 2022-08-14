@@ -31,7 +31,7 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
     useEffect(() => {
         if (demo || !isLoggedIn) return;
         dispatch(fetchTasks(todoListId));
-    }, [demo, isLoggedIn, dispatch])
+    }, [demo, isLoggedIn, dispatch, todoListId])
 
     if (!tasks.length) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
 

@@ -6,11 +6,9 @@ import {AxiosError} from 'axios';
 import {AppThunk} from '../store';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState: TodoListsDomainType[] = []
-
 const todoListsReducerSlice = createSlice({
     name: 'todoLists',
-    initialState: initialState,
+    initialState: [] as TodoListsDomainType[],
     reducers: {
         deleteTodolist(state, action: PayloadAction<{ todoListId: string }>) {
             const index = state.findIndex(todo => todo.id === action.payload.todoListId);

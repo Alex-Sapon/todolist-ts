@@ -1,48 +1,51 @@
 import {AxiosError} from 'axios';
-import {authAPI, LoginParamsType} from '../../api/todolist-api';
+import {authAPI, FieldErrorsType, LoginParamsType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
 import {handleAppError} from '../../utils/error-utils';
 import {AppThunk} from '../store';
 import {setAppErrorMessage, setAppStatus} from './app-reducer';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-const initialState: AuthStateType = {
-    isLoggedIn: false
-}
+export const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType,
+    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorsType[] } }>('auth/login', async (params, thunkAPI) => {
+
+    thunkAPI.dispatch(setAppStatus({status: 'loading'}));
+
+    try {
+        const res = await authAPI.login(params);
+        if (res.data.resultCode === ResultCode.Success) {
+            return {isLoggedIn: true};
+        } else {
+            handleAppError(res.data, thunkAPI.dispatch);
+            return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
+        }
+    } catch (e) {
+        const err = e as AxiosError;
+        thunkAPI.dispatch(setAppErrorMessage({error: err.message}));
+        return thunkAPI.rejectWithValue({errors: [err.message]});
+    } finally {
+        thunkAPI.dispatch(setAppStatus({status: 'idle'}));
+    }
+})
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: initialState,
+    initialState: {isLoggedIn: false},
     reducers: {
         setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
             state.isLoggedIn = action.payload.isLoggedIn;
         },
     },
+    extraReducers: builder => {
+        builder.addCase(login.fulfilled, (state, action) => {
+            state.isLoggedIn = action.payload.isLoggedIn;
+        });
+    }
 })
 
 export const {setIsLoggedIn} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
-
-export const login = (data: LoginParamsType): AppThunk => async dispatch => {
-    dispatch(setAppStatus({status: 'loading'}));
-
-    try {
-        const res = await authAPI.login(data);
-        if (res.data.resultCode === ResultCode.Success) {
-            dispatch(setIsLoggedIn({isLoggedIn: true}));
-        }
-
-        if (res.data.resultCode === ResultCode.Error) {
-            handleAppError(res.data, dispatch);
-        }
-    } catch (e) {
-        const err = e as Error | AxiosError;
-        dispatch(setAppErrorMessage({error: err.message}));
-    } finally {
-        dispatch(setAppStatus({status: 'idle'}));
-    }
-};
 
 export const logout = (): AppThunk => async dispatch => {
     dispatch(setAppStatus({status: 'loading'}));
@@ -57,15 +60,11 @@ export const logout = (): AppThunk => async dispatch => {
             handleAppError(res.data, dispatch);
         }
     } catch (e) {
-        const err = e as Error | AxiosError;
+        const err = e as AxiosError;
         dispatch(setAppErrorMessage({error: err.message}));
     } finally {
         dispatch(setAppStatus({status: 'idle'}));
     }
 };
-
-type AuthStateType = {
-    isLoggedIn: boolean
-}
 
 export type AuthActionsType = ReturnType<typeof setIsLoggedIn>

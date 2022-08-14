@@ -26,6 +26,7 @@ export const TodoList = memo((props: TodoListProps) => {
     const dispatch = useAppDispatch();
 
     const status = useAppSelector(state => state.app.status);
+    const tasks = useAppSelector(state => state.tasks[todolist.id]);
 
     const allFilterTasks = useCallback(() => {
         filterTasks(todolist.id, 'all');
@@ -41,7 +42,7 @@ export const TodoList = memo((props: TodoListProps) => {
 
     const addTaskHandler = useCallback((title: string) => {
         !demo && dispatch(addTask({todoListId: todolist.id, title}));
-    }, [dispatch, todolist.id])
+    }, [dispatch, todolist.id, demo])
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={6}>
@@ -63,20 +64,20 @@ export const TodoList = memo((props: TodoListProps) => {
             <div className={styles.buttons}>
                 <Button
                     size="small"
-                    disabled={status === 'loading'}
+                    disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'all' ? 'contained' : 'text'}
                     onClick={allFilterTasks}
                 >All</Button>
                 <Button
                     size="small"
-                    disabled={status === 'loading'}
+                    disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'active' ? 'contained' : 'text'}
                     onClick={activeFilterTasks}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size="small"
-                    disabled={status === 'loading'}
+                    disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'completed' ? 'contained' : 'text'}
                     onClick={completedFilterTasks}
                 >Completed</Button>

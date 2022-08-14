@@ -6,11 +6,12 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from 'formik';
+import {FormikHelpers, useFormik} from 'formik';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {login} from '../../store/reducers/auth-reducer';
+import {authReducer, login} from '../../store/reducers/auth-reducer';
 import {Navigate} from 'react-router';
 import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
+import {LoginParamsType} from '../../api/todolist-api';
 
 type FormikErrorType = {
     email?: string
@@ -46,15 +47,22 @@ export const Login = () => {
 
             return errors;
         },
-        onSubmit: values => {
-            dispatch(login(values));
-            formik.resetForm();
+        onSubmit: async (values: LoginParamsType, formikHelpers: FormikHelpers<LoginParamsType>) => {
+            const action = await dispatch(login(values));
+
+            if (login.rejected.match(action)) {
+                if (action.payload?.errors.length) {
+                    const error = action.payload.errors;
+
+                    formikHelpers.setFieldError('email', error[0]);
+                }
+            } else {
+                formik.resetForm({values: {email: values.email, password: '', rememberMe: false}});
+            }
         },
     });
 
-    if (isLoggedIn) {
-        return <Navigate to="/"/>
-    }
+    if (isLoggedIn) return <Navigate to="/"/>
 
     return (
         <Grid container justifyContent="center">
@@ -63,8 +71,8 @@ export const Login = () => {
                     <FormControl>
                         <FormLabel>
                             <p>
-                                To log in get registered
-                                <a href="https://social-network.samuraijs.com/" target="_blank" rel="noreferrer">here</a>
+                                {`To log in get registered `}
+                                <b><a href="https://social-network.samuraijs.com/" target="_blank" rel="noreferrer">here</a></b>
                             </p>
                             <p>or use common test account credentials:</p>
                             <p>Email: free@samuraijs.com</p>

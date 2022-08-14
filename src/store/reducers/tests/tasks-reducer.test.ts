@@ -1,15 +1,11 @@
 import {
-    changeStatus,
-    changeTaskEntityStatus,
-    changeValueTask,
-    deleteTask,
-    setTask,
-    setTasks,
+    addTask,
+    changeTaskEntityStatus, fetchTasks, removeTask,
     tasksReducer,
-    TasksStateType
+    TasksStateType, updateTaskStatus, updateTaskTitle
 } from '../tasks-reducer';
 import {deleteTodolist, setTodoList, TodoListsDomainType} from '../todolists-reducer';
-import {TaskPriority, TaskStatus} from '../../../api/todolist-api';
+import {TaskPriority, TaskStatus, TaskType} from '../../../api/todolist-api';
 
 let startState: TasksStateType;
 let newTodoList: TodoListsDomainType;
@@ -151,20 +147,20 @@ beforeEach(() => {
 });
 
 test('correct task should be added', () => {
-    const endState = tasksReducer(startState, setTask({
-        task: {
-            id: '1',
-            title: 'Git',
-            description: '',
-            status: TaskStatus.New,
-            priority: TaskPriority.Low,
-            startDate: '',
-            deadline: '',
-            todoListId: 'todoListId1',
-            order: 0,
-            addedDate: '',
-        }
-    }))
+    const task: TaskType = {
+        id: '1',
+        title: 'Git',
+        description: '',
+        status: TaskStatus.New,
+        priority: TaskPriority.Low,
+        startDate: '',
+        deadline: '',
+        todoListId: 'todoListId1',
+        order: 0,
+        addedDate: '',
+    }
+
+    const endState = tasksReducer(startState, addTask.fulfilled({task}, 'requestId', {todoListId: 'todoListId1', title: 'Git'}))
 
     expect(startState['todoListId1'].length).toBe(6);
     expect(endState['todoListId1'][0].title).toBe('Git');
@@ -172,29 +168,35 @@ test('correct task should be added', () => {
 });
 
 test('task should be removed', () => {
-    const endState = tasksReducer(startState, deleteTask({todoListId: 'todoListId1', taskId: '6'}))
+    const params = {todoListId: 'todoListId1', taskId: '6'};
+
+    const endState = tasksReducer(startState, removeTask.fulfilled(params, 'requestId', params));
 
     expect(startState['todoListId1'].length).toBe(6);
     expect(endState['todoListId1'].length).toBe(5);
 });
 
 test('status of task should be changed', () => {
-    const endState = tasksReducer(startState, changeStatus({
+    const params = {
         todoListId: 'todoListId2',
         taskId: '2',
-        status: TaskStatus.Completed
-    }))
+        status: TaskStatus.Completed,
+    }
+
+    const endState = tasksReducer(startState, updateTaskStatus.fulfilled(params, 'requestId', params));
 
     expect(startState['todoListId2'][1].status).toBe(TaskStatus.New);
     expect(endState['todoListId2'][1].status).toBe(TaskStatus.Completed);
 })
 
 test('title of task should be changed', () => {
-    const endState = tasksReducer(startState, changeValueTask({
+    const params = {
         todoListId: 'todoListId2',
         taskId: '3',
         title: 'Honey'
-    }));
+    }
+
+    const endState = tasksReducer(startState, updateTaskTitle.fulfilled(params, 'requestId', params));
 
     expect(startState['todoListId2'][2].title).toBe('Phone');
     expect(endState['todoListId2'][2].title).toBe('Honey');
@@ -206,7 +208,7 @@ test('new array should be added when new todolist is added', () => {
     const keys = Object.keys(endState);
     const newKey = keys.find(i => i !== 'todoListId1' && i !== 'todoListId2');
 
-    if (!newKey) throw Error('new key not find');
+    if (!newKey) throw Error('new key not found');
 
     expect(keys.length).toBe(3);
     expect(endState[newKey]).toEqual([]);
@@ -221,7 +223,9 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('tasks should be added for todoList', () => {
-    const action = setTasks({todoListId: 'todoListId1', tasks: startState['todoListId1']});
+    const params = {todoListId: 'todoListId1', tasks: startState['todoListId1']};
+
+    const action = fetchTasks.fulfilled(params, 'requestId', 'todoListId1');
 
     const endState = tasksReducer({'todoListId2': [], 'todoListId1': []}, action);
 
