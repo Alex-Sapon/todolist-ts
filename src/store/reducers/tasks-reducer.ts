@@ -1,4 +1,4 @@
-import {changeTodoListEntityStatus, deleteTodolist, setTodoList, setTodoLists} from './todolists-reducer';
+import {addTodoList, changeTodoListEntityStatus, fetchTodoLists, removeTodoList} from './todolists-reducer';
 import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
 import {RootStateType} from '../store';
 import {ResultCode} from '../../enums/result-code';
@@ -112,9 +112,7 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle',
 
         const task = (thunkAPI.getState() as RootStateType).tasks[todoListId].find(task => task.id === taskId);
 
-        if (!task) {
-            return thunkAPI.rejectWithValue('task not found in the state')
-        }
+        if (!task) return thunkAPI.rejectWithValue('task not found in the state');
 
         const model: UpdateTaskType = {
             title: title,
@@ -153,13 +151,13 @@ const tasksSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(setTodoList, (state, action) => {
+            .addCase(addTodoList.fulfilled, (state, action) => {
                 state[action.payload.todoList.id] = [];
             })
-            .addCase(deleteTodolist, (state, action) => {
+            .addCase(removeTodoList.fulfilled, (state, action) => {
                 delete state[action.payload.todoListId];
             })
-            .addCase(setTodoLists, (state, action) => {
+            .addCase(fetchTodoLists.fulfilled, (state, action) => {
                 action.payload.todoLists.forEach(todo => state[todo.id] = []);
             })
             .addCase(fetchTasks.fulfilled, (state, action) => {
@@ -194,5 +192,3 @@ export type TaskDomainType = TaskType & {
 export type TasksStateType = {
     [key: string]: TaskDomainType[]
 }
-
-export type TasksActionsType = ReturnType<typeof changeTaskEntityStatus>

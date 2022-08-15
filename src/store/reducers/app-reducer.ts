@@ -1,9 +1,24 @@
 import {AxiosError} from 'axios';
 import {authAPI} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
-import {AppThunk} from '../store';
 import {setIsLoggedIn} from './auth-reducer';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+
+export const initializeApp = createAsyncThunk('app/initializeApp', async (_, {dispatch, rejectWithValue}) => {
+
+    try {
+        const res = await authAPI.me();
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setIsLoggedIn({isLoggedIn: true}));
+        } else {
+            return rejectWithValue(null);
+        }
+    } catch (e) {
+        dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
+    } finally {
+        dispatch(setInitializedApp({isInitialized: true}));
+    }
+})
 
 const appSlice = createSlice({
     name: 'app',
@@ -19,35 +34,15 @@ const appSlice = createSlice({
         setAppErrorMessage(state, action: PayloadAction<{ error: string | null }>) {
             state.errorMessage = action.payload.error;
         },
-        setInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
-            state.isInitialized = action.payload.initialized;
+        setInitializedApp(state, action: PayloadAction<{ isInitialized: boolean }>) {
+            state.isInitialized = action.payload.isInitialized;
         },
     },
 })
 
-export const {setAppStatus, setAppErrorMessage, setInitialized} = appSlice.actions;
+export const {setAppStatus, setAppErrorMessage, setInitializedApp} = appSlice.actions;
 
 export const appReducer = appSlice.reducer;
-
-export const initializeApp = (): AppThunk => dispatch => {
-    authAPI.me()
-        .then(res => {
-            if (res.data.resultCode === ResultCode.Success) {
-                dispatch(setIsLoggedIn({isLoggedIn: true}));
-            }
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setAppErrorMessage({error: err.message}));
-        })
-        .finally(() => {
-            dispatch(setInitialized({initialized: true}));
-        })
-}
-
-export type AppActionsType =
-    | ReturnType<typeof setAppStatus>
-    | ReturnType<typeof setAppErrorMessage>
-    | ReturnType<typeof setInitialized>
 
 export type InitialStateType = {
     status: RequestStatusType

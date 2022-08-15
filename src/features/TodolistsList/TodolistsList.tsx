@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../store/hooks';
 import {ValueFilterType} from '../../api/todolist-api';
 import {
     addTodoList,
-    changeTodoListFilterAC,
+    changeTodoListFilter,
     changeTodoListTitle,
     fetchTodoLists,
     removeTodoList
@@ -26,7 +26,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
     const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
-        dispatch(changeTodoListFilterAC({todoListId: todoListId, filter: filter}));
+        dispatch(changeTodoListFilter({todoListId: todoListId, filter: filter}));
     }, [dispatch])
 
     const deleteTodoList = useCallback((todoListId: string) => {
@@ -38,7 +38,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     }, [dispatch])
 
     const changeTodoListTitleHandler = useCallback((todoListId: string, title: string) => {
-        dispatch(changeTodoListTitle(todoListId, title));
+        dispatch(changeTodoListTitle({todoListId, title}));
     }, [dispatch])
 
     useEffect(() => {

@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from 'formik';
 import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {authReducer, login} from '../../store/reducers/auth-reducer';
+import {login} from '../../store/reducers/auth-reducer';
 import {Navigate} from 'react-router';
 import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
 import {LoginParamsType} from '../../api/todolist-api';
