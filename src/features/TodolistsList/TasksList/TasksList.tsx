@@ -1,10 +1,10 @@
 import {memo, useEffect} from 'react';
 import {List, Typography} from '@mui/material';
-import {Task} from './Task/Task';
+import {Task} from '../Task/Task';
 import {TaskStatus, ValueFilterType} from '../../../api/todolist-api';
-import {fetchTasks} from '../../../store/reducers/tasks-reducer';
-import {selectIsLoggedIn} from '../../../store/selectors/select-isLoggedIn';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
+import {fetchTasks} from '../tasks-reducer';
+import {selectIsLoggedIn} from '../../Login';
+import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
 
 export type TasksList = {
     filter: ValueFilterType

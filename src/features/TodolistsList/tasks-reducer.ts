@@ -1,11 +1,11 @@
-import {addTodoList, changeTodoListEntityStatus, fetchTodoLists, removeTodoList} from './todolists-reducer';
 import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
-import {RootStateType} from '../store';
+import {RootStateType} from '../../app/store';
 import {ResultCode} from '../../enums/result-code';
-import {RequestStatusType, setAppErrorMessage, setAppStatus} from './app-reducer';
+import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app/app-reducer';
 import {AxiosError} from 'axios';
 import {handleAppError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {changeTodoListEntityStatus, todoListsActions} from './index';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todoListId: string, {
     dispatch,
@@ -48,24 +48,24 @@ export const removeTask = createAsyncThunk('tasks/removeTask',
     })
 
 export const addTask = createAsyncThunk('tasks/addTask',
-    async ({todoListId, title}: { todoListId: string, title: string }, thunkAPI) => {
+    async ({todoListId, title}: { todoListId: string, title: string }, {dispatch, rejectWithValue}) => {
 
-        thunkAPI.dispatch(changeTodoListEntityStatus({todoListId, status: 'loading'}));
+        dispatch(changeTodoListEntityStatus({todoListId, status: 'loading'}));
 
         try {
             const res = await todolistAPI.createTask(todoListId, title);
             if (res.data.resultCode === ResultCode.Success) {
                 return {task: res.data.data.item};
             } else {
-                handleAppError(res.data, thunkAPI.dispatch);
-                return thunkAPI.rejectWithValue(res.data.messages[0]);
+                handleAppError(res.data, dispatch);
+                return rejectWithValue(res.data.messages[0]);
             }
         } catch (e) {
             const err = e as AxiosError;
-            thunkAPI.dispatch(setAppErrorMessage({error: err.message}));
-            return thunkAPI.rejectWithValue(err.message);
+            dispatch(setAppErrorMessage({error: err.message}));
+            return rejectWithValue(err.message);
         } finally {
-            thunkAPI.dispatch(changeTodoListEntityStatus({todoListId, status: 'idle'}));
+            dispatch(changeTodoListEntityStatus({todoListId, status: 'idle'}));
         }
     })
 
@@ -151,13 +151,13 @@ const tasksSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(addTodoList.fulfilled, (state, action) => {
+            .addCase(todoListsActions.addTodoList.fulfilled, (state, action) => {
                 state[action.payload.todoList.id] = [];
             })
-            .addCase(removeTodoList.fulfilled, (state, action) => {
+            .addCase(todoListsActions.removeTodoList.fulfilled, (state, action) => {
                 delete state[action.payload.todoListId];
             })
-            .addCase(fetchTodoLists.fulfilled, (state, action) => {
+            .addCase(todoListsActions.fetchTodoLists.fulfilled, (state, action) => {
                 action.payload.todoLists.forEach(todo => state[todo.id] = []);
             })
             .addCase(fetchTasks.fulfilled, (state, action) => {

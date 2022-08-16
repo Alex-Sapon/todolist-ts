@@ -1,8 +1,8 @@
 import {AppBar, Box, Button, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {RootStateType} from '../../store/store';
-import {useAppSelector, useAppDispatch} from '../../store/hooks';
-import {logout} from '../../store/reducers/auth-reducer';
+import {RootStateType} from '../../app/store';
+import {useAppSelector, useAppDispatch} from '../../utils/hooks';
+import {logout} from '../Login/auth-reducer';
 
 const selectorStatus = (state: RootStateType) => state.app.status;
 

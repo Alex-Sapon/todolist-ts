@@ -1,11 +1,11 @@
 import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
-import {RequestStatusType, setAppErrorMessage, setAppStatus} from './app-reducer';
+import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app/app-reducer';
 import {handleAppError} from '../../utils/error-utils';
 import {AxiosError} from 'axios';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-export const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {dispatch, rejectWithValue}) => {
+const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatus({status: 'loading'}));
 
     try {
@@ -20,7 +20,7 @@ export const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async
     }
 })
 
-export const addTodoList = createAsyncThunk('todoLists/addTodoList', async (title: string, {
+const addTodoList = createAsyncThunk('todoLists/addTodoList', async (title: string, {
     dispatch,
     rejectWithValue
 }) => {
@@ -43,7 +43,7 @@ export const addTodoList = createAsyncThunk('todoLists/addTodoList', async (titl
     }
 })
 
-export const removeTodoList = createAsyncThunk('todoLists/removeTodoList', async (todoListId: string, {
+const removeTodoList = createAsyncThunk('todoLists/removeTodoList', async (todoListId: string, {
     dispatch,
     rejectWithValue
 }) => {
@@ -67,7 +67,7 @@ export const removeTodoList = createAsyncThunk('todoLists/removeTodoList', async
     }
 })
 
-export const changeTodoListTitle = createAsyncThunk('todoLists/changeTodoListTitle', async (params: { todoListId: string, title: string }, {
+const changeTodoListTitle = createAsyncThunk('todoLists/changeTodoListTitle', async (params: { todoListId: string, title: string }, {
     dispatch,
     rejectWithValue
 }) => {
@@ -90,7 +90,7 @@ export const changeTodoListTitle = createAsyncThunk('todoLists/changeTodoListTit
     }
 })
 
-const todoListsReducerSlice = createSlice({
+export const todoListsReducerSlice = createSlice({
     name: 'todoLists',
     initialState: [] as TodoListsDomainType[],
     reducers: {
@@ -125,6 +125,8 @@ const todoListsReducerSlice = createSlice({
 export const {changeTodoListFilter, changeTodoListEntityStatus} = todoListsReducerSlice.actions;
 
 export const todoListsReducer = todoListsReducerSlice.reducer;
+
+export const asyncActions = {fetchTodoLists, addTodoList, removeTodoList, changeTodoListTitle};
 
 export type TodoListsDomainType = TodoListType & {
     filter: ValueFilterType

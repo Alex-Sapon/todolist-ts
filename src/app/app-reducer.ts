@@ -1,7 +1,7 @@
 import {AxiosError} from 'axios';
-import {authAPI} from '../../api/todolist-api';
-import {ResultCode} from '../../enums/result-code';
-import {setIsLoggedIn} from './auth-reducer';
+import {authAPI} from '../api/todolist-api';
+import {ResultCode} from '../enums/result-code';
+import {setIsLoggedIn} from '../features/Login/auth-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export const initializeApp = createAsyncThunk('app/initializeApp', async (_, {dispatch, rejectWithValue}) => {

@@ -2,9 +2,9 @@ import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch} from 'react-redux';
-import {RootStateType} from '../../store/store';
-import {useAppSelector} from '../../store/hooks';
-import {setAppErrorMessage} from '../../store/reducers/app-reducer';
+import {RootStateType} from '../../app/store';
+import {useAppSelector} from '../../utils/hooks';
+import {setAppErrorMessage} from '../../app/app-reducer';
 
 const selectAppErrorMessage = (state: RootStateType) => state.app.errorMessage;
 

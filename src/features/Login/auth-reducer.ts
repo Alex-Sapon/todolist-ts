@@ -2,7 +2,7 @@ import {AxiosError} from 'axios';
 import {authAPI, FieldErrorsType, LoginParamsType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
 import {handleAppError} from '../../utils/error-utils';
-import {setAppErrorMessage, setAppStatus} from './app-reducer';
+import {setAppErrorMessage, setAppStatus} from '../../app/app-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType,

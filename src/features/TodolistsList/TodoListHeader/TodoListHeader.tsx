@@ -2,7 +2,7 @@ import {memo, useCallback} from 'react';
 import styles from './TodoListHeader.module.css'
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {RequestStatusType} from '../../../store/reducers/app-reducer';
+import {RequestStatusType} from '../../../app/app-reducer';
 import {IconButton} from '@mui/material';
 
 type TodoListHeaderType = {
@@ -10,7 +10,7 @@ type TodoListHeaderType = {
     todoListId: string
     entityStatus: RequestStatusType
     removeTodoList: (todoListId: string) => void
-    changeTodoListTitle: (todolistId: string, title: string) => void
+    changeTodoListTitle: (params: {todoListId: string, title: string}) => void
 };
 
 export const TodoListHeader = memo((props: TodoListHeaderType) => {
@@ -21,7 +21,7 @@ export const TodoListHeader = memo((props: TodoListHeaderType) => {
     }, [removeTodoList, todoListId])
 
     const onChangeValueHandler = useCallback((title: string) => {
-        changeTodoListTitle(todoListId, title);
+        changeTodoListTitle({todoListId, title});
     }, [changeTodoListTitle, todoListId])
 
     return (

@@ -1,11 +1,11 @@
 import {Task} from './Task';
 import {Story} from '@storybook/react';
 import React from 'react';
-import {ReduxStoreProviderDecorator} from '../../../../stories/decorators/ReduxStoreProviderDecorator';
+import {ReduxStoreProviderDecorator} from '../../../stories/decorators/ReduxStoreProviderDecorator';
 import {action} from '@storybook/addon-actions';
 import {Meta} from '@storybook/react/types-6-0';
-import {TaskPriority, TaskStatus} from '../../../../api/todolist-api';
-import {TaskDomainType} from '../../../../store/reducers/tasks-reducer';
+import {TaskPriority, TaskStatus} from '../../../api/todolist-api';
+import {TaskDomainType} from '../tasks-reducer';
 
 export default {
     title: 'TodoList/Todolist',

@@ -1,14 +1,14 @@
-import {removeTask, TaskDomainType, updateTaskStatus, updateTaskTitle} from '../../../../store/reducers/tasks-reducer';
+import {removeTask, TaskDomainType, updateTaskStatus, updateTaskTitle} from '../tasks-reducer';
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
-import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import {TaskStatus} from '../../../../api/todolist-api';
+import {TaskStatus} from '../../../api/todolist-api';
 import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
-import {useAppDispatch} from '../../../../store/hooks';
+import {useAppDispatch} from '../../../utils/hooks';
 
 export type TaskPropsType = {
     task: TaskDomainType

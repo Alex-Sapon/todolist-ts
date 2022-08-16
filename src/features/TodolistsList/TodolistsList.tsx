@@ -1,51 +1,30 @@
 import {Grid, Typography} from '@mui/material';
-import {TodoList} from './Todolist/TodoList';
+import {selectTodoLists, TodoList, todoListsActions} from './';
 import {useCallback, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {ValueFilterType} from '../../api/todolist-api';
-import {
-    addTodoList,
-    changeTodoListFilter,
-    changeTodoListTitle,
-    fetchTodoLists,
-    removeTodoList
-} from '../../store/reducers/todolists-reducer';
+import {useActions, useAppSelector} from '../../utils/hooks';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
-import {selectTodoLists} from '../../store/selectors/select-todoLists';
 import {Navigate} from 'react-router';
-import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
+import {selectIsLoggedIn} from '../Login';
 
 type TodolistsListType = {
     demo?: boolean
 }
 
 export const TodolistsList = ({demo = false}: TodolistsListType) => {
-    const dispatch = useAppDispatch();
-
     const todoLists = useAppSelector(selectTodoLists);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
-    const changeFilter = useCallback((todoListId: string, filter: ValueFilterType) => {
-        dispatch(changeTodoListFilter({todoListId: todoListId, filter: filter}));
-    }, [dispatch])
-
-    const deleteTodoList = useCallback((todoListId: string) => {
-        dispatch(removeTodoList(todoListId));
-    }, [dispatch])
+    const {addTodoList, fetchTodoLists} = useActions(todoListsActions);
 
     const addTodoListHandler = useCallback((title: string) => {
-        dispatch(addTodoList(title));
-    }, [dispatch])
-
-    const changeTodoListTitleHandler = useCallback((todoListId: string, title: string) => {
-        dispatch(changeTodoListTitle({todoListId, title}));
-    }, [dispatch])
+        addTodoList(title);
+    }, [addTodoList])
 
     useEffect(() => {
         if (demo || !isLoggedIn) return;
 
-        dispatch(fetchTodoLists());
-    }, [demo, isLoggedIn, dispatch]);
+        fetchTodoLists();
+    }, [demo, isLoggedIn, fetchTodoLists]);
 
     if (!isLoggedIn) return <Navigate to="/login"/>
 
@@ -63,13 +42,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
             <Grid container spacing={3} columns={12}>
                 {todoLists.map(todo =>
                     <Grid item xs={12} md={6} sm={12} lg={4} key={todo.id}>
-                        <TodoList
-                            todolist={todo}
-                            filterTasks={changeFilter}
-                            removeTodoList={deleteTodoList}
-                            changeTodoListTitle={changeTodoListTitleHandler}
-                            demo={demo}
-                        />
+                        <TodoList todolist={todo} demo={demo}/>
                     </Grid>
                 )}
             </Grid>

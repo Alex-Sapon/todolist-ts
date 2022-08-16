@@ -1,44 +1,32 @@
 import {memo, useCallback} from 'react';
 
-import {TodoListHeader} from '../TodoListHeader/TodoListHeader';
 import {TasksList} from '../TasksList/TasksList';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {addTask} from '../../../store/reducers/tasks-reducer';
+import {addTask} from '../tasks-reducer';
+import {todoListsActions, TodoListHeader, TodoListsDomainType} from '../';
+import {useActions, useAppDispatch, useAppSelector} from '../../../utils/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
-import {TodoListsDomainType} from '../../../store/reducers/todolists-reducer';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
 
 export type TodoListProps = {
     todolist: TodoListsDomainType
-    filterTasks: (todoListId: string, title: ValueFilterType) => void
-    removeTodoList: (todoListId: string) => void
-    changeTodoListTitle: (todoListId: string, title: string) => void
     demo?: boolean
 };
 
-export const TodoList = memo((props: TodoListProps) => {
-    const {filterTasks, removeTodoList, changeTodoListTitle, demo, todolist} = props;
-
+export const TodoList = memo(({todolist, demo}: TodoListProps) => {
     const dispatch = useAppDispatch();
+
+    const {removeTodoList, changeTodoListTitle, changeTodoListFilter} = useActions(todoListsActions);
 
     const status = useAppSelector(state => state.app.status);
     const tasks = useAppSelector(state => state.tasks[todolist.id]);
 
-    const allFilterTasks = useCallback(() => {
-        filterTasks(todolist.id, 'all');
-    }, [filterTasks, todolist.id])
-
-    const activeFilterTasks = useCallback(() => {
-        filterTasks(todolist.id, 'active');
-    }, [filterTasks, todolist.id])
-
-    const completedFilterTasks = useCallback(() => {
-        filterTasks(todolist.id, 'completed');
-    }, [filterTasks, todolist.id])
+    const filterTasks = useCallback((filter: ValueFilterType) => {
+        changeTodoListFilter({todoListId: todolist.id, filter: filter});
+    }, [todolist.id, changeTodoListFilter])
 
     const addTaskHandler = useCallback((title: string) => {
         !demo && dispatch(addTask({todoListId: todolist.id, title}));
@@ -66,20 +54,20 @@ export const TodoList = memo((props: TodoListProps) => {
                     size="small"
                     disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'all' ? 'contained' : 'text'}
-                    onClick={allFilterTasks}
+                    onClick={() => filterTasks('all')}
                 >All</Button>
                 <Button
                     size="small"
                     disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'active' ? 'contained' : 'text'}
-                    onClick={activeFilterTasks}
+                    onClick={() => filterTasks('active')}
                     sx={{m: '0 1rem'}}
                 >Active</Button>
                 <Button
                     size="small"
                     disabled={status === 'loading' || !tasks.length}
                     variant={todolist.filter === 'completed' ? 'contained' : 'text'}
-                    onClick={completedFilterTasks}
+                    onClick={() => filterTasks('completed')}
                 >Completed</Button>
             </div>
             <TasksList filter={todolist.filter} todoListId={todolist.id} demo={demo}/>

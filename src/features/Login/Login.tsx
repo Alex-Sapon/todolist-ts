@@ -7,10 +7,10 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from 'formik';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
-import {login} from '../../store/reducers/auth-reducer';
+import {useAppDispatch, useAppSelector} from '../../utils/hooks';
+import {login} from './auth-reducer';
 import {Navigate} from 'react-router';
-import {selectIsLoggedIn} from '../../store/selectors/select-isLoggedIn';
+import {selectIsLoggedIn} from '../Login';
 import {LoginParamsType} from '../../api/todolist-api';
 
 type FormikErrorType = {

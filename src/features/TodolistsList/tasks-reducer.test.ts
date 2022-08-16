@@ -3,9 +3,9 @@ import {
     changeTaskEntityStatus, fetchTasks, removeTask,
     tasksReducer,
     TasksStateType, updateTaskStatus, updateTaskTitle
-} from '../tasks-reducer';
-import {deleteTodolist, setTodoList, TodoListsDomainType} from '../todolists-reducer';
-import {TaskPriority, TaskStatus, TaskType} from '../../../api/todolist-api';
+} from './tasks-reducer';
+import {TodoListsDomainType, todoListsActions} from './';
+import {TaskPriority, TaskStatus, TaskType} from '../../api/todolist-api';
 
 let startState: TasksStateType;
 let newTodoList: TodoListsDomainType;
@@ -160,7 +160,10 @@ test('correct task should be added', () => {
         addedDate: '',
     }
 
-    const endState = tasksReducer(startState, addTask.fulfilled({task}, 'requestId', {todoListId: 'todoListId1', title: 'Git'}))
+    const endState = tasksReducer(startState, addTask.fulfilled({task}, 'requestId', {
+        todoListId: 'todoListId1',
+        title: 'Git'
+    }))
 
     expect(startState['todoListId1'].length).toBe(6);
     expect(endState['todoListId1'][0].title).toBe('Git');
@@ -203,7 +206,7 @@ test('title of task should be changed', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const endState = tasksReducer(startState, setTodoList({todoList: newTodoList}));
+    const endState = tasksReducer(startState, todoListsActions.addTodoList.fulfilled({todoList: newTodoList}, 'requestId', newTodoList.title));
 
     const keys = Object.keys(endState);
     const newKey = keys.find(i => i !== 'todoListId1' && i !== 'todoListId2');
@@ -215,7 +218,7 @@ test('new array should be added when new todolist is added', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-    const endState = tasksReducer(startState, deleteTodolist({todoListId: 'todoListId2'}));
+    const endState = tasksReducer(startState, todoListsActions.removeTodoList.fulfilled({todoListId: 'todoListId2'}, 'requestId', 'todoListId2'));
     const keys = Object.keys(endState);
 
     expect(keys.length).toBe(1);

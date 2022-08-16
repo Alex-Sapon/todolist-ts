@@ -1,7 +1,7 @@
 import {TextField, Typography} from '@mui/material';
 import React, {ChangeEvent, memo, useState} from 'react';
-import {useAppSelector} from '../../store/hooks';
-import {selectStatus} from '../../store/selectors/select-status';
+import {useAppSelector} from '../../utils/hooks';
+import {selectStatus} from '../../app';
 
 export type EditableSpanType = {
     title: string
