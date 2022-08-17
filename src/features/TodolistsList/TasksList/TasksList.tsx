@@ -1,10 +1,10 @@
 import {memo, useEffect} from 'react';
 import {List, Typography} from '@mui/material';
-import {Task} from '../Task/Task';
 import {TaskStatus, ValueFilterType} from '../../../api/todolist-api';
 import {fetchTasks} from '../tasks-reducer';
-import {selectIsLoggedIn} from '../../Login';
+import {authSelectors} from '../../Login';
 import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
+import {selectTasks, Task} from '../';
 
 export type TasksList = {
     filter: ValueFilterType
@@ -15,9 +15,9 @@ export type TasksList = {
 export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
     const dispatch = useAppDispatch();
 
-    let tasks = useAppSelector(state => state.tasks[todoListId]);
+    let tasks = useAppSelector(selectTasks(todoListId));
 
-    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     switch (filter) {
         case 'active':
@@ -33,7 +33,9 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
         dispatch(fetchTasks(todoListId));
     }, [demo, isLoggedIn, dispatch, todoListId])
 
-    if (!tasks.length) return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
+    if (!tasks.length) {
+        return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>
+    }
 
     return <List>{tasks.map(task => <Task key={task.id} task={task}/>)}</List>
 });

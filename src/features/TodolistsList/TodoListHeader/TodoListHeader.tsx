@@ -1,8 +1,8 @@
 import {memo, useCallback} from 'react';
-import styles from './TodoListHeader.module.css'
-import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import styles from './TodoListHeader.module.css';
+import {EditableSpan} from '../../../components/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {RequestStatusType} from '../../../app/app-reducer';
+import {RequestStatusType} from '../../../app';
 import {IconButton} from '@mui/material';
 
 type TodoListHeaderType = {

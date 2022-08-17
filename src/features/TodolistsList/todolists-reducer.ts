@@ -1,6 +1,6 @@
 import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
-import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app/app-reducer';
+import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app';
 import {handleAppError} from '../../utils/error-utils';
 import {AxiosError} from 'axios';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
@@ -126,7 +126,7 @@ export const {changeTodoListFilter, changeTodoListEntityStatus} = todoListsReduc
 
 export const todoListsReducer = todoListsReducerSlice.reducer;
 
-export const asyncActions = {fetchTodoLists, addTodoList, removeTodoList, changeTodoListTitle};
+export const asyncTodoActions = {fetchTodoLists, addTodoList, removeTodoList, changeTodoListTitle};
 
 export type TodoListsDomainType = TodoListType & {
     filter: ValueFilterType

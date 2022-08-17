@@ -2,7 +2,7 @@ import {AxiosError} from 'axios';
 import {authAPI, FieldErrorsType, LoginParamsType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
 import {handleAppError} from '../../utils/error-utils';
-import {setAppErrorMessage, setAppStatus} from '../../app/app-reducer';
+import {setAppErrorMessage, setAppStatus} from '../../app/';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType,
@@ -52,7 +52,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, {dispatch, rejec
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {isLoggedIn: false},
+    initialState: {isLoggedIn: false} as InitialStateType,
     reducers: {
         setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
             state.isLoggedIn = action.payload.isLoggedIn;
@@ -72,3 +72,9 @@ const authSlice = createSlice({
 export const {setIsLoggedIn} = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
+
+export const asyncAuthActions = {login, logout};
+
+type InitialStateType = {
+    isLoggedIn: boolean
+}

@@ -1,16 +1,15 @@
 import {AppBar, Box, Button, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {RootStateType} from '../../app/store';
 import {useAppSelector, useAppDispatch} from '../../utils/hooks';
 import {logout} from '../Login/auth-reducer';
-
-const selectorStatus = (state: RootStateType) => state.app.status;
+import {authSelectors} from '../Login';
+import {appSelectors} from '../../app';
 
 export const AppBarComponent = () => {
     const dispatch = useAppDispatch();
 
-    const status = useAppSelector(selectorStatus);
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
+    const status = useAppSelector(appSelectors.selectStatus);
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     const logoutHandler = () => {
         dispatch(logout());

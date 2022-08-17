@@ -1,14 +1,14 @@
-import {removeTask, TaskDomainType, updateTaskStatus, updateTaskTitle} from '../tasks-reducer';
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, ListItem, Paper} from '@mui/material';
 import styles from './Task.module.css';
-import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import {TaskStatus} from '../../../api/todolist-api';
 import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
-import {useAppDispatch} from '../../../utils/hooks';
+import {TaskStatus} from '../../../api/todolist-api';
+import {EditableSpan} from '../../../components/EditableSpan';
+import {useActions} from '../../../utils/hooks';
+import {tasksActions, TaskDomainType} from '../';
 
 export type TaskPropsType = {
     task: TaskDomainType
@@ -17,18 +17,18 @@ export type TaskPropsType = {
 export const Task = memo(({task}: TaskPropsType) => {
     const {id, todoListId, title, entityStatus, status} = task;
 
-    const dispatch = useAppDispatch();
+    const {removeTask, updateTaskStatus, updateTaskTitle} = useActions(tasksActions);
 
-    const removeTaskHandler = () => dispatch(removeTask({todoListId: todoListId, taskId: id}));
+    const removeTaskHandler = () => removeTask({todoListId: todoListId, taskId: id});
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTaskStatus({todoListId: todoListId, taskId: id, status: e.currentTarget.checked
-            ? TaskStatus.Completed : TaskStatus.New}));
+        updateTaskStatus({todoListId: todoListId, taskId: id, status: e.currentTarget.checked
+            ? TaskStatus.Completed : TaskStatus.New});
     }
 
     const changeTitleHandler = useCallback((title: string) => {
-        dispatch(updateTaskTitle({todoListId, taskId: id, title}));
-    }, [dispatch, todoListId, id])
+        updateTaskTitle({todoListId, taskId: id, title});
+    }, [updateTaskTitle, todoListId, id])
 
     return (
         <ListItem>

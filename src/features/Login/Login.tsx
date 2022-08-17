@@ -10,8 +10,8 @@ import {FormikHelpers, useFormik} from 'formik';
 import {useAppDispatch, useAppSelector} from '../../utils/hooks';
 import {login} from './auth-reducer';
 import {Navigate} from 'react-router';
-import {selectIsLoggedIn} from '../Login';
 import {LoginParamsType} from '../../api/todolist-api';
+import {selectIsLoggedIn} from './selectors';
 
 type FormikErrorType = {
     email?: string

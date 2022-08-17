@@ -1,7 +1,7 @@
 import {TextField, Typography} from '@mui/material';
 import React, {ChangeEvent, memo, useState} from 'react';
 import {useAppSelector} from '../../utils/hooks';
-import {selectStatus} from '../../app';
+import {appSelectors} from '../../app';
 
 export type EditableSpanType = {
     title: string
@@ -14,10 +14,10 @@ export type EditableSpanType = {
 export const EditableSpan = memo((props: EditableSpanType) => {
     const {title, changeValue, textStyles, inputStyles, children} = props;
 
-    const [value, setValue] = useState<string>('');
-    const [editMode, setEditMode] = useState<boolean>(false);
+    const [value, setValue] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
-    const status = useAppSelector(selectStatus);
+    const status = useAppSelector(appSelectors.selectStatus);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
 

@@ -1,13 +1,13 @@
 import {Box, CircularProgress, Container} from '@mui/material';
-import {AppBarComponent} from '../features/AppBar/AppBar';
-import {TodolistsList} from '../features/TodolistsList/TodolistsList';
-import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {AppBarComponent} from '../features/AppBar';
+import {TodolistsList} from '../features/TodolistsList';
+import {ErrorSnackbar} from '../components/ErrorSnackbar';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {Login} from '../features/Login/Login';
+import {Login} from '../features/Login';
 import {useAppDispatch, useAppSelector} from '../utils/hooks';
 import {initializeApp} from './app-reducer';
 import {useEffect} from 'react';
-import {selectIsInitialized} from './';
+import {selectIsInitialized} from './selectors';
 
 type AppType = {
     demo?: boolean
@@ -22,7 +22,7 @@ export const App = ({demo = false}: AppType) => {
         if (!demo) {
             dispatch(initializeApp())
         }
-    }, [demo])
+    }, [demo, dispatch])
 
     if (!isInitialized) {
         return (

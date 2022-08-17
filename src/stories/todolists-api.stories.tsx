@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {TaskType, todolistAPI, TodoListType} from '../api/todolist-api';
-import {Simulate} from 'react-dom/test-utils';
 
 export default {
     title: 'API'

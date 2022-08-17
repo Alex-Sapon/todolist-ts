@@ -2,9 +2,9 @@ import {Grid, Typography} from '@mui/material';
 import {selectTodoLists, TodoList, todoListsActions} from './';
 import {useCallback, useEffect} from 'react';
 import {useActions, useAppSelector} from '../../utils/hooks';
-import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
+import {AddItemForm} from '../../components/AddItemForm/';
 import {Navigate} from 'react-router';
-import {selectIsLoggedIn} from '../Login';
+import {authSelectors} from '../Login';
 
 type TodolistsListType = {
     demo?: boolean
@@ -12,7 +12,7 @@ type TodolistsListType = {
 
 export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const todoLists = useAppSelector(selectTodoLists);
-    const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     const {addTodoList, fetchTodoLists} = useActions(todoListsActions);
 
