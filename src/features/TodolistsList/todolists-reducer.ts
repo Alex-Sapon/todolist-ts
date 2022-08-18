@@ -2,8 +2,8 @@ import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api
 import {ResultCode} from '../../enums/result-code';
 import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app';
 import {handleAppError} from '../../utils/error-utils';
-import {AxiosError} from 'axios';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {AxiosError} from 'axios';
 
 const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatus({status: 'loading'}));
@@ -12,7 +12,7 @@ const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {d
         const res = await todolistAPI.getTodolists();
         return {todoLists: res.data};
     } catch (e) {
-        const err = e as Error | AxiosError;
+        const err = e as AxiosError;
         dispatch(setAppErrorMessage({error: err.message}));
         return rejectWithValue({error: err.message});
     } finally {

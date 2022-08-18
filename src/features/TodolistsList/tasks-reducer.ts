@@ -1,4 +1,4 @@
-import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
+import {FieldErrorsType, TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
 import {RootStateType} from '../../app/store';
 import {ResultCode} from '../../enums/result-code';
 import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app';
@@ -47,23 +47,22 @@ export const removeTask = createAsyncThunk('tasks/removeTask',
         }
     })
 
-export const addTask = createAsyncThunk('tasks/addTask',
-    async ({todoListId, title}: { todoListId: string, title: string }, {dispatch, rejectWithValue}) => {
+export const addTask = createAsyncThunk<TaskType,
+    { todoListId: string, title: string },
+    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorsType[] } }>('tasks/addTask',
+    async ({todoListId, title}, {dispatch, rejectWithValue}) => {
 
         dispatch(changeTodoListEntityStatus({todoListId, status: 'loading'}));
 
         try {
             const res = await todolistAPI.createTask(todoListId, title);
             if (res.data.resultCode === ResultCode.Success) {
-                return {task: res.data.data.item};
+                return res.data.data.item;
             } else {
-                handleAppError(res.data, dispatch);
-                return rejectWithValue(res.data.messages[0]);
+                return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
             }
         } catch (e) {
-            const err = e as AxiosError;
-            dispatch(setAppErrorMessage({error: err.message}));
-            return rejectWithValue(err.message);
+            return rejectWithValue({errors: [(e as AxiosError).message], fieldsErrors: undefined});
         } finally {
             dispatch(changeTodoListEntityStatus({todoListId, status: 'idle'}));
         }
@@ -81,7 +80,7 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus',
         const task = (getState() as RootStateType).tasks[todoListId].find(task => task.id === taskId);
 
         if (!task) {
-            return rejectWithValue('task not found in the state')
+            return rejectWithValue('Task not found in the state')
         }
 
         const model: UpdateTaskType = {
@@ -176,7 +175,7 @@ export const tasksSlice = createSlice({
                 state[action.payload.todoListId].splice(index, 1);
             })
             .addCase(addTask.fulfilled, (state, action) => {
-                state[action.payload.task.todoListId].unshift({...action.payload.task, entityStatus: 'idle'});
+                state[action.payload.todoListId].unshift({...action.payload, entityStatus: 'idle'});
             })
             .addCase(updateTaskStatus.fulfilled, (state, action) => {
                 const index = state[action.payload.todoListId].findIndex(task => task.id === action.payload.taskId);

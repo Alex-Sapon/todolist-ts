@@ -7,7 +7,7 @@ import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
 import {TaskStatus} from '../../../api/todolist-api';
 import {EditableSpan} from '../../../components/EditableSpan';
-import {useActions} from '../../../utils/hooks';
+import {useActions, useAppSelector} from '../../../utils/hooks';
 import {tasksActions, TaskDomainType} from '../';
 
 export type TaskPropsType = {
@@ -17,9 +17,15 @@ export type TaskPropsType = {
 export const Task = memo(({task}: TaskPropsType) => {
     const {id, todoListId, title, entityStatus, status} = task;
 
+    const appLoadingStatus = useAppSelector(state => state.app.status);
+
     const {removeTask, updateTaskStatus, updateTaskTitle} = useActions(tasksActions);
 
-    const removeTaskHandler = () => removeTask({todoListId: todoListId, taskId: id});
+    const removeTaskHandler = () => {
+        if (appLoadingStatus !== 'loading') {
+            removeTask({todoListId: todoListId, taskId: id});
+        }
+    };
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
         updateTaskStatus({todoListId: todoListId, taskId: id, status: e.currentTarget.checked
@@ -45,8 +51,7 @@ export const Task = memo(({task}: TaskPropsType) => {
                 </EditableSpan>
                 {entityStatus === 'loading'
                     ? <LoadingButton loading variant="text" sx={{minWidth: '24px'}}/>
-                    : <DeleteIcon className={styles.item_delete} onClick={removeTaskHandler}/>
-                }
+                    : <DeleteIcon className={styles.item_delete} onClick={removeTaskHandler}/>}
             </Paper>
         </ListItem>
     )

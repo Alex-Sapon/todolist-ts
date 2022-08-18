@@ -3,6 +3,7 @@ import styles from './AddItemForm.module.css';
 import {Container, TextField} from '@mui/material';
 import {AddBox} from '@mui/icons-material';
 import {LoadingButton} from '@mui/lab';
+import {AxiosError} from 'axios';
 
 export type AddItemFormType = {
     title: string
@@ -14,26 +15,31 @@ export type AddItemFormType = {
 };
 
 export const AddItemForm = memo((props: AddItemFormType) => {
-    const {title, className, addItem, errorText, disabled, entityStatus} = props;
+    const {title, className, addItem, disabled, entityStatus} = props;
 
     const [value, setValue] = useState('');
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const addItemHandler = () => {
+    const addItemHandler = async () => {
         if (value.trim() !== '') {
-            addItem(value);
-            setValue('');
+            try {
+                await addItem(value);
+                setValue('');
+            } catch (e) {
+                setError((e as AxiosError).message);
+            }
+
         } else {
-            setError(true);
+            setError('Title is required');
         }
     };
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        error && setError(false);
+        error !== null && setError(null);
         setValue(e.currentTarget.value);
     };
 
-    const onBlurHandler = () => setError(false);
+    const onBlurHandler = () => setError(null);
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLDivElement>) => {
         e.key === 'Enter' && addItemHandler()
@@ -47,11 +53,11 @@ export const AddItemForm = memo((props: AddItemFormType) => {
                 fullWidth
                 size="small"
                 value={value}
-                error={error}
+                error={!!error}
                 label={title}
                 disabled={disabled}
                 className={inputClasses}
-                helperText={error && errorText}
+                helperText={error}
                 onKeyPress={onKeyPressHandler}
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}

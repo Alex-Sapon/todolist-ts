@@ -4,8 +4,8 @@ import {AddItemForm} from '../../../components/AddItemForm';
 import styles from './TodoList.module.css';
 import {Button, Paper} from '@mui/material';
 
-import {todoListsActions, TodoListHeader, TodoListsDomainType, tasksActions, TasksList} from '../';
-import {useActions, useAppSelector} from '../../../utils/hooks';
+import {tasksActions, TasksList, TodoListHeader, todoListsActions, TodoListsDomainType} from '../';
+import {useActions, useAppDispatch, useAppSelector} from '../../../utils/hooks';
 import {ValueFilterType} from '../../../api/todolist-api';
 import {appSelectors} from '../../../app';
 
@@ -27,8 +27,9 @@ const buttons: ButtonsType[] = [
 ]
 
 export const TodoList = memo(({todolist, demo}: TodoListProps) => {
+    const dispatch = useAppDispatch();
+
     const {removeTodoList, changeTodoListTitle, changeTodoListFilter} = useActions(todoListsActions);
-    const {addTask} = useActions(tasksActions);
 
     const status = useAppSelector(appSelectors.selectStatus);
     const tasks = useAppSelector(state => state.tasks[todolist.id]);
@@ -37,9 +38,19 @@ export const TodoList = memo(({todolist, demo}: TodoListProps) => {
         changeTodoListFilter({todoListId: todolist.id, filter: filter});
     }, [todolist.id, changeTodoListFilter])
 
-    const addTaskHandler = useCallback((title: string) => {
-        !demo && addTask({todoListId: todolist.id, title});
-    }, [addTask, todolist.id, demo])
+    const addTaskHandler = useCallback(async (title: string) => {
+        if (!demo) {
+            const action = await dispatch(tasksActions.addTask({todoListId: todolist.id, title}));
+
+            if (tasksActions.addTask.rejected.match(action)) {
+                if (action.payload?.errors[0].length) {
+                    throw new Error(action.payload.errors[0]);
+                } else {
+                    throw new Error('Some error occurred.');
+                }
+            }
+        }
+    }, [dispatch, todolist.id, demo])
 
     return (
         <Paper sx={{padding: '1rem'}} elevation={6}>
