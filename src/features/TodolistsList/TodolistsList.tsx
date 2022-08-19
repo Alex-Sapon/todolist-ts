@@ -1,7 +1,7 @@
 import {Grid, Typography} from '@mui/material';
 import {selectTodoLists, TodoList, todoListsActions} from './';
 import {useCallback, useEffect} from 'react';
-import {useActions, useAppSelector} from '../../utils/hooks';
+import {useActions, useAppDispatch, useAppSelector} from '../../utils/hooks';
 import {AddItemForm} from '../../components/AddItemForm/';
 import {Navigate} from 'react-router';
 import {authSelectors} from '../Login';
@@ -11,13 +11,24 @@ type TodolistsListType = {
 }
 
 export const TodolistsList = ({demo = false}: TodolistsListType) => {
+    const dispatch = useAppDispatch();
+
     const todoLists = useAppSelector(selectTodoLists);
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     const {addTodoList, fetchTodoLists} = useActions(todoListsActions);
 
-    const addTodoListHandler = useCallback((title: string) => {
-        addTodoList(title);
+    const addTodoListHandler = useCallback(async (title: string) => {
+        const action = await dispatch(todoListsActions.addTodoList(title));
+
+        if (todoListsActions.addTodoList.rejected.match(action)) {
+            if (action.payload?.errors) {
+                throw new Error(action.payload.errors[0]);
+            } else {
+                throw new Error('Some error occurred.');
+            }
+
+        }
     }, [addTodoList])
 
     useEffect(() => {

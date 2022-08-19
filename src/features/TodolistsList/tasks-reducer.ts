@@ -159,7 +159,7 @@ export const tasksSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(todoListsActions.addTodoList.fulfilled, (state, action) => {
-                state[action.payload.todoList.id] = [];
+                state[action.payload.id] = [];
             })
             .addCase(todoListsActions.removeTodoList.fulfilled, (state, action) => {
                 delete state[action.payload.todoListId];

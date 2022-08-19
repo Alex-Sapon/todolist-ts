@@ -1,4 +1,4 @@
-import {todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
+import {FieldErrorsType, todolistAPI, TodoListType, ValueFilterType} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
 import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app';
 import {handleAppError} from '../../utils/error-utils';
@@ -20,7 +20,8 @@ const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {d
     }
 })
 
-const addTodoList = createAsyncThunk('todoLists/addTodoList', async (title: string, {
+const addTodoList = createAsyncThunk<TodoListType, string,
+    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorsType[] } }>('todoLists/addTodoList', async (title, {
     dispatch,
     rejectWithValue
 }) => {
@@ -29,15 +30,12 @@ const addTodoList = createAsyncThunk('todoLists/addTodoList', async (title: stri
     try {
         const res = await todolistAPI.createTodolist(title);
         if (res.data.resultCode === ResultCode.Success) {
-            return {todoList: res.data.data.item};
+            return res.data.data.item;
         } else {
-            handleAppError(res.data, dispatch);
-            return rejectWithValue({error: res.data.messages[0]});
+            return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
         }
     } catch (e) {
-        const err = e as AxiosError;
-        dispatch(setAppErrorMessage({error: err.message}));
-        return rejectWithValue({error: err.message});
+        return rejectWithValue({errors: [(e as AxiosError).message]});
     } finally {
         dispatch(setAppStatus({status: 'idle'}));
     }
@@ -109,7 +107,7 @@ export const todoListsReducerSlice = createSlice({
                 return action.payload.todoLists.map(todo => ({...todo, filter: 'all', entityStatus: 'idle'}));
             })
             .addCase(addTodoList.fulfilled, (state, action) => {
-                state.unshift({...action.payload.todoList, filter: 'all', entityStatus: 'idle'});
+                state.unshift({...action.payload, filter: 'all', entityStatus: 'idle'});
             })
             .addCase(removeTodoList.fulfilled, (state, action) => {
                 const index = state.findIndex(todo => todo.id === action.payload.todoListId);
