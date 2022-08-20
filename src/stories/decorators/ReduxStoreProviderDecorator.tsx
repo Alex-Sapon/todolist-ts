@@ -2,12 +2,11 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {combineReducers} from 'redux';
 import {v1} from 'uuid';
-import {tasksReducer} from '../../features/TodolistsList/tasks-reducer';
-import {todoListsReducer} from '../../features/TodolistsList/todolists-reducer';
+import {tasksReducer, todoListsReducer} from '../../features/TodolistsList';
 import {TaskPriority, TaskStatus} from '../../api/todolist-api';
-import {appReducer} from '../../app/app-reducer';
+import {appReducer} from '../../app';
 import thunkMiddleware from 'redux-thunk';
-import {authReducer} from '../../features/Login/auth-reducer';
+import {authReducer} from '../../features/Login';
 import {HashRouter} from 'react-router-dom';
 import {configureStore} from '@reduxjs/toolkit';
 
@@ -102,6 +101,7 @@ const initialGlobalState: RootSBState = {
     },
     auth: {
         isLoggedIn: true,
+        captchaUrl: '',
     }
 };
 

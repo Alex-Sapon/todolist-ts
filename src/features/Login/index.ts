@@ -1,5 +1,5 @@
-import {asyncAuthActions, authReducer} from './auth-reducer';
+import {asyncAuthActions, authReducer, setIsLoggedIn} from './auth-reducer';
 import {Login} from './Login';
 import * as authSelectors from './selectors';
 
-export {authSelectors, Login, authReducer, asyncAuthActions}
+export {authSelectors, Login, authReducer, asyncAuthActions, setIsLoggedIn}

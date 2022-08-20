@@ -20,8 +20,7 @@ const fetchTodoLists = createAsyncThunk('todoLists/fetchTodoLists', async (_, {d
     }
 })
 
-const addTodoList = createAsyncThunk<TodoListType, string,
-    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorsType[] } }>('todoLists/addTodoList', async (title, {
+const addTodoList = createAsyncThunk<TodoListType, string, RejectType>('todoLists/addTodoList', async (title, {
     dispatch,
     rejectWithValue
 }) => {
@@ -53,13 +52,11 @@ const removeTodoList = createAsyncThunk('todoLists/removeTodoList', async (todoL
         if (res.data.resultCode === ResultCode.Success) {
             return {todoListId};
         } else {
-            handleAppError(res.data, dispatch);
-            return rejectWithValue({error: res.data.messages[0]});
+            return handleAppError(res.data, {dispatch, rejectWithValue});
         }
     } catch (e) {
-        const err = e as AxiosError;
-        dispatch(setAppErrorMessage({error: err.message}));
-        return rejectWithValue({error: err.message});
+        dispatch(changeTodoListEntityStatus({todoListId, status: 'idle'}));
+        return dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
     } finally {
         dispatch(setAppStatus({status: 'idle'}));
     }
@@ -67,7 +64,7 @@ const removeTodoList = createAsyncThunk('todoLists/removeTodoList', async (todoL
 
 const changeTodoListTitle = createAsyncThunk('todoLists/changeTodoListTitle', async (params: { todoListId: string, title: string }, {
     dispatch,
-    rejectWithValue
+    rejectWithValue,
 }) => {
     dispatch(changeTodoListEntityStatus({todoListId: params.todoListId, status: 'loading'}));
 
@@ -76,8 +73,7 @@ const changeTodoListTitle = createAsyncThunk('todoLists/changeTodoListTitle', as
         if (res.data.resultCode === ResultCode.Success) {
             return {todoListId: params.todoListId, title: params.title};
         } else {
-            handleAppError(res.data, dispatch);
-            return rejectWithValue({error: res.data.messages[0]});
+            return handleAppError(res.data, {dispatch, rejectWithValue});
         }
     } catch (e) {
         const err = e as AxiosError;
@@ -130,3 +126,11 @@ export type TodoListsDomainType = TodoListType & {
     filter: ValueFilterType
     entityStatus: RequestStatusType
 }
+
+export type RejectType = {
+    rejectValue: {
+        errors: string[]
+        fieldsErrors?: FieldErrorsType[]
+    }
+}
+

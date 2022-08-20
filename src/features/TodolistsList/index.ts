@@ -1,6 +1,6 @@
 import {selectTodoLists, selectTasks} from './selectors';
 import {TodoList} from './Todolist/TodoList';
-import {TodoListHeader} from './TodoListHeader/TodoListHeader';
+import {TodoListHeader} from './TodoListHeader/TodoListHeader' ;
 import {TodolistsList} from './TodolistsList';
 import {tasksReducer, tasksSlice, asyncTasksActions, TaskDomainType} from './tasks-reducer';
 import {Task} from './Task/Task';
@@ -11,7 +11,8 @@ import {
     changeTodoListFilter,
     TodoListsDomainType,
     todoListsReducer,
-    todoListsReducerSlice
+    todoListsReducerSlice,
+    RejectType,
 } from './todolists-reducer';
 
 const todoListsActions = {...asyncTodoActions, ...todoListsReducerSlice.actions}
@@ -33,4 +34,4 @@ export {
     TasksList
 };
 
-export type {TodoListsDomainType, TaskDomainType};
+export type {TodoListsDomainType, TaskDomainType, RejectType};

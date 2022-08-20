@@ -1,3 +1,9 @@
+import {FormikHelpers, useFormik} from 'formik';
+import {useAppDispatch, useAppSelector} from '../../utils/hooks';
+import {login} from './auth-reducer';
+import {Navigate} from 'react-router';
+import {LoginParamsType} from '../../api/todolist-api';
+import {selectIsLoggedIn, selectCaptchaUrl} from './selectors';
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -6,29 +12,26 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {FormikHelpers, useFormik} from 'formik';
-import {useAppDispatch, useAppSelector} from '../../utils/hooks';
-import {login} from './auth-reducer';
-import {Navigate} from 'react-router';
-import {LoginParamsType} from '../../api/todolist-api';
-import {selectIsLoggedIn} from './selectors';
 
 type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
+    captcha?: string
 }
 
 export const Login = () => {
     const dispatch = useAppDispatch();
 
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const captchaUrl = useAppSelector(selectCaptchaUrl);
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
             rememberMe: false,
+            captcha: '',
         },
         validate: (values) => {
             const errors: FormikErrorType = {};
@@ -51,13 +54,15 @@ export const Login = () => {
             const action = await dispatch(login(values));
 
             if (login.rejected.match(action)) {
-                if (action.payload?.errors.length) {
-                    const error = action.payload.errors;
-
-                    formikHelpers.setFieldError('email', error[0]);
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload.fieldsErrors;
+                    formikHelpers.setFieldError(error[0].field, error[0].error);
+                } else {
+                    const error = action.payload?.errors[0];
+                    formikHelpers.setFieldError('email', error);
                 }
             } else {
-                formik.resetForm({values: {email: values.email, password: '', rememberMe: false}});
+                formik.resetForm({values: {email: values.email, password: '', rememberMe: false, captcha: ''}});
             }
         },
     });
@@ -72,7 +77,11 @@ export const Login = () => {
                         <FormLabel>
                             <p>
                                 {`To log in get registered `}
-                                <b><a href="https://social-network.samuraijs.com/" target="_blank" rel="noreferrer">here</a></b>
+                                <b><a
+                                    href="https://social-network.samuraijs.com/"
+                                    target="_blank"
+                                    rel="noreferrer">here</a>
+                                </b>
                             </p>
                             <p>or use common test account credentials:</p>
                             <p>Email: free@samuraijs.com</p>
@@ -98,6 +107,17 @@ export const Login = () => {
                                 label="Remember me"
                                 control={<Checkbox{...formik.getFieldProps('rememberMe')}/>}
                             />
+                            {captchaUrl &&
+                                <><img src={captchaUrl} alt="Captcha"/>
+                                    <TextField
+                                        error={formik.touched.captcha && !!formik.errors.captcha}
+                                        helperText={formik.touched.captcha && !!formik.errors.captcha && formik.errors.captcha}
+                                        type="captcha"
+                                        label="Captcha"
+                                        margin="normal"
+                                        {...formik.getFieldProps('captcha')}
+                                    /></>
+                            }
                             <Button type="submit" variant="contained" color="primary">Login</Button>
                         </FormGroup>
                     </FormControl>

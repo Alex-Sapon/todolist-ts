@@ -1,14 +1,14 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
-import {Checkbox, ListItem, Paper} from '@mui/material';
-import styles from './Task.module.css';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import {LoadingButton} from '@mui/lab';
-import {grey} from '@mui/material/colors';
 import {TaskStatus} from '../../../api/todolist-api';
 import {EditableSpan} from '../../../components/EditableSpan';
 import {useActions, useAppSelector} from '../../../utils/hooks';
 import {tasksActions, TaskDomainType} from '../';
+import {Checkbox, ListItem, Paper} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import {LoadingButton} from '@mui/lab';
+import {grey} from '@mui/material/colors';
+import styles from './Task.module.css';
 
 export type TaskPropsType = {
     task: TaskDomainType

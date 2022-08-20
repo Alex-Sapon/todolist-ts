@@ -1,4 +1,4 @@
-import {FieldErrorsType, TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
+import {TaskStatus, TaskType, todolistAPI, UpdateTaskType} from '../../api/todolist-api';
 import {RootStateType} from '../../app/store';
 import {ResultCode} from '../../enums/result-code';
 import {RequestStatusType, setAppErrorMessage, setAppStatus} from '../../app';
@@ -6,10 +6,11 @@ import {AxiosError} from 'axios';
 import {handleAppError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {changeTodoListEntityStatus, todoListsActions} from '.';
+import {RejectType} from './todolists-reducer';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todoListId: string, {
     dispatch,
-    rejectWithValue
+    rejectWithValue,
 }) => {
     dispatch(setAppStatus({status: 'loading'}));
 
@@ -35,21 +36,16 @@ export const removeTask = createAsyncThunk('tasks/removeTask',
             if (res.data.resultCode === ResultCode.Success) {
                 return {todoListId, taskId};
             } else {
-                handleAppError(res.data, dispatch);
-                return rejectWithValue(res.data.messages[0]);
+                return handleAppError(res.data, {dispatch, rejectWithValue});
             }
         } catch (e) {
-            const err = e as AxiosError;
-            dispatch(setAppErrorMessage({error: err.message}));
-            return rejectWithValue(err.message);
+            return dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
         } finally {
             dispatch(setAppStatus({status: 'idle'}));
         }
     })
 
-export const addTask = createAsyncThunk<TaskType,
-    { todoListId: string, title: string },
-    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorsType[] } }>('tasks/addTask',
+export const addTask = createAsyncThunk<TaskType, { todoListId: string, title: string }, RejectType>('tasks/addTask',
     async ({todoListId, title}, {dispatch, rejectWithValue}) => {
 
         dispatch(changeTodoListEntityStatus({todoListId, status: 'loading'}));
@@ -79,9 +75,7 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus',
 
         const task = (getState() as RootStateType).tasks[todoListId].find(task => task.id === taskId);
 
-        if (!task) {
-            return rejectWithValue('Task not found in the state')
-        }
+        if (!task) return rejectWithValue('Task not found in the state');
 
         const model: UpdateTaskType = {
             title: task.title,
@@ -97,13 +91,10 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus',
             if (res.data.resultCode === ResultCode.Success) {
                 return {todoListId, taskId, status: status};
             } else {
-                handleAppError(res.data, dispatch);
-                return rejectWithValue(res.data.messages[0]);
+                return handleAppError(res.data, {dispatch, rejectWithValue});
             }
         } catch (e) {
-            const err = e as AxiosError;
-            dispatch(setAppErrorMessage({error: err.message}));
-            return rejectWithValue(err.message);
+            dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
         } finally {
             dispatch(changeTaskEntityStatus({todoListId, taskId, status: 'idle'}));
         }
@@ -113,13 +104,13 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle',
     async ({todoListId, taskId, title}: { todoListId: string, taskId: string, title: string }, {
         dispatch,
         rejectWithValue,
-        getState
+        getState,
     }) => {
         dispatch(changeTaskEntityStatus({todoListId, taskId, status: 'loading'}));
 
         const task = (getState() as RootStateType).tasks[todoListId].find(task => task.id === taskId);
 
-        if (!task) return rejectWithValue('task not found in the state');
+        if (!task) return rejectWithValue('Task not found in the state');
 
         const model: UpdateTaskType = {
             title: title,
@@ -135,13 +126,10 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle',
             if (res.data.resultCode === ResultCode.Success) {
                 return {todoListId, taskId, title: title};
             } else {
-                handleAppError(res.data, dispatch);
-                return rejectWithValue(res.data.messages[0]);
+                return handleAppError(res.data, {dispatch, rejectWithValue});
             }
         } catch (e) {
-            const err = e as AxiosError;
-            dispatch(setAppErrorMessage({error: err.message}));
-            return rejectWithValue(err.message);
+            dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
         } finally {
             dispatch(changeTaskEntityStatus({todoListId, taskId, status: 'idle'}));
         }

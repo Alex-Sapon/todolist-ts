@@ -1,19 +1,14 @@
 import {AppBar, Box, Button, IconButton, LinearProgress, Toolbar, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useAppSelector, useAppDispatch} from '../../utils/hooks';
-import {logout} from '../Login/auth-reducer';
-import {authSelectors} from '../Login';
+import {useActions, useAppSelector} from '../../utils/hooks';
+import {asyncAuthActions, authSelectors} from '../Login';
 import {appSelectors} from '../../app';
 
 export const AppBarComponent = () => {
-    const dispatch = useAppDispatch();
+    const {logout} = useActions(asyncAuthActions);
 
     const status = useAppSelector(appSelectors.selectStatus);
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
-
-    const logoutHandler = () => {
-        dispatch(logout());
-    }
 
     return (
         <Box sx={{flexGrow: 1, mb: '2rem'}}>
@@ -23,7 +18,7 @@ export const AppBarComponent = () => {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>Menu</Typography>
-                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
+                    {isLoggedIn && <Button color="inherit" onClick={() => logout()}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' &&
                     <LinearProgress color="inherit" sx={{position: 'absolute', top: '60px', width: '100%'}}/>}

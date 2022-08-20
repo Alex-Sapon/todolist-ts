@@ -2,7 +2,7 @@ import {Grid, Typography} from '@mui/material';
 import {selectTodoLists, TodoList, todoListsActions} from './';
 import {useCallback, useEffect} from 'react';
 import {useActions, useAppDispatch, useAppSelector} from '../../utils/hooks';
-import {AddItemForm} from '../../components/AddItemForm/';
+import {AddItemForm} from '../../components/AddItemForm';
 import {Navigate} from 'react-router';
 import {authSelectors} from '../Login';
 
@@ -16,7 +16,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
     const todoLists = useAppSelector(selectTodoLists);
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
-    const {addTodoList, fetchTodoLists} = useActions(todoListsActions);
+    const {fetchTodoLists} = useActions(todoListsActions);
 
     const addTodoListHandler = useCallback(async (title: string) => {
         const action = await dispatch(todoListsActions.addTodoList(title));
@@ -29,7 +29,7 @@ export const TodolistsList = ({demo = false}: TodolistsListType) => {
             }
 
         }
-    }, [addTodoList])
+    }, [dispatch])
 
     useEffect(() => {
         if (demo || !isLoggedIn) return;

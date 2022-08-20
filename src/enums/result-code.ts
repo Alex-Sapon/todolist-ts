@@ -1,4 +1,5 @@
 export enum ResultCode {
     Success = 0,
-    Error = 1,
+    Invalid = 1,
+    Captcha = 10,
 }
