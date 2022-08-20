@@ -1,10 +1,9 @@
 import {memo, useEffect} from 'react';
 import {List, Typography} from '@mui/material';
 import {TaskStatus, ValueFilterType} from '../../../api/todolist-api';
-import {fetchTasks} from '../tasks-reducer';
 import {authSelectors} from '../../Login';
-import {useAppDispatch, useAppSelector} from '../../../utils/hooks';
-import {selectTasks, Task} from '../';
+import {useActions, useAppSelector} from '../../../utils/hooks';
+import {selectTasks, Task, tasksActions} from '../';
 
 export type TasksList = {
     filter: ValueFilterType
@@ -13,7 +12,7 @@ export type TasksList = {
 }
 
 export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
-    const dispatch = useAppDispatch();
+    const {fetchTasks} = useActions(tasksActions);
 
     let tasks = useAppSelector(selectTasks(todoListId));
 
@@ -30,8 +29,8 @@ export const TasksList = memo(({todoListId, filter, demo}: TasksList) => {
 
     useEffect(() => {
         if (demo || !isLoggedIn) return;
-        dispatch(fetchTasks(todoListId));
-    }, [demo, isLoggedIn, dispatch, todoListId])
+        fetchTasks(todoListId);
+    }, [demo, isLoggedIn, fetchTasks, todoListId])
 
     if (!tasks.length) {
         return <Typography sx={{textAlign: 'center'}} variant="subtitle1">No tasks...</Typography>

@@ -1,22 +1,22 @@
-import {selectTodoLists, selectTasks} from './selectors';
+import {selectTasks, selectTodoLists} from './selectors';
 import {TodoList} from './Todolist/TodoList';
-import {TodoListHeader} from './TodoListHeader/TodoListHeader' ;
+import {TodoListHeader} from './TodoListHeader/TodoListHeader';
 import {TodolistsList} from './TodolistsList';
-import {tasksReducer, tasksSlice, asyncTasksActions, TaskDomainType} from './tasks-reducer';
+import {asyncTasksActions, TaskDomainType, tasksReducer, TasksStateType, updateTask} from './tasks-reducer';
 import {Task} from './Task/Task';
 import {TasksList} from './TasksList/TasksList';
 import {
     asyncTodoActions,
     changeTodoListEntityStatus,
     changeTodoListFilter,
+    RejectType,
     TodoListsDomainType,
     todoListsReducer,
     todoListsReducerSlice,
-    RejectType,
 } from './todolists-reducer';
 
 const todoListsActions = {...asyncTodoActions, ...todoListsReducerSlice.actions}
-const tasksActions = {...asyncTasksActions, ...tasksSlice.actions}
+const tasksActions = {...asyncTasksActions}
 
 export {
     todoListsActions,
@@ -31,7 +31,8 @@ export {
     tasksReducer,
     tasksActions,
     Task,
-    TasksList
+    TasksList,
+    updateTask
 };
 
-export type {TodoListsDomainType, TaskDomainType, RejectType};
+export type {TodoListsDomainType, TaskDomainType, RejectType, TasksStateType};

@@ -6,7 +6,7 @@ import {
     setAppErrorMessage,
     setInitializedApp,
     RequestStatusType,
-    appReducer
+    appReducer,
 } from './app-reducer';
 
 export {appSelectors, setAppStatus, setAppErrorMessage, setInitializedApp, asyncAppActions, App, appReducer};

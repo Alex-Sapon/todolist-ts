@@ -1,8 +1,8 @@
 import {AxiosError} from 'axios';
 import {authAPI, LoginParamsType, securityAPI} from '../../api/todolist-api';
 import {ResultCode} from '../../enums/result-code';
-import {handleAppError} from '../../utils/error-utils';
-import {setAppErrorMessage, setAppStatus} from '../../app';
+import {handleAppError, handleAsyncServerNetworkError} from '../../utils/error-utils';
+import {setAppStatus} from '../../app';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RejectType} from '../TodolistsList';
 
@@ -23,11 +23,9 @@ export const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType, 
             dispatch(getCaptcha());
         }
 
-        return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
+        return handleAppError(res.data, {dispatch, rejectWithValue});
     } catch (e) {
-        const err = e as AxiosError;
-        dispatch(setAppErrorMessage({error: err.message}));
-        return rejectWithValue({errors: [err.message], fieldsErrors: undefined});
+        return handleAsyncServerNetworkError((e as AxiosError), {dispatch, rejectWithValue});
     } finally {
         dispatch(setAppStatus({status: 'idle'}));
     }
@@ -43,24 +41,25 @@ export const logout = createAsyncThunk<{ isLoggedIn: false }, void, RejectType>(
         const res = await authAPI.logout();
         if (res.data.resultCode === ResultCode.Success) {
             return {isLoggedIn: false};
+        } else {
+            return handleAppError(res.data, {dispatch, rejectWithValue});
         }
-
-        return handleAppError(res.data, {dispatch, rejectWithValue});
     } catch (e) {
-        return dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
+        return handleAsyncServerNetworkError((e as AxiosError), {dispatch, rejectWithValue});
     } finally {
         dispatch(setAppStatus({status: 'idle'}));
     }
 })
 
 export const getCaptcha = createAsyncThunk<{ captchaUrl: string }, void, RejectType>('auth/captcha', async (_, {
+    dispatch,
     rejectWithValue,
 }) => {
     try {
         const res = await securityAPI.getCaptcha();
         return {captchaUrl: res.data.url};
     } catch (e) {
-        return rejectWithValue({errors: [(e as AxiosError).message], fieldsErrors: undefined});
+        return handleAsyncServerNetworkError((e as AxiosError), {dispatch, rejectWithValue});
     }
 })
 

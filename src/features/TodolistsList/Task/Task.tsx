@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {LoadingButton} from '@mui/lab';
 import {grey} from '@mui/material/colors';
 import styles from './Task.module.css';
+import {appSelectors} from '../../../app';
 
 export type TaskPropsType = {
     task: TaskDomainType
@@ -17,9 +18,9 @@ export type TaskPropsType = {
 export const Task = memo(({task}: TaskPropsType) => {
     const {id, todoListId, title, entityStatus, status} = task;
 
-    const appLoadingStatus = useAppSelector(state => state.app.status);
+    const appLoadingStatus = useAppSelector(appSelectors.selectStatus);
 
-    const {removeTask, updateTaskStatus, updateTaskTitle} = useActions(tasksActions);
+    const {removeTask, updateTask} = useActions(tasksActions);
 
     const removeTaskHandler = () => {
         if (appLoadingStatus !== 'loading') {
@@ -28,13 +29,13 @@ export const Task = memo(({task}: TaskPropsType) => {
     };
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        updateTaskStatus({todoListId: todoListId, taskId: id, status: e.currentTarget.checked
-            ? TaskStatus.Completed : TaskStatus.New});
+        updateTask({todoListId: todoListId, taskId: id, task: {status: e.currentTarget.checked
+            ? TaskStatus.Completed : TaskStatus.New}});
     }
 
     const changeTitleHandler = useCallback((title: string) => {
-        updateTaskTitle({todoListId, taskId: id, title});
-    }, [updateTaskTitle, todoListId, id])
+        updateTask({todoListId, taskId: id, task: {title: title}});
+    }, [updateTask, todoListId, id])
 
     return (
         <ListItem>

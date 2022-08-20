@@ -3,6 +3,7 @@ import {authAPI} from '../api/todolist-api';
 import {ResultCode} from '../enums/result-code';
 import {setIsLoggedIn} from '../features/Login';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {handleAppError, handleAsyncServerNetworkError} from '../utils/error-utils';
 
 export const initializeApp = createAsyncThunk('app/initializeApp', async (_, {dispatch, rejectWithValue}) => {
 
@@ -11,10 +12,10 @@ export const initializeApp = createAsyncThunk('app/initializeApp', async (_, {di
         if (res.data.resultCode === ResultCode.Success) {
             dispatch(setIsLoggedIn({isLoggedIn: true}));
         } else {
-            return rejectWithValue(null);
+            return handleAppError(res.data, {dispatch, rejectWithValue});
         }
     } catch (e) {
-        dispatch(setAppErrorMessage({error: (e as AxiosError).message}));
+        return handleAsyncServerNetworkError((e as AxiosError), {dispatch, rejectWithValue});
     } finally {
         dispatch(setInitializedApp({isInitialized: true}));
     }

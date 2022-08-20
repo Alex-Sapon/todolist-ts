@@ -1,9 +1,5 @@
 import {
-    todoListsAsyncActions as actions,
-    changeTodoListEntityStatus,
-    changeTodoListFilter,
-    TodoListsDomainType,
-    todoListsReducer
+    changeTodoListEntityStatus, changeTodoListFilter, TodoListsDomainType, todoListsReducer, todoListsActions
 } from './';
 import {ValueFilterType} from '../../api/todolist-api';
 
@@ -35,14 +31,14 @@ beforeEach(() => {
 });
 
 test('correct todolist should be removed', () => {
-    const endState = todoListsReducer(startState, actions.removeTodoList.fulfilled({todoListId: 'todolistId1'}, 'requestId', 'todolistId1'));
+    const endState = todoListsReducer(startState, todoListsActions.removeTodoList.fulfilled('todolistId1', 'requestId', 'todolistId1'));
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe('todolistId2');
 });
 
 test('correct todolist should be added', () => {
-    const endState = todoListsReducer(startState, actions.addTodoList.fulfilled({todoList: newTodoList}, 'requestId', newTodoList.title));
+    const endState = todoListsReducer(startState, todoListsActions.addTodoList.fulfilled(newTodoList, 'requestId', newTodoList.title));
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe(newTodolistTitle);
@@ -54,7 +50,7 @@ test('correct todolist should change its name', () => {
         title: newTodolistTitle,
     }
 
-    const endState = todoListsReducer(startState, actions.changeTodoListTitle.fulfilled(params, 'requestId', params));
+    const endState = todoListsReducer(startState, todoListsActions.changeTodoListTitle.fulfilled(params, 'requestId', params));
 
     expect(endState[0].title).toBe('What to learn');
     expect(endState[1].title).toBe(newTodolistTitle);
@@ -71,7 +67,7 @@ test('correct filter of todolist should be changed', () => {
 });
 
 test('todolist should be set', () => {
-    const endState = todoListsReducer([], actions.fetchTodoLists.fulfilled({todoLists: startState}, 'requestId'));
+    const endState = todoListsReducer([], todoListsActions.fetchTodoLists.fulfilled(startState, 'requestId'));
 
     expect(endState.length).toBe(2);
 });
